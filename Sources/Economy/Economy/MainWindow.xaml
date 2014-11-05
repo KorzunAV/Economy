@@ -1,8 +1,53 @@
 ﻿<Window x:Class="Economy.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="MainWindow">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Skins/Glass.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="270"/>
+            <ColumnDefinition Width="97*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="Acconts" Style="{StaticResource AccountListBox}" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border>
+                        <StackPanel >
+                            <StackPanel Orientation="Horizontal" Style="{StaticResource AccountStackPanel}">
+                                <Label Content="Счет:" Style="{StaticResource LabelBold}"/>
+                                <TextBlock Text="{Binding AccountNumber}"
+                                           Style="{StaticResource TextBlockCenter}"  />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Style="{StaticResource AccountStackPanel}">
+                                <Label Content="Банк:" Style="{StaticResource LabelBold}"/>
+                                <TextBlock ToolTip="{Binding BancInfo}" 
+                                           Text="{Binding BancInfo}"  
+                                           Style="{StaticResource TextBlockCenter}"   />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Style="{StaticResource AccountStackPanel}">
+                                <Label Content="Ошибки:" Style="{StaticResource LabelBold}"/>
+                                <Button Content="Просмотреть" Click="ShowErrorList" IsEnabled="{Binding IsError}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <GroupBox x:Name="MessageGroupBox" Grid.Column="1" Header="Информация" Style="{StaticResource AccountGroupBox}" Visibility="Hidden" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Button Content="X" ToolTip="Закрыть" HorizontalAlignment="Right" VerticalAlignment="Top" Width="23" Click="CloseMessageBox"/>
+                <TextBlock x:Name="Message"/>
+            </Grid>
+        </GroupBox>
+
     </Grid>
 </Window>

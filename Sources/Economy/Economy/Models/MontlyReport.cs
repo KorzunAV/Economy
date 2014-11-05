@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -77,5 +76,6 @@ namespace Economy.Models
         /// Переводы
         /// </summary>
         public List<TransactionItem> TransactionItems { get; set; }
+
     }
 }

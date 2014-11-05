@@ -9,9 +9,9 @@ using Economy.Models;
 
 namespace Economy.Common.Belinvest
 {
-    public class Parser
+    public class Parser : MailParser
     {
-        public static MontlyReport TryParse(string filePath)
+        public MontlyReport TryParse(string filePath)
         {
             try
             {
@@ -23,15 +23,15 @@ namespace Economy.Common.Belinvest
             return null;
         }
 
-        public static MontlyReport Parse(string filePath)
+        public MontlyReport Parse(string filePath)
         {
             string file;
             using (var sr = new StreamReader(filePath, Encoding.GetEncoding("windows-1251")))
             {
                 file = sr.ReadToEnd();
             }
-            file = MailParser.Clean(file);
-            var tree = MailParser.TryParse(file);
+            file = CleanFile(file);
+            var tree = ToDocument(file);
             var montlyReport = new MontlyReport();
 
             var result = ReadPreambula(tree.Root);
@@ -49,7 +49,7 @@ namespace Economy.Common.Belinvest
             return montlyReport;
         }
 
-        private static bool ReadPreambula(XElement root)
+        private bool ReadPreambula(XElement root)
         {
             var titleTable = root.Elements().First();
             var elem = titleTable.Elements().ToArray();
@@ -62,7 +62,7 @@ namespace Economy.Common.Belinvest
             return true;
         }
 
-        private static bool ReadTitle(XElement root, MontlyReport montlyReport)
+        private bool ReadTitle(XElement root, MontlyReport montlyReport)
         {
             var titleTable = root.Elements().First();
             var infoLines = titleTable.Elements().ToArray();
@@ -78,7 +78,7 @@ namespace Economy.Common.Belinvest
             return true;
         }
 
-        private static bool ReadHeader(XElement root, MontlyReport montlyReport)
+        private bool ReadHeader(XElement root, MontlyReport montlyReport)
         {
             var hederTable = root.Elements().First();
             var infoLines = hederTable.Elements().ToArray();
@@ -95,7 +95,7 @@ namespace Economy.Common.Belinvest
             return true;
         }
 
-        private static bool ReadTransactionItems(XElement root, MontlyReport montlyReport)
+        private bool ReadTransactionItems(XElement root, MontlyReport montlyReport)
         {
             var items = root.Elements().ToArray();
             montlyReport.TransactionItems = new List<TransactionItem>();
@@ -127,7 +127,7 @@ namespace Economy.Common.Belinvest
             return true;
         }
 
-        private static decimal? Sum(XElement element)
+        private decimal? Sum(XElement element)
         {
             var cols = element.Elements().Single().Elements().ToArray();
             if (cols.Length == 2 && !string.IsNullOrEmpty(cols[1].Value))
@@ -138,7 +138,7 @@ namespace Economy.Common.Belinvest
             return null;
         }
 
-        private static TransactionItem ReadTransactionItem(XElement element)
+        private TransactionItem ReadTransactionItem(XElement element)
         {
             var row = element.Elements().Single();
             var cols = row.Elements().ToArray();
@@ -160,7 +160,7 @@ namespace Economy.Common.Belinvest
             return item;
         }
 
-        private static decimal StringToDecimal(string value)
+        private decimal StringToDecimal(string value)
         {
             value = value.Trim();
             if (string.IsNullOrEmpty(value))
@@ -172,7 +172,7 @@ namespace Economy.Common.Belinvest
             return (sign ? 1 : -1) * decimal.Parse(value, NumberStyles.Any);
         }
 
-        private static DateTime StringToDateTime(string value)
+        private DateTime StringToDateTime(string value)
         {
             value = value.Trim();
             if (string.IsNullOrEmpty(value))

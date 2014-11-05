@@ -69,8 +69,13 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Skins\Glass.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AccountReport.cs" />
     <Compile Include="Models\MontlyReport.cs" />
     <Compile Include="Models\TransactionItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

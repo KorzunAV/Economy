@@ -6,20 +6,14 @@ namespace Economy.Common
 {
     public class MailParser
     {
-        public static XDocument TryParse(string file)
+        protected XDocument ToDocument(string file)
         {
             file = string.Format("<data>{0}</data>", file);
             var doc = XDocument.Parse(file);
             return doc;
         }
-
-        public static string Clean(string file)
-        {
-            var source = CleanFile(file);
-            return source;
-        }
-
-        private static string CleanFile(string file)
+        
+        protected virtual string CleanFile(string file)
         {
             var result = RemoveReplaceTag(file, "<!--", ">", "");
             result = RemoveAttributs(result);
@@ -42,12 +36,11 @@ namespace Economy.Common
             result = result.Replace("\r", string.Empty).Replace("\n", string.Empty);
             result = CloseTable(result);
             result = Repair(result);
-            
+
             return result;
         }
 
-
-        private static string CloseTable(string text)
+        protected string CloseTable(string text)
         {
             var rows = text.Split(new[] { "<table>" }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < rows.Length; i++)
@@ -58,7 +51,7 @@ namespace Economy.Common
             return string.Format("<table>{0}</table>", data);
         }
 
-        private static string Repair(string text)
+        protected string Repair(string text)
         {
             int startP = 0;
             var stack = new Stack<string>();
@@ -104,7 +97,7 @@ namespace Economy.Common
             return text;
         }
 
-        private static string GetTag(string text, int start)
+        protected string GetTag(string text, int start)
         {
             if (start == -1)
                 return string.Empty;
@@ -119,7 +112,7 @@ namespace Economy.Common
             return tag;
         }
 
-        private static string RemoveReplaceTag(string text, string spanStartPattern, string spanEndPattern,
+        protected string RemoveReplaceTag(string text, string spanStartPattern, string spanEndPattern,
             string spanClosePattern, string insert = null)
         {
             int startP = 0;
@@ -152,7 +145,7 @@ namespace Economy.Common
             } while (!end);
             return text;
         }
-        private static string RemoveAttributs(string text)
+        protected string RemoveAttributs(string text)
         {
             var blocs = text.Split(new[] { "<" }, StringSplitOptions.RemoveEmptyEntries);
             for (int index = 0; index < blocs.Length; index++)

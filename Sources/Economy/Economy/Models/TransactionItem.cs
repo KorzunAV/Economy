@@ -3,7 +3,7 @@
 namespace Economy.Models
 {
     [Serializable]
-    public class TransactionItem
+    public class TransactionItem : IComparable<TransactionItem>
     {
         /// <summary>
         /// Дата регистрации
@@ -39,5 +39,10 @@ namespace Economy.Models
         /// Сумма в валюте счета
         /// </summary>
         public decimal AmountByAccount { get; set; }
+
+        public int CompareTo(TransactionItem other)
+        {
+            return RegistrationDate.CompareTo(other.RegistrationDate);
+        }
     }
 }

@@ -12,30 +12,24 @@ namespace Economy.Test
     [TestFixture]
     public class BelinvestParserTest
     {
-        [Test]
-        public void CleanTest()
-        {
-            const string filePath = @"D:/Projects/MyProjects/Economy/Economy/Sources/Economy/Economy/Data/Mails/10239140.htm";
-            var data = Parser.Parse(filePath);
-            Assert.IsNotNull(data);
-        }
+        const string DirPath = @"..\..\..\Economy\Data\Mails\";
+        const string DirPathOut = @"..\..\..\Economy\Data\Converted\";
+        private readonly Parser _parser = new Parser();
 
         [Test]
         public void ConvertTest()
         {
-            const string dirPath = @"D:\Projects\MyProjects\Economy\Economy\Sources\Economy\Economy\Data\Mails\";
-            const string dirPathOut = @"D:\Projects\MyProjects\Economy\Economy\Sources\Economy\Economy\Data\Converted\";
-            var paths = Directory.GetFiles(dirPath);
-            var convertedPaths = Directory.GetFiles(dirPathOut);
+            var paths = Directory.GetFiles(DirPath);
+            var convertedPaths = Directory.GetFiles(DirPathOut);
 
             foreach (var filePath in paths)
             {
                 if (!convertedPaths.Any(f => Path.GetFileNameWithoutExtension(f) == Path.GetFileNameWithoutExtension(filePath)))
                 {
-                    var data = Parser.Parse(filePath);
+                    var data = _parser.Parse(filePath);
                     if (data != null)
                     {
-                        var outpath = Path.Combine(dirPathOut, Path.GetFileNameWithoutExtension(filePath) + ".xml");
+                        var outpath = Path.Combine(DirPathOut, Path.GetFileNameWithoutExtension(filePath) + ".xml");
                         Serialization.Save(data, outpath, FileMode.Create);
                     }
                 }
@@ -45,19 +39,17 @@ namespace Economy.Test
         [Test]
         public void TryConvertTest()
         {
-            const string dirPath = @"D:\Projects\MyProjects\Economy\Economy\Sources\Economy\Economy\Data\Mails\";
-            const string dirPathOut = @"D:\Projects\MyProjects\Economy\Economy\Sources\Economy\Economy\Data\Converted\";
-            var paths = Directory.GetFiles(dirPath);
-            var convertedPaths = Directory.GetFiles(dirPathOut);
+            var paths = Directory.GetFiles(DirPath);
+            var convertedPaths = Directory.GetFiles(DirPathOut);
 
             foreach (var filePath in paths)
             {
                 if (convertedPaths.All(f => Path.GetFileNameWithoutExtension(f) == Path.GetFileNameWithoutExtension(filePath)))
                 {
-                    var data = Parser.TryParse(filePath);
+                    var data = _parser.TryParse(filePath);
                     if (data != null)
                     {
-                        var outpath = Path.Combine(dirPathOut, Path.GetFileNameWithoutExtension(filePath) + ".xml");
+                        var outpath = Path.Combine(DirPathOut, Path.GetFileNameWithoutExtension(filePath) + ".xml");
                         Serialization.Save(data, outpath, FileMode.Create);
                     }
                 }
@@ -67,8 +59,7 @@ namespace Economy.Test
         [Test]
         public void ReadTest()
         {
-            const string dirPathOut = @"D:\Projects\MyProjects\Economy\Economy\Sources\Economy\Economy\Data\Converted\";
-            var convertedPaths = Directory.GetFiles(dirPathOut);
+            var convertedPaths = Directory.GetFiles(DirPathOut);
             var statistic = new List<MontlyReport>();
 
             foreach (var filePath in convertedPaths)
@@ -82,12 +73,16 @@ namespace Economy.Test
             foreach (var itemList in groups)
             {
                 DateTime date;
-                decimal balans = 0;
+                decimal balans = itemList.First().PrevBalance;
                 foreach (var item in itemList)
                 {
                     if (balans == item.PrevBalance)
                     {
                         balans += item.TransactionItems.Sum(i=>i.AmountByAccount);
+                    }
+                    else
+                    {
+                        Assert.Pass("Дебит с кредитом не срослись");
                     }
                 }
             }
