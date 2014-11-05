@@ -9,11 +9,16 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="241*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="270"/>
             <ColumnDefinition Width="97*"/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="Acconts" Style="{StaticResource AccountListBox}" >
+        <Button Content="Выбрать все"/>
+        <ListBox x:Name="Acconts" Style="{StaticResource AccountListBox}" Grid.Row="1">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border>
@@ -24,16 +29,23 @@
                                            Style="{StaticResource TextBlockCenter}"  />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Style="{StaticResource AccountStackPanel}">
+                                <Label Content="Баланс:" Style="{StaticResource LabelBold}"/>
+                                <TextBlock Text="{Binding Balance}"
+                                           Style="{StaticResource TextBlockCenter}"  />
+                                <TextBlock Text="{Binding Currency}"
+                                           Style="{StaticResource TextBlockCenter}"  />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Style="{StaticResource AccountStackPanel}">
                                 <Label Content="Банк:" Style="{StaticResource LabelBold}"/>
                                 <TextBlock ToolTip="{Binding BancInfo}" 
                                            Text="{Binding BancInfo}"  
-                                           Style="{StaticResource TextBlockCenter}"   />
+                                           Style="{StaticResource TextBlockWrapping}"   />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" 
                                         Style="{StaticResource AccountStackPanel}" 
                                         IsEnabled="{Binding IsError}">
                                 <Label Content="Ошибки:" Style="{StaticResource LabelBold}"/>
-                                <Button Content="Просмотреть" Click="ShowErrorList" />
+                                <Button Content="i" Click="ShowErrorList" Width="20" Height="20" />
                             </StackPanel>
                         </StackPanel>
                     </Border>
@@ -41,7 +53,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <GroupBox x:Name="MessageGroupBox" Grid.Column="1" Header="Информация" Style="{StaticResource AccountGroupBox}" Visibility="Hidden" >
+        <GroupBox x:Name="MessageGroupBox" Grid.Column="1" Header="Информация" Style="{StaticResource AccountGroupBox}" Visibility="Hidden" Grid.RowSpan="2" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />

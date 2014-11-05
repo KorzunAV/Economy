@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Economy.Models
 {
@@ -15,7 +16,24 @@ namespace Economy.Models
         /// </summary>
         public string BancInfo { get; set; }
 
+        /// <summary>
+        /// Итоговое состояние счета
+        /// </summary>
+        public decimal Balance
+        {
+            get
+            {
+                return StartBalance + TransactionItems.Sum(i => i.AmountByAccount);
+            }
+        }
 
+        /// <summary>
+        /// Первоначальный баланс счета
+        /// </summary>
+        public decimal StartBalance { get; set; }
+
+
+        public string Currency { get; set; }
 
         /// <summary>
         /// Переводы
@@ -37,7 +55,7 @@ namespace Economy.Models
                 return (ErrorsList != null && ErrorsList.Count > 0);
             }
         }
-        
+
         public AccountReport()
         {
             TransactionItems = new List<TransactionItem>();

@@ -43,7 +43,9 @@ namespace Economy
                 var accountReport = new AccountReport
                 {
                     AccountNumber = buf.AccountNumber,
-                    BancInfo = buf.BancInfo
+                    BancInfo = buf.BancInfo,
+                    StartBalance = buf.PrevBalance,
+                    Currency = buf.AccountCurrency
                 };
 
                 foreach (var item in itemList)
@@ -100,16 +102,21 @@ namespace Economy
         private void ShowErrorList(object sender, RoutedEventArgs e)
         {
             var data = ((FrameworkElement)sender).DataContext as AccountReport;
-            if (data != null)
-            {
-                Message.Text = string.Join(System.Environment.NewLine, data.ErrorsList);
-                MessageGroupBox.Visibility = Visibility.Visible;
-            }
+            MessageGroupBox.Visibility = Visibility.Visible;
+            UpdateErrorList(data);
         }
 
         private void CloseMessageBox(object sender, RoutedEventArgs e)
         {
             MessageGroupBox.Visibility = Visibility.Hidden;
+        }
+
+        private void UpdateErrorList(AccountReport accountReport)
+        {
+            if (accountReport != null && MessageGroupBox.Visibility == Visibility.Visible)
+            {
+                Message.Text = string.Join(System.Environment.NewLine, accountReport.ErrorsList);
+            }
         }
     }
 }
