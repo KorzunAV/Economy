@@ -29,9 +29,11 @@
                                            Text="{Binding BancInfo}"  
                                            Style="{StaticResource TextBlockCenter}"   />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Style="{StaticResource AccountStackPanel}">
+                            <StackPanel Orientation="Horizontal" 
+                                        Style="{StaticResource AccountStackPanel}" 
+                                        IsEnabled="{Binding IsError}">
                                 <Label Content="Ошибки:" Style="{StaticResource LabelBold}"/>
-                                <Button Content="Просмотреть" Click="ShowErrorList" IsEnabled="{Binding IsError}" />
+                                <Button Content="Просмотреть" Click="ShowErrorList" />
                             </StackPanel>
                         </StackPanel>
                     </Border>
@@ -45,7 +47,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Button Content="X" ToolTip="Закрыть" HorizontalAlignment="Right" VerticalAlignment="Top" Width="23" Click="CloseMessageBox"/>
-                <TextBlock x:Name="Message"/>
+                <TextBlock x:Name="Message" TextWrapping="Wrap"/>
             </Grid>
         </GroupBox>
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Economy.Models
 {
@@ -68,8 +67,30 @@ namespace Economy.Models
 
         #endregion Header
 
-        public DateTime? LastDate {
-            get { return TransactionItems.Any() ? TransactionItems.Last().RegistrationDate : (DateTime?)null; }
+        public DateTime? StartDate
+        {
+            get
+            {
+                var date1 = PeriodInfo.Substring(PeriodInfo.IndexOf("-") - 2, 10);
+                return DateTime.Parse(date1);
+            }
+        }
+
+        public DateTime? EndDate {
+            get
+            {
+                var date2 = PeriodInfo.Substring(PeriodInfo.LastIndexOf("-") - 5, 10);
+                return DateTime.Parse(date2);
+            }
+        }
+
+        public DateTime? CreatedDateTime
+        {
+            get
+            {
+                var date = CreationInfo.Substring(CreationInfo.IndexOf("-") - 2,19);
+                return DateTime.Parse(date);
+            }
         }
 
         /// <summary>

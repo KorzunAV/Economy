@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using Economy.Common.FileSystem;
@@ -35,7 +36,7 @@ namespace Economy
 
         private void MergeData()
         {
-            var groups = _reports.OrderBy(i => i.LastDate).GroupBy(i => i.AccountNumber);
+            var groups = _reports.OrderBy(i => i.CreatedDateTime).GroupBy(i => i.AccountNumber);
             foreach (var itemList in groups)
             {
                 var buf = itemList.First();
@@ -55,21 +56,28 @@ namespace Economy
 
         private void ValidateReports()
         {
-            var groups = _reports.OrderBy(i => i.LastDate).GroupBy(i => i.AccountNumber);
+            var groups = _reports.OrderBy(i => i.CreatedDateTime).GroupBy(i => i.AccountNumber);
             foreach (var itemList in groups)
             {
                 var errors = new List<string>();
                 decimal balans = itemList.First().PrevBalance;
+                DateTime? startDate = null;
+                DateTime? endDate = null;
+                DateTime? createdDateTime = null;
                 foreach (var item in itemList)
                 {
                     if (balans != item.PrevBalance)
                     {
                         errors.Add(
                             string.Format(
-                                "Дебит с кредитом не сошлись: Дата {0}. Сумма по месяцам {1}. Сумма по отчету {2}",
-                                item.LastDate, balans, item.PrevBalance));
+                                "Дата {0} [{1} - {2}]. Сумма по месяцам {3}.{4}Дата {5} [{6} - {7}]. Сумма по отчету {8}. {4}{9}",
+                                createdDateTime, startDate, endDate, balans, Environment.NewLine,
+                                item.CreatedDateTime, item.StartDate, item.EndDate, item.PrevBalance, "-----------"));
                     }
-                    balans += item.TransactionItems.Sum(i => i.AmountByAccount);
+                    startDate = item.StartDate;
+                    endDate = item.EndDate;
+                    createdDateTime = item.CreatedDateTime;
+                    balans = item.PrevBalance + item.TransactionItems.Sum(i => i.AmountByAccount);
                 }
                 _reportsByAccaunt.SingleOrDefault(i => i.AccountNumber == itemList.Key).ErrorsList = errors;
             }
@@ -91,7 +99,7 @@ namespace Economy
 
         private void ShowErrorList(object sender, RoutedEventArgs e)
         {
-            var data = ((FrameworkElement) sender).DataContext as AccountReport;
+            var data = ((FrameworkElement)sender).DataContext as AccountReport;
             if (data != null)
             {
                 Message.Text = string.Join(System.Environment.NewLine, data.ErrorsList);
