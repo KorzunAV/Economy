@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="Economy.Controls.TransactionListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:filter="clr-namespace:DataGridFilterLibrary;assembly=DataGridFilterLibrary"
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="760">
+    <Grid>
+
+        <DataGrid 
+            filter:DataGridExtensions.UseBackgroundWorkerForFiltering="True"
+            filter:DataGridExtensions.IsClearButtonVisible="False"
+            filter:DataGridExtensions.IsFilterVisible="{Binding Path=IsChecked, 
+            ElementName=ShowHideFilterCheckBox, Mode=TwoWay}"
+            
+       
+            
+            AutoGenerateColumns="False"
+            ItemsSource="{Binding Path=EmployeeList}" 
+            Name="List" 
+            Grid.Row="0">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Дата регистрации" Binding="{Binding Path=RegistrationDate, StringFormat='dd.MM.yyyy'}"/>
+                <DataGridTextColumn Header="Дата транзакции" Binding="{Binding Path=TransactionDate, StringFormat='dd.MM.yyyy'}"/>
+                <DataGridTextColumn Header="Номер транзакции" Binding="{Binding Path=TransactionCode}"/>
+                <DataGridTextColumn Header="Валюта транзакции" Binding="{Binding Path=Currency}"/>
+                <DataGridTextColumn Header="Сумма в валюте транзакции" Binding="{Binding Path=AmountByCurrency, StringFormat={}{0:### ### ###}}"/>
+                <DataGridTextColumn Header="Сумма в валюте счета" Binding="{Binding Path=AmountByAccount, StringFormat={}{0:### ### ###}}"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+    </Grid>
+</UserControl>

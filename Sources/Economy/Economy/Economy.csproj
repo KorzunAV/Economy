@@ -53,6 +53,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\AccountListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\InformationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TransactionListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -65,6 +81,18 @@
     <Compile Include="Common\FileSystem\Deserialization.cs" />
     <Compile Include="Common\FileSystem\Serialization.cs" />
     <Compile Include="Common\MailParser.cs" />
+    <Compile Include="Controls\AccountListControl.xaml.cs">
+      <DependentUpon>AccountListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\InformationControl.xaml.cs">
+      <DependentUpon>InformationControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageControl.xaml.cs">
+      <DependentUpon>MessageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TransactionListControl.xaml.cs">
+      <DependentUpon>TransactionListControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -108,6 +136,12 @@
     <Folder Include="Data\Converted\" />
     <Folder Include="Data\Mails\" />
     <Folder Include="Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataGridFilterLibrary\DataGridFilterLibrary.csproj">
+      <Project>{57e0cb10-1c4a-4bd8-9667-7a8dbd4d75e5}</Project>
+      <Name>DataGridFilterLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

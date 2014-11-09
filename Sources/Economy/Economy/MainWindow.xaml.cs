@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using Economy.Common.FileSystem;
 using Economy.Models;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Economy
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         const string DirPathOut = @"..\..\..\Economy\Data\Converted\";
         private IEnumerable<MontlyReport> _reports;
@@ -22,7 +23,17 @@ namespace Economy
         {
             InitializeData();
             InitializeComponent();
-            Acconts.ItemsSource = _reportsByAccaunt;
+            Acconts.List.ItemsSource = _reportsByAccaunt;
+            Acconts.ShowErrorEvent += ShowErrorList;
+            Acconts.List.SelectionChanged += AccontsSelectionChanged;
+            TransactionList.List.ItemsSource = _reportsByAccaunt.First().TransactionItems;
+        }
+
+        void AccontsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var typedSender = sender as ListBox;
+            TransactionList.List.ItemsSource = ((AccountReport)typedSender.SelectedItem).TransactionItems;
+           
         }
 
 
@@ -105,17 +116,12 @@ namespace Economy
             MessageGroupBox.Visibility = Visibility.Visible;
             UpdateErrorList(data);
         }
-
-        private void CloseMessageBox(object sender, RoutedEventArgs e)
-        {
-            MessageGroupBox.Visibility = Visibility.Hidden;
-        }
-
+        
         private void UpdateErrorList(AccountReport accountReport)
         {
             if (accountReport != null && MessageGroupBox.Visibility == Visibility.Visible)
             {
-                Message.Text = string.Join(System.Environment.NewLine, accountReport.ErrorsList);
+                MessageGroupBox.MessageTextBlock.Text = string.Join(Environment.NewLine, accountReport.ErrorsList);
             }
         }
     }

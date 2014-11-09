@@ -69,7 +69,7 @@ namespace Economy.Test
                 statistic.Add(montlyReport);
             }
 
-            var groups = statistic.OrderBy(i => i.LastDate).GroupBy(i => i.AccountNumber);
+            var groups = statistic.OrderBy(i => i.CreatedDateTime).GroupBy(i => i.AccountNumber);
             foreach (var itemList in groups)
             {
                 DateTime date;
