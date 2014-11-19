@@ -5,6 +5,7 @@ using System.Linq;
 using Economy.Common.Belinvest;
 using Economy.Common.FileSystem;
 using Economy.Models;
+using Economy.ViewModels;
 using NUnit.Framework;
 
 namespace Economy.Test

@@ -1,57 +1,48 @@
-﻿<UserControl x:Class="Economy.Controls.AccountListControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:models="clr-namespace:Economy.Models"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <!--<UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Skins/Glass.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>-->
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Button Content="Выбрать все"/>
-        <ListBox x:Name="List" Grid.Row="1" Grid.Column="0" >
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="models:AccountReport">
-                    <Border>
-                        <StackPanel >
-                            <StackPanel Orientation="Horizontal" Style="{DynamicResource AccountStackPanel}">
-                                <Label Content="Счет:" Style="{DynamicResource LabelBold}"/>
-                                <TextBlock Text="{Binding AccountNumber}" 
+﻿<ListBox x:Class="Economy.Controls.AccountListControl"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+         xmlns:viewModels="clr-namespace:Economy.ViewModels"
+         mc:Ignorable="d" 
+         ItemsSource="{Binding Accounts, Source={StaticResource Locator}}"
+         d:DesignHeight="300" d:DesignWidth="300">
+
+    <ListBox.Resources>
+        <ResourceDictionary Source="/Economy;component/Skins/AccountListControl.xaml" />
+    </ListBox.Resources>
+
+    <ListBox.ItemTemplate>
+        <DataTemplate DataType="viewModels:AccountViewModel">
+            <Border>
+                <StackPanel >
+                    <CheckBox Style="{DynamicResource AccauntSelectedCheckBox}" Command="{Binding SelectionChangedCommand}"/>
+                    <StackPanel Style="{DynamicResource AccountStackPanel}" >
+                        <Label Content="Баланс:" Style="{DynamicResource LabelBold}"/>
+                        <TextBlock Text="{Binding Balance}"
                                            Style="{DynamicResource TextBlockCenter}"  />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Style="{DynamicResource AccountStackPanel}">
-                                <Label Content="Баланс:" Style="{DynamicResource LabelBold}"/>
-                                <TextBlock Text="{Binding Balance}"
+                        <TextBlock Text="{Binding Currency}"
                                            Style="{DynamicResource TextBlockCenter}"  />
-                                <TextBlock Text="{Binding Currency}"
-                                           Style="{DynamicResource TextBlockCenter}"  />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Style="{DynamicResource AccountStackPanel}">
-                                <Label Content="Банк:" Style="{DynamicResource LabelBold}"/>
-                                <TextBlock ToolTip="{Binding BancInfo}" 
+                    </StackPanel>
+                    <StackPanel Style="{DynamicResource AccountStackPanel}">
+                        <Label Content="Счет:" Style="{DynamicResource LabelBold}"/>
+                        <TextBlock Text="{Binding AccountNumber}" Style="{DynamicResource TextBlockCenter}"  />
+                    </StackPanel>
+                    <StackPanel Style="{DynamicResource AccountStackPanel}">
+                        <Label Content="Банк:" Style="{DynamicResource LabelBold}"/>
+                        <TextBlock ToolTip="{Binding BancInfo}" 
                                            Text="{Binding BancInfo}"  
                                            Style="{DynamicResource TextBlockWrapping}"   />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" 
-                                        Style="{DynamicResource AccountStackPanel}" 
-                                        IsEnabled="{Binding IsError}">
-                                <Label Content="Ошибки:" Style="{DynamicResource LabelBold}"/>
-                                <Button x:Name="ShowError" Click="ShowError" Style="{DynamicResource AccauntButtonInfo}" />
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>
-</UserControl>
+                    </StackPanel>
+                    <StackPanel Style="{DynamicResource AccountStackPanel}" IsEnabled="{Binding IsError}">
+                        <Label Content="Ошибки:" Style="{DynamicResource LabelBold}"/>
+                        <Button Command="{Binding ShowErrorCommand}" Style="{DynamicResource AccauntButtonInfo}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </ListBox.ItemTemplate>
+
+ 
+
+</ListBox>

@@ -67,6 +67,12 @@ namespace Economy.Models
 
         #endregion Header
 
+        /// <summary>
+        /// Переводы
+        /// </summary>
+        public List<TransactionItem> TransactionItems { get; set; }
+
+
         public DateTime? StartDate
         {
             get
@@ -76,7 +82,8 @@ namespace Economy.Models
             }
         }
 
-        public DateTime? EndDate {
+        public DateTime? EndDate
+        {
             get
             {
                 var date2 = PeriodInfo.Substring(PeriodInfo.LastIndexOf("-") - 5, 10);
@@ -88,15 +95,9 @@ namespace Economy.Models
         {
             get
             {
-                var date = CreationInfo.Substring(CreationInfo.IndexOf("-") - 2,19);
+                var date = CreationInfo.Substring(CreationInfo.IndexOf("-") - 2, 19);
                 return DateTime.Parse(date);
             }
         }
-
-        /// <summary>
-        /// Переводы
-        /// </summary>
-        public List<TransactionItem> TransactionItems { get; set; }
-
     }
 }

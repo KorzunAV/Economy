@@ -329,24 +329,6 @@
     <Style  TargetType="Grid">
         <Setter Property="Background" Value="#FF807C7C"/>
     </Style>
-
-    <!--MessageControl-->
-    <Style x:Key="MessageGroupBox"  TargetType="GroupBox">
-        <Setter Property="Background" Value="#FF807C7C"/>
-        <Setter Property="Header" Value="Информация"/>
-    </Style>
-
-    <Style  x:Key="MessageTextBlock" TargetType="TextBlock">
-        <Setter Property="TextWrapping" Value="Wrap"/>
-    </Style>
-
-    <Style  x:Key="MessageButtonClose" BasedOn="{StaticResource Button}" TargetType="Button">
-        <Setter Property="ToolTip" Value="Закрыть"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="Content" Value="X"/>
-        <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="Width" Value="23"/>
-    </Style>
     
     <Style  x:Key="AccauntButtonInfo" BasedOn="{StaticResource Button}" TargetType="Button">
         <Setter Property="ToolTip" Value="Показать"/>

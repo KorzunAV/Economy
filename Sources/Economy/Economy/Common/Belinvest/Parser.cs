@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Economy.Models;
+using Economy.ViewModels;
 
 namespace Economy.Common.Belinvest
 {
