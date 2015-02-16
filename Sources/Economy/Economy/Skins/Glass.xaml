@@ -329,13 +329,18 @@
     <Style  TargetType="Grid">
         <Setter Property="Background" Value="#FF807C7C"/>
     </Style>
-    
-    <Style  x:Key="AccauntButtonInfo" BasedOn="{StaticResource Button}" TargetType="Button">
-        <Setter Property="ToolTip" Value="Показать"/>
-        <Setter Property="Content" Value="i"/>
-        <Setter Property="Width" Value="20"/>
-        <Setter Property="Height" Value="20"/>
+
+
+    <Style TargetType="Menu">
+        <Setter Property="Background" Value="#FF807C7C"/>
     </Style>
 
+    <Style TargetType="MenuItem">
+        <Setter Property="Background" Value="#FF807C7C"/>
+    </Style>
+
+    <Style TargetType="StatusBar">
+        <Setter Property="Background" Value="#FF807C7C"/>
+    </Style>
 
 </ResourceDictionary>

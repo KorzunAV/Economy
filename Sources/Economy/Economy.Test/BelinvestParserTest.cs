@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using Economy.Common.Belinvest;
 using Economy.Common.FileSystem;
+using Economy.Data;
 using Economy.Models;
-using Economy.ViewModels;
 using NUnit.Framework;
 
 namespace Economy.Test
@@ -15,46 +15,19 @@ namespace Economy.Test
     {
         const string DirPath = @"..\..\..\Economy\Data\Mails\";
         const string DirPathOut = @"..\..\..\Economy\Data\Converted\";
-        private readonly Parser _parser = new Parser();
 
         [Test]
         public void ConvertTest()
         {
-            var paths = Directory.GetFiles(DirPath);
-            var convertedPaths = Directory.GetFiles(DirPathOut);
-
-            foreach (var filePath in paths)
-            {
-                if (!convertedPaths.Any(f => Path.GetFileNameWithoutExtension(f) == Path.GetFileNameWithoutExtension(filePath)))
-                {
-                    var data = _parser.Parse(filePath);
-                    if (data != null)
-                    {
-                        var outpath = Path.Combine(DirPathOut, Path.GetFileNameWithoutExtension(filePath) + ".xml");
-                        Serialization.Save(data, outpath, FileMode.Create);
-                    }
-                }
-            }
+            var manager = new ConvertManager();
+            manager.Convert(DirPath, DirPathOut);
         }
 
         [Test]
         public void TryConvertTest()
         {
-            var paths = Directory.GetFiles(DirPath);
-            var convertedPaths = Directory.GetFiles(DirPathOut);
-
-            foreach (var filePath in paths)
-            {
-                if (convertedPaths.All(f => Path.GetFileNameWithoutExtension(f) == Path.GetFileNameWithoutExtension(filePath)))
-                {
-                    var data = _parser.TryParse(filePath);
-                    if (data != null)
-                    {
-                        var outpath = Path.Combine(DirPathOut, Path.GetFileNameWithoutExtension(filePath) + ".xml");
-                        Serialization.Save(data, outpath, FileMode.Create);
-                    }
-                }
-            }
+            var manager = new ConvertManager();
+            manager.TryConvert(DirPath, DirPathOut);
         }
 
         [Test]
@@ -87,6 +60,12 @@ namespace Economy.Test
                     }
                 }
             }
+        }
+
+        [Test]
+        public void ConvertHistory()
+        {
+            
         }
     }
 }

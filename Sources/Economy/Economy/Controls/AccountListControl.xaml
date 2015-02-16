@@ -19,7 +19,7 @@
                     <CheckBox Style="{DynamicResource AccauntSelectedCheckBox}" Command="{Binding SelectionChangedCommand}"/>
                     <StackPanel Style="{DynamicResource AccountStackPanel}" >
                         <Label Content="Баланс:" Style="{DynamicResource LabelBold}"/>
-                        <TextBlock Text="{Binding Balance}"
+                        <TextBlock Text="{Binding Balance, StringFormat={}{0:### ### ###}}"
                                            Style="{DynamicResource TextBlockCenter}"  />
                         <TextBlock Text="{Binding Currency}"
                                            Style="{DynamicResource TextBlockCenter}"  />

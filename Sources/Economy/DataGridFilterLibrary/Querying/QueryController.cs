@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Dynamic;
-using System.Text;
 using DataGridFilterLibrary.Support;
 using System.Collections;
 using System.Windows.Data;
 using System.ComponentModel;
-using System.Threading;
 using System.Diagnostics;
 using System.Windows.Threading;
 
@@ -134,17 +133,17 @@ namespace DataGridFilterLibrary.Querying
                     collection = (ItemsSource as ListCollectionView).SourceCollection as IEnumerable;
                 }
 
-                var observable = ItemsSource as System.Collections.Specialized.INotifyCollectionChanged;
+                var observable = ItemsSource as INotifyCollectionChanged;
                 if (observable != null)
                 {
-                    observable.CollectionChanged -= new System.Collections.Specialized.NotifyCollectionChangedEventHandler(observable_CollectionChanged);
-                    observable.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(observable_CollectionChanged);
+                    observable.CollectionChanged -= observable_CollectionChanged;
+                    observable.CollectionChanged += observable_CollectionChanged;
 
                 }
 
                 #region Debug
 #if DEBUG
-                System.Diagnostics.Debug.WriteLine("QUERY STATEMENT: " + query.FilterString);
+                Debug.WriteLine("QUERY STATEMENT: " + query.FilterString);
 
                 string debugParameters = String.Empty;
                 query.QueryParameters.ForEach(p =>
@@ -153,7 +152,7 @@ namespace DataGridFilterLibrary.Querying
                     debugParameters += p.ToString();
                 });
 
-                System.Diagnostics.Debug.WriteLine("QUERY PARAMETRS: " + debugParameters);
+                Debug.WriteLine("QUERY PARAMETRS: " + debugParameters);
 #endif
                 #endregion
 
@@ -173,7 +172,7 @@ namespace DataGridFilterLibrary.Querying
         }
 
         private void observable_CollectionChanged(
-            object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+            object sender, NotifyCollectionChangedEventArgs e)
         {
             DoQuery(true);
         }
@@ -190,20 +189,20 @@ namespace DataGridFilterLibrary.Querying
             if (filteredCollection != null)
             {
                 executeFilterAction(
-                    new Action(() =>
+                    () =>
                     {
                         filteredCollectionHashSet = initLookupDictionary(filteredCollection);
 
-                        view.Filter = new Predicate<object>(itemPassesFilter);
+                        view.Filter = itemPassesFilter;
 
                         OnFilteringFinished(this, EventArgs.Empty);
-                    })
+                    }
                 );
             }
             else
             {
                 executeFilterAction(
-                    new Action(() =>
+                    () =>
                     {
                         if (view.Filter != null)
                         {
@@ -211,7 +210,7 @@ namespace DataGridFilterLibrary.Querying
                         }
 
                         OnFilteringFinished(this, EventArgs.Empty);
-                    })
+                    }
                 );
             }
         }
@@ -255,14 +254,14 @@ namespace DataGridFilterLibrary.Querying
 
         private void executeActionUsingDispatcher(Action action)
         {
-            if (this.CallingThreadDispatcher != null && !this.CallingThreadDispatcher.CheckAccess())
+            if (CallingThreadDispatcher != null && !CallingThreadDispatcher.CheckAccess())
             {
-                this.CallingThreadDispatcher.Invoke
+                CallingThreadDispatcher.Invoke
                     (
-                        new Action(() =>
+                        () =>
                         {
                             invoke(action);
-                        })
+                        }
                     );
             }
             else
@@ -273,14 +272,14 @@ namespace DataGridFilterLibrary.Querying
 
         private static void invoke(Action action)
         {
-            System.Diagnostics.Trace.WriteLine("------------------ START APPLAY FILTER ------------------------------");
+            Trace.WriteLine("------------------ START APPLAY FILTER ------------------------------");
             Stopwatch sw = Stopwatch.StartNew();
 
             action.Invoke();
 
             sw.Stop();
-            System.Diagnostics.Trace.WriteLine("TIME: " + sw.ElapsedMilliseconds);
-            System.Diagnostics.Trace.WriteLine("------------------ STOP APPLAY FILTER ------------------------------");
+            Trace.WriteLine("TIME: " + sw.ElapsedMilliseconds);
+            Trace.WriteLine("------------------ STOP APPLAY FILTER ------------------------------");
         }
 
         private bool itemPassesFilter(object item)

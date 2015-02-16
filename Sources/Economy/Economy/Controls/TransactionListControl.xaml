@@ -12,10 +12,18 @@
           AutoGenerateColumns="False">
 
     <DataGrid.Columns>
-        <DataGridTextColumn Header="Дата регистрации" Binding="{Binding Path=RegistrationDate, StringFormat='dd.MM.yyyy'}"/>
-        <DataGridTextColumn Header="Дата транзакции" Binding="{Binding Path=TransactionDate, StringFormat='dd.MM.yyyy'}"/>
+        <DataGridTextColumn Header="Дата регистрации" Binding="{Binding Path=RegistrationDate, StringFormat='dd.MM.yyyy'}" Width="70"/>
+        <DataGridTextColumn Header="Дата транзакции" Binding="{Binding Path=TransactionDate, StringFormat='dd.MM.yyyy'}" Width="70"/>
         <DataGridTextColumn Header="Номер транзакции" Binding="{Binding Path=TransactionCode}"/>
-        <DataGridTextColumn Header="Валюта транзакции" Binding="{Binding Path=Currency}"/>
+        <DataGridTextColumn Header="Описание" Binding="{Binding Path=Description}" Width="200">
+            <DataGridTextColumn.ElementStyle>
+                <Style>
+                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                    <Setter Property="TextBlock.TextAlignment" Value="Justify"/>
+                </Style>
+            </DataGridTextColumn.ElementStyle>
+        </DataGridTextColumn>
+        <DataGridTextColumn Header="Валюта транзакции" Binding="{Binding Path=Currency}" Width="30"/>
         <DataGridTextColumn Header="Сумма в валюте транзакции" Binding="{Binding Path=AmountByCurrency, StringFormat={}{0:### ### ###}}"/>
         <DataGridTextColumn Header="Сумма в валюте счета" Binding="{Binding Path=AmountByAccount, StringFormat={}{0:### ### ###}}"/>
         <DataGridTextColumn Header="Номер счета" Binding="{Binding Path=AccountNumber}"/>

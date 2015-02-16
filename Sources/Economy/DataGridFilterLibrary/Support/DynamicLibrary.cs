@@ -1,9 +1,8 @@
 ﻿//Copyright (C) Microsoft Corporation.  All rights reserved.
 
-using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -127,7 +126,7 @@ namespace System.Linq.Dynamic
     {
         public override string ToString()
         {
-            PropertyInfo[] props = this.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            PropertyInfo[] props = GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
             StringBuilder sb = new StringBuilder();
             sb.Append("{");
             for (int i = 0; i < props.Length; i++)
@@ -307,7 +306,7 @@ namespace System.Linq.Dynamic
 #endif
                 try
                 {
-                    TypeBuilder tb = this.module.DefineType(typeName, TypeAttributes.Class |
+                    TypeBuilder tb = module.DefineType(typeName, TypeAttributes.Class |
                         TypeAttributes.Public, typeof(DynamicClass));
                     FieldInfo[] fields = GenerateProperties(tb, properties);
                     GenerateEquals(tb, fields);
@@ -668,7 +667,7 @@ namespace System.Linq.Dynamic
                 }
                 else
                 {
-                    AddSymbol("@" + i.ToString(System.Globalization.CultureInfo.InvariantCulture), value);
+                    AddSymbol("@" + i.ToString(CultureInfo.InvariantCulture), value);
                 }
             }
         }
@@ -1027,9 +1026,9 @@ namespace System.Linq.Dynamic
                 if (!UInt64.TryParse(text, out value))
                     throw ParseError(Res.InvalidIntegerLiteral, text);
                 NextToken();
-                if (value <= (ulong)Int32.MaxValue) return CreateLiteral((int)value, text);
-                if (value <= (ulong)UInt32.MaxValue) return CreateLiteral((uint)value, text);
-                if (value <= (ulong)Int64.MaxValue) return CreateLiteral((long)value, text);
+                if (value <= Int32.MaxValue) return CreateLiteral((int)value, text);
+                if (value <= UInt32.MaxValue) return CreateLiteral((uint)value, text);
+                if (value <= Int64.MaxValue) return CreateLiteral((long)value, text);
                 return CreateLiteral(value, text);
             }
             else
@@ -1089,9 +1088,9 @@ namespace System.Linq.Dynamic
             if (keywords.TryGetValue(token.text, out value))
             {
                 if (value is Type) return ParseTypeAccess((Type)value);
-                if (value == (object)keywordIt) return ParseIt();
-                if (value == (object)keywordIif) return ParseIif();
-                if (value == (object)keywordNew) return ParseNew();
+                if (value == keywordIt) return ParseIt();
+                if (value == keywordIif) return ParseIif();
+                if (value == keywordNew) return ParseNew();
                 NextToken();
                 return (Expression)value;
             }
@@ -1293,7 +1292,7 @@ namespace System.Linq.Dynamic
                         if (method.ReturnType == typeof(void))
                             throw ParseError(errorPos, Res.MethodIsVoid,
                                 id, GetTypeName(method.DeclaringType));
-                        return Expression.Call(instance, (MethodInfo)method, args);
+                        return Expression.Call(instance, method, args);
                     default:
                         throw ParseError(errorPos, Res.AmbiguousMethodInvocation,
                             id, GetTypeName(type));
@@ -2239,7 +2238,7 @@ namespace System.Linq.Dynamic
 
         Exception ParseError(int pos, string format, params object[] args)
         {
-            return new ParseException(string.Format(System.Globalization.CultureInfo.CurrentCulture, format, args), pos);
+            return new ParseException(string.Format(CultureInfo.CurrentCulture, format, args), pos);
         }
 
         static Dictionary<string, object> CreateKeywords()

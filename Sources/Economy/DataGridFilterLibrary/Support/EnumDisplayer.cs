@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Resources;
 using System.Collections;
 using System.Reflection;
@@ -29,7 +27,7 @@ namespace DataGridFilterLibrary.Support
 
         public EnumDisplayer(Type type)
         {
-            this.Type = type;
+            Type = type;
         }
 
         public Type Type
@@ -39,7 +37,7 @@ namespace DataGridFilterLibrary.Support
             {
                 if (!value.IsEnum)
                     throw new ArgumentException("parameter is not an Enumermated type", "value");
-                this.type = value;
+                type = value;
             }
         }
 
@@ -48,9 +46,9 @@ namespace DataGridFilterLibrary.Support
             get
             {
                 Type displayValuesType = typeof(Dictionary<,>).GetGenericTypeDefinition().MakeGenericType(type, typeof(string));
-                this.displayValues = (IDictionary)Activator.CreateInstance(displayValuesType);
+                displayValues = (IDictionary)Activator.CreateInstance(displayValuesType);
 
-                this.reverseValues =
+                reverseValues =
                    (IDictionary)Activator.CreateInstance(typeof(Dictionary<,>)
                             .GetGenericTypeDefinition()
                             .MakeGenericType(typeof(string), type));

@@ -59,12 +59,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\IParser.cs" />
+    <Compile Include="Common\History\Parser.cs" />
     <Compile Include="Common\RelayCommand.cs" />
+    <Compile Include="Data\DataConvertManager.cs" />
     <Compile Include="Models\MontlyReport.cs" />
+    <Compile Include="Models\PriceHistory.cs" />
     <Compile Include="Models\TransactionItem.cs" />
     <Compile Include="Common\TypeHelper.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\InformationViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\StateViewModel.cs" />
     <Compile Include="ViewModels\TransactionItemViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Page Include="Controls\AccountListControl.xaml">

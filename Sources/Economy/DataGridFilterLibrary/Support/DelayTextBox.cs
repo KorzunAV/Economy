@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Controls;
 using System.Timers;
 using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace DataGridFilterLibrary.Support
 {
@@ -32,16 +31,16 @@ namespace DataGridFilterLibrary.Support
         {
             // Initialize Timer
             DelayTimer = new Timer(DELAY_TIME);
-            DelayTimer.Elapsed += new ElapsedEventHandler(DelayTimer_Elapsed);
+            DelayTimer.Elapsed += DelayTimer_Elapsed;
 
             previousTextChangedEventArgs = null;
 
-            AddHandler(TextBox.PreviewKeyDownEvent, new System.Windows.Input.KeyEventHandler(DelayTextBox_PreviewKeyDown));
+            AddHandler(PreviewKeyDownEvent, new KeyEventHandler(DelayTextBox_PreviewKeyDown));
 
             PreviousTextValue = String.Empty;
         }
 
-        void DelayTextBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        void DelayTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (!DelayTimer.Enabled)
                 DelayTimer.Enabled = true;
@@ -64,7 +63,7 @@ namespace DataGridFilterLibrary.Support
 
             TimerElapsed = true;// set timer elapsed to true, so the OnTextChange knows to fire
 
-            this.Dispatcher.Invoke(new DelayOverHandler(DelayOver), null);// use invoke to get back on the UI thread.
+            Dispatcher.Invoke(new DelayOverHandler(DelayOver), null);// use invoke to get back on the UI thread.
         }
 
         #endregion
@@ -84,8 +83,8 @@ namespace DataGridFilterLibrary.Support
                 KeysPressed = false;
                 base.OnTextChanged(e);
 
-                System.Windows.Data.BindingExpression be = this.GetBindingExpression(TextBox.TextProperty);
-                if (be != null && be.Status==System.Windows.Data.BindingStatus.Active) be.UpdateSource();
+                BindingExpression be = GetBindingExpression(TextProperty);
+                if (be != null && be.Status==BindingStatus.Active) be.UpdateSource();
 
                 PreviousTextValue = Text;
             }

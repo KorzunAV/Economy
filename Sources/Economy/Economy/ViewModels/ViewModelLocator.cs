@@ -5,24 +5,43 @@ using System.IO;
 using System.Linq;
 using Economy.Common.FileSystem;
 using Economy.Models;
+using Economy.Data;
 
 namespace Economy.ViewModels
 {
     public class ViewModelLocator : ViewModelBase
     {
+        const string DirPath = @"..\..\..\Economy\Data\Mails\";
         const string DirPathOut = @"..\..\..\Economy\Data\Converted\";
 
         public static ObservableCollection<AccountViewModel> Accounts { get; set; }
 
         public static ObservableCollection<TransactionItemViewModel> SelectedTransactions { get; set; }
 
+
+        /// <summary>
+        /// Сообщения об ошибках и другой информационный текст
+        /// </summary>
         public static InformationViewModel Information { get; set; }
-     
+
+        /// <summary>
+        /// Пользовательские настройки
+        /// </summary>
+        public static SettingsViewModel Settings { get; set; }
+
+
+        /// <summary>
+        /// Статус процесса
+        /// </summary>
+        public static StateViewModel State { get; set; }
+
+
         public ViewModelLocator()
         {
             Accounts = new ObservableCollection<AccountViewModel>();
             SelectedTransactions = new ObservableCollection<TransactionItemViewModel>();
             Information = new InformationViewModel();
+            State = new StateViewModel();
 
             if (IsDesignTime)
             {
@@ -31,24 +50,34 @@ namespace Economy.ViewModels
             }
             else
             {
-                var montlyReport = LoadMontlyReports();
-                var accountViewModels =  ConvertMontlyReportToAccountReport(montlyReport);
-                ValidateReports(accountViewModels, montlyReport);
-                Accounts.Clear();
-                foreach (var accountViewModel in accountViewModels)
-                {
-                    Accounts.Add(accountViewModel);
-                }
+                LoadData();
             }
         }
 
-        private List<MontlyReport> LoadMontlyReports()
+
+        private static void LoadData()
+        {
+            SelectedTransactions.Clear();
+            var montlyReport = LoadMontlyReports();
+            var accountViewModels = ConvertMontlyReportToAccountReport(montlyReport);
+            ValidateReports(accountViewModels, montlyReport);
+            Accounts.Clear();
+            
+
+            foreach (var accountViewModel in accountViewModels)
+            {
+                Accounts.Add(accountViewModel);
+            }
+            
+        }
+
+        private static List<MontlyReport> LoadMontlyReports()
         {
             var convertedPaths = Directory.GetFiles(DirPathOut);
             return convertedPaths.Select(Deserialization.Load<MontlyReport>).ToList();
         }
 
-        private List<AccountViewModel> ConvertMontlyReportToAccountReport(IEnumerable<MontlyReport> montlyReport)
+        private static List<AccountViewModel> ConvertMontlyReportToAccountReport(IEnumerable<MontlyReport> montlyReport)
         {
             var accounts = new List<AccountViewModel>();
             var groups = montlyReport.OrderBy(i => i.CreatedDateTime).GroupBy(i => i.AccountNumber);
@@ -72,8 +101,8 @@ namespace Economy.ViewModels
             }
             return accounts;
         }
-        
-        private void ValidateReports(List<AccountViewModel> accountViewModels, IEnumerable<MontlyReport> montlyReport)
+
+        private static void ValidateReports(List<AccountViewModel> accountViewModels, IEnumerable<MontlyReport> montlyReport)
         {
             var groups = montlyReport.OrderBy(i => i.CreatedDateTime).GroupBy(i => i.AccountNumber);
             foreach (var itemList in groups)
@@ -105,6 +134,26 @@ namespace Economy.ViewModels
                 }
                 accountViewModel.ErrorsList = errors;
             }
+        }
+
+        public async static void UpdateDataFiles()
+        {
+            try
+            {
+                State.CreateUpdateAction(StateViewModel.Actions.MailConvert, "Выполняется обновление данных.");
+                var manager = new ConvertManager();
+                await manager.Convert(DirPath, DirPathOut, UpdateDataFilesState);
+                LoadData();
+            }
+            catch (Exception exception)
+            {
+                State.CreateUpdateAction(StateViewModel.Actions.MailConvert, string.Format("Ошибка обновления данных {0}",exception.Message));
+           }
+        }
+
+        private static void UpdateDataFilesState(string fileName, int fileCount, int index)
+        {
+            State.CreateUpdateAction(StateViewModel.Actions.MailConvert, string.Format("Обработка почты: {0} из {1} выполнено", fileCount, index));
         }
     }
 }

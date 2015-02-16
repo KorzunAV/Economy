@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Globalization;
 using System.Windows.Data;
 
 namespace DataGridFilterLibrary.Support
@@ -10,7 +8,7 @@ namespace DataGridFilterLibrary.Support
     {
         #region IValueConverter Members
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             object convertedValue;
 
@@ -25,7 +23,7 @@ namespace DataGridFilterLibrary.Support
                 if (DateTime.TryParse(
                     value.ToString(),
                     culture.DateTimeFormat,
-                    System.Globalization.DateTimeStyles.None,
+                    DateTimeStyles.None,
                     out dateTime))
                 {
                     convertedValue = dateTime;
@@ -39,7 +37,7 @@ namespace DataGridFilterLibrary.Support
             return convertedValue;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value;
         }

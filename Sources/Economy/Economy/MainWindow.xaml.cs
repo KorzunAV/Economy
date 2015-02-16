@@ -1,4 +1,4 @@
-﻿
+﻿using System.Windows;
 using Economy.ViewModels;
 
 namespace Economy
@@ -12,15 +12,10 @@ namespace Economy
         {
             InitializeComponent();
         }
-
-     
         
-        //private void UpdateErrorList(TaskViewModel accountReport)
-        //{
-        //    if (accountReport != null && MessageGroupBox.Visibility == Visibility.Visible)
-        //    {
-        //        MessageGroupBox.DataContext = string.Join(Environment.NewLine, accountReport.ErrorsList);
-        //    }
-        //}
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+           ViewModelLocator.UpdateDataFiles();
+        }
     }
 }

@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Collections;
 using DataGridFilterLibrary.Support;
 using System.Reflection;
 using DataGridFilterLibrary.Querying;
-using System.ComponentModel;
 using System.Windows.Controls.Primitives;
 
 namespace DataGridFilterLibrary
@@ -41,8 +32,8 @@ namespace DataGridFilterLibrary
 
                 filterCurrentData_FilterChangedEvent(this, EventArgs.Empty);//init query
 
-                FilterCurrentData.FilterChangedEvent -= new EventHandler<EventArgs>(filterCurrentData_FilterChangedEvent);
-                FilterCurrentData.FilterChangedEvent += new EventHandler<EventArgs>(filterCurrentData_FilterChangedEvent);
+                FilterCurrentData.FilterChangedEvent -= filterCurrentData_FilterChangedEvent;
+                FilterCurrentData.FilterChangedEvent += filterCurrentData_FilterChangedEvent;
             }
 
             base.OnPropertyChanged(e);
@@ -277,7 +268,7 @@ namespace DataGridFilterLibrary
         {
             if (FilterCurrentData.Type == FilterType.List)
             {
-                ComboBox comboBox             = this.Template.FindName("PART_ComboBoxFilter", this) as ComboBox;
+                ComboBox comboBox             = Template.FindName("PART_ComboBoxFilter", this) as ComboBox;
                 DataGridComboBoxColumn column = AssignedDataGridColumn as DataGridComboBoxColumn;
 
                 if (comboBox != null && column != null)
@@ -295,7 +286,7 @@ namespace DataGridFilterLibrary
 
                         if (columnItemsSourceBinding == null)
                         {
-                            System.Windows.Setter styleSetter = column.EditingElementStyle.Setters.First(s => ((System.Windows.Setter)s).Property == DataGridComboBoxColumn.ItemsSourceProperty) as System.Windows.Setter;
+                            Setter styleSetter = column.EditingElementStyle.Setters.First(s => ((Setter)s).Property == DataGridComboBoxColumn.ItemsSourceProperty) as Setter;
                             if (styleSetter != null)
                                 columnItemsSourceBinding = styleSetter.Value as Binding;
                         }
@@ -309,7 +300,7 @@ namespace DataGridFilterLibrary
                         }
 
                         comboBox.RequestBringIntoView 
-                            += new RequestBringIntoViewEventHandler(setComboBindingAndHanldeUnsetValue);
+                            += setComboBindingAndHanldeUnsetValue;
                     }
                 }
             }
@@ -329,7 +320,7 @@ namespace DataGridFilterLibrary
                     if (list.Count > 0 && list[0] != DependencyProperty.UnsetValue)
                     {
                         combo.RequestBringIntoView -=
-                            new RequestBringIntoViewEventHandler(setComboBindingAndHanldeUnsetValue);
+                            setComboBindingAndHanldeUnsetValue;
 
                         list.Insert(0, DependencyProperty.UnsetValue);
 
@@ -343,7 +334,7 @@ namespace DataGridFilterLibrary
             else
             {
                 combo.RequestBringIntoView -=
-                    new RequestBringIntoViewEventHandler(setComboBindingAndHanldeUnsetValue);
+                    setComboBindingAndHanldeUnsetValue;
 
                 IList comboList = null;
                 IList columnList = null;
@@ -365,7 +356,7 @@ namespace DataGridFilterLibrary
                 }
 
                 combo.RequestBringIntoView +=
-                    new RequestBringIntoViewEventHandler(setComboBindingAndHanldeUnsetValue);
+                    setComboBindingAndHanldeUnsetValue;
             }
         }
 
@@ -654,18 +645,18 @@ namespace DataGridFilterLibrary
 
         private void addFilterStateHandlers(QueryController query)
         {
-            query.FilteringStarted -= new EventHandler<EventArgs>(query_FilteringStarted);
-            query.FilteringFinished -= new EventHandler<EventArgs>(query_FilteringFinished);
+            query.FilteringStarted -= query_FilteringStarted;
+            query.FilteringFinished -= query_FilteringFinished;
 
-            query.FilteringStarted += new EventHandler<EventArgs>(query_FilteringStarted);
-            query.FilteringFinished += new EventHandler<EventArgs>(query_FilteringFinished);
+            query.FilteringStarted += query_FilteringStarted;
+            query.FilteringFinished += query_FilteringFinished;
         }
 
         void query_FilteringFinished(object sender, EventArgs e)
         {
             if (FilterCurrentData.Equals((sender as QueryController).ColumnFilterData))
             {
-                this.IsFilteringInProgress = false;
+                IsFilteringInProgress = false;
             }
         }
 
@@ -673,7 +664,7 @@ namespace DataGridFilterLibrary
         {
             if (FilterCurrentData.Equals((sender as QueryController).ColumnFilterData))
             {
-                this.IsFilteringInProgress = true;
+                IsFilteringInProgress = true;
             }
         }
         #endregion

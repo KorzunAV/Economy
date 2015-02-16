@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-namespace Economy.Controls
+﻿namespace Economy.Controls
 {
     /// <summary>
     /// Interaction logic for TransactionListControl.xaml

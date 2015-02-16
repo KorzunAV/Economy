@@ -2,16 +2,41 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:cntrl="clr-namespace:Economy.Controls"
-        Title="MainWindow">    
+        Title="MainWindow">
 
-    
-    <Grid >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="270"/>
-            <ColumnDefinition Width="97*"/>
-        </Grid.ColumnDefinitions>
-        <cntrl:AccountListControl Grid.Column="0"/>
-        <cntrl:TransactionListControl Grid.Column="1" Grid.Row="0" />
-        <cntrl:MessageControl Grid.Column="1" Grid.Row="0"/>
+    <Window.Resources>
+        <ResourceDictionary Source="/Economy;component/Skins/Glass.xaml" />
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="28"/>
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0" >
+            <MenuItem Header="Меню" >
+                <MenuItem Header="Обновить" Click="MenuItem_OnClick" />
+                <MenuItem Header="Настройки" />
+            </MenuItem>
+            <MenuItem Header="О програме"  />
+        </Menu>
+
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="270"/>
+                <ColumnDefinition Width="97*"/>
+            </Grid.ColumnDefinitions>
+            <cntrl:AccountListControl Grid.Column="0"/>
+            <cntrl:TransactionListControl Grid.Column="1" Grid.Row="0" />
+            <cntrl:MessageControl Grid.Column="1" Grid.Row="0" VerticalAlignment="Bottom"/>
+        </Grid>
+
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <TextBlock Text="{Binding State.MainState, Source={StaticResource Locator}, Mode=OneWay}" TextWrapping="Wrap"/>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using AutoMapper.Mappers;
 using Economy.Common;
 
 namespace Economy.ViewModels
@@ -69,7 +68,7 @@ namespace Economy.ViewModels
             }
 
             storage = value;
-            this.OnPropertyChanged(propertyName);
+            OnPropertyChanged(propertyName);
             return true;
         }
 
@@ -83,7 +82,7 @@ namespace Economy.ViewModels
         /// </param>
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChangedEventHandler eventHandler = this.PropertyChanged;
+            PropertyChangedEventHandler eventHandler = PropertyChanged;
             if (eventHandler != null)
             {
                 eventHandler(this, new PropertyChangedEventArgs(propertyName));

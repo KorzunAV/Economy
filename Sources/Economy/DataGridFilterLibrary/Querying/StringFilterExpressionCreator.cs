@@ -35,7 +35,7 @@ namespace DataGridFilterLibrary.Querying
         {
             StringBuilder filter = new StringBuilder();
             
-            List<string> filterList = parse(this.filterData.QueryString);
+            List<string> filterList = parse(filterData.QueryString);
 
             for (int i = 0; i < filterList.Count; i++)
             {

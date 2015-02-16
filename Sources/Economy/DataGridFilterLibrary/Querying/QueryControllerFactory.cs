@@ -1,4 +1,7 @@
-﻿using DataGridFilterLibrary.Support;
+﻿using System.ComponentModel;
+using System.Windows.Controls;
+using System.Windows.Data;
+using DataGridFilterLibrary.Support;
 using System.Collections;
 
 namespace DataGridFilterLibrary.Querying
@@ -7,7 +10,7 @@ namespace DataGridFilterLibrary.Querying
     {
         public static QueryController 
             GetQueryController(
-            System.Windows.Controls.DataGrid dataGrid,
+            DataGrid dataGrid,
             FilterData filterData, IEnumerable itemsSource)
         {
             QueryController query;
@@ -17,8 +20,8 @@ namespace DataGridFilterLibrary.Querying
             if (query == null)
             {
                 //clear the filter if exisits begin
-                System.ComponentModel.ICollectionView view
-                    = System.Windows.Data.CollectionViewSource.GetDefaultView(dataGrid.ItemsSource);
+                ICollectionView view
+                    = CollectionViewSource.GetDefaultView(dataGrid.ItemsSource);
                 if (view != null) view.Filter = null;
                 //clear the filter if exisits end
 

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Windows;
 using System.Windows.Data;
 using System.Globalization;
 
@@ -13,11 +11,11 @@ namespace DataGridFilterLibrary.Support
         {
             if ((bool)values[0] && (bool)values[1])
             {
-                return System.Windows.Visibility.Visible;
+                return Visibility.Visible;
             }
             else
             {
-                return System.Windows.Visibility.Collapsed;
+                return Visibility.Collapsed;
             }
         }
 

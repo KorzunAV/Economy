@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace Economy.Controls
+﻿namespace Economy.Controls
 {
     /// <summary>
     /// Просто область с текстом и кнопкой закрытия
@@ -10,11 +8,6 @@ namespace Economy.Controls
         public MessageControl()
         {
             InitializeComponent();
-        }
-
-        private void CloseMessageBox(object sender, RoutedEventArgs e)
-        {
-            Visibility = Visibility.Hidden;
         }
     }
 }

@@ -3,6 +3,9 @@ using Economy.Common;
 
 namespace Economy.ViewModels
 {
+    /// <summary>
+    /// Сообщения об ошибках и другой информационный текст
+    /// </summary>
     public class InformationViewModel : ViewModelBase
     {
         private string _messageText;
