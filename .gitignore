@@ -216,3 +216,5 @@ com_crashlytics_export_strings.xml
 
 Sources/Economy/Economy/Data/Mails/*
 Sources/Economy/Economy/Data/Converted/*
+Sources/Economy/Economy/Data/Sources/Mails/
+Sources/Economy/packages/

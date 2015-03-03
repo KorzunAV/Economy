@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Economy.Common.FileSystem;
@@ -11,13 +10,15 @@ namespace Economy.ViewModels
 {
     public class ViewModelLocator : ViewModelBase
     {
-        const string DirPath = @"..\..\..\Economy\Data\Mails\";
-        const string DirPathOut = @"..\..\..\Economy\Data\Converted\";
+        const string DataDir = @"..\..\..\Economy\Data\";
+        const string DirPath = DataDir + @"Sources\Mails\";
+        const string DirHistoryPath = DataDir + @"Sources\History\";
+        const string DirPathOut = DataDir + @"Converted\Mails\";
+        const string DirHistoryPathOut = DataDir + @"Converted\History\";
 
-        public static ObservableCollection<AccountViewModel> Accounts { get; set; }
+        public static ExtendedObservableCollection<AccountViewModel> Accounts { get; set; }
 
-        public static ObservableCollection<TransactionItemViewModel> SelectedTransactions { get; set; }
-
+        public static ExtendedObservableCollection<TransactionItemViewModel> SelectedTransactions { get; set; }
 
         /// <summary>
         /// Сообщения об ошибках и другой информационный текст
@@ -29,17 +30,27 @@ namespace Economy.ViewModels
         /// </summary>
         public static SettingsViewModel Settings { get; set; }
 
-
+        /// <summary>
+        /// История курсов валют
+        /// </summary>
+        public static History History { get; set; }
+        
         /// <summary>
         /// Статус процесса
         /// </summary>
         public static StateViewModel State { get; set; }
 
-
         public ViewModelLocator()
+            : this(false)
         {
-            Accounts = new ObservableCollection<AccountViewModel>();
-            SelectedTransactions = new ObservableCollection<TransactionItemViewModel>();
+
+        }
+
+        public ViewModelLocator(bool isDebug)
+            : base(isDebug)
+        {
+            Accounts = new ExtendedObservableCollection<AccountViewModel>();
+            SelectedTransactions = new ExtendedObservableCollection<TransactionItemViewModel>();
             Information = new InformationViewModel();
             State = new StateViewModel();
 
@@ -59,22 +70,24 @@ namespace Economy.ViewModels
         {
             SelectedTransactions.Clear();
             var montlyReport = LoadMontlyReports();
+            History = LoadHistory();
             var accountViewModels = ConvertMontlyReportToAccountReport(montlyReport);
             ValidateReports(accountViewModels, montlyReport);
             Accounts.Clear();
-            
-
-            foreach (var accountViewModel in accountViewModels)
-            {
-                Accounts.Add(accountViewModel);
-            }
-            
+            Accounts.AddRange(accountViewModels);
         }
 
         private static List<MontlyReport> LoadMontlyReports()
         {
             var convertedPaths = Directory.GetFiles(DirPathOut);
             return convertedPaths.Select(Deserialization.Load<MontlyReport>).ToList();
+        }
+
+        private static History LoadHistory()
+        {
+            if (!File.Exists(DirHistoryPathOut + "Courses.xml"))
+                return null;
+            return Deserialization.Load<History>(DirHistoryPathOut + "Courses.xml");
         }
 
         private static List<AccountViewModel> ConvertMontlyReportToAccountReport(IEnumerable<MontlyReport> montlyReport)
@@ -143,12 +156,13 @@ namespace Economy.ViewModels
                 State.CreateUpdateAction(StateViewModel.Actions.MailConvert, "Выполняется обновление данных.");
                 var manager = new ConvertManager();
                 await manager.Convert(DirPath, DirPathOut, UpdateDataFilesState);
+                await manager.Convert(DirHistoryPath, DirHistoryPathOut, UpdateDataFilesState);
                 LoadData();
             }
             catch (Exception exception)
             {
-                State.CreateUpdateAction(StateViewModel.Actions.MailConvert, string.Format("Ошибка обновления данных {0}",exception.Message));
-           }
+                State.CreateUpdateAction(StateViewModel.Actions.MailConvert, string.Format("Ошибка обновления данных {0}", exception.Message));
+            }
         }
 
         private static void UpdateDataFilesState(string fileName, int fileCount, int index)

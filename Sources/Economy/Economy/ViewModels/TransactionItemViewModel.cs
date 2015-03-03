@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media;
 using Economy.Models;
 
 namespace Economy.ViewModels
@@ -15,6 +16,7 @@ namespace Economy.ViewModels
         private decimal _amountByCurrency;
         private decimal _amountByAccount;
         private string _accountNumber;
+        private AccountViewModel _account;
 
         #endregion Поля
 
@@ -88,8 +90,34 @@ namespace Economy.ViewModels
         /// </summary>
         public string AccountNumber
         {
-            get { return _accountNumber; }
-            set { SetProperty(ref _accountNumber, value); }
+            get { return Account.AccountNumber; }
+        }
+
+        /// <summary>
+        /// Ссылка на аккаунт
+        /// </summary>
+        public AccountViewModel Account
+        {
+            get { return _account; }
+            set { SetProperty(ref _account, value); }
+        }
+
+        public bool IsIncome
+        {
+            get
+            {
+                return (AmountByCurrency > 0 || AmountByAccount > 0) ||
+                    (AmountByCurrency == 0 && AmountByAccount == 0);
+            }
+        }
+
+        public Brush DataRowColor
+        {
+            get
+            {
+                var cl = IsIncome ? Colors.Green : Colors.Red;
+                return new SolidColorBrush(cl);
+            }
         }
 
         #endregion Свойства
@@ -109,12 +137,12 @@ namespace Economy.ViewModels
             }
         }
 
-        public TransactionItemViewModel(TransactionItem item, string accountNumber)
+        public TransactionItemViewModel(TransactionItem item, AccountViewModel account)
         {
-            SetSilent(item, accountNumber);
+            SetSilent(item, account);
         }
 
-        public void SetSilent(TransactionItem item, string accountNumber)
+        public void SetSilent(TransactionItem item, AccountViewModel account)
         {
             _registrationDate = item.RegistrationDate;
             _transactionDate = item.TransactionDate;
@@ -123,9 +151,8 @@ namespace Economy.ViewModels
             _currency = item.Currency;
             _amountByCurrency = item.AmountByCurrency;
             _amountByAccount = item.AmountByAccount;
-            _accountNumber = accountNumber;
+            Account = account;
         }
-
 
         public int CompareTo(TransactionItem other)
         {

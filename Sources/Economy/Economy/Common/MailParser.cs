@@ -34,6 +34,8 @@ namespace Economy.Common
             result = result.Replace("&nbsp;", " ");
             result = result.Replace("&nbsp", " ");
             result = result.Replace("\r", string.Empty).Replace("\n", string.Empty);
+            result = result.Replace("> ", ">");
+            result = result.Replace(" <", "<");
             result = CloseTable(result);
             result = Repair(result);
 

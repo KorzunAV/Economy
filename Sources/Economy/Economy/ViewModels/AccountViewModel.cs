@@ -136,7 +136,7 @@ namespace Economy.ViewModels
         {
             foreach (var transactionItem in items)
             {
-                _transactionItems.Add(new TransactionItemViewModel(transactionItem, _accountNumber));
+                _transactionItems.Add(new TransactionItemViewModel(transactionItem, this));
             }
         }
 
@@ -172,10 +172,7 @@ namespace Economy.ViewModels
             {
                 if (!ViewModelLocator.SelectedTransactions.Contains(_transactionItems[0]))
                 {
-                    foreach (var transactionItemViewModel in TransactionItems)
-                    {
-                        ViewModelLocator.SelectedTransactions.Add(transactionItemViewModel);
-                    }
+                    ViewModelLocator.SelectedTransactions.AddRange(TransactionItems);
                 }
             }
             _isSelected = !_isSelected;

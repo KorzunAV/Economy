@@ -9,9 +9,9 @@ using Economy.Models;
 
 namespace Economy.Common.Belinvest
 {
-    public class Parser : MailParser
+    public class Parser : MailParser, IParser
     {
-        public MontlyReport TryParse(string filePath)
+        public object TryParse(string filePath)
         {
             try
             {
@@ -23,7 +23,7 @@ namespace Economy.Common.Belinvest
             return null;
         }
 
-        public MontlyReport Parse(string filePath)
+        public object Parse(string filePath)
         {
             string file;
             using (var sr = new StreamReader(filePath, Encoding.GetEncoding("windows-1251")))
@@ -48,6 +48,8 @@ namespace Economy.Common.Belinvest
 
             return montlyReport;
         }
+
+
 
         private bool ReadPreambula(XElement root)
         {

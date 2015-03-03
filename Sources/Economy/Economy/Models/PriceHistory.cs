@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Economy.Models
 {
@@ -16,35 +12,18 @@ namespace Economy.Models
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// Цена покупки USD
+        /// Валюта
         /// </summary>
-        public double UsdBuy { get; set; }
+        public string Currency { get; set; }
 
         /// <summary>
-        /// Цена продажи USD
+        /// Цена покупки
         /// </summary>
-        public double UsdSel { get; set; }
+        public decimal Buy { get; set; }
 
         /// <summary>
-        /// Цена покупки EUR
+        /// Цена продажи
         /// </summary>
-        public double EurBuy { get; set; }
-
-        /// <summary>
-        /// Цена продажи EUR
-        /// </summary>
-        public double EurSel { get; set; }
-
-
-        /// <summary>
-        /// Цена покупки RUB
-        /// </summary>
-        public double RubBuy { get; set; }
-
-        /// <summary>
-        /// Цена продажи RUB
-        /// </summary>
-        public double RubSel { get; set; }
-
+        public decimal Sel { get; set; }
     }
 }

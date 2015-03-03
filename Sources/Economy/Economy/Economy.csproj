@@ -40,6 +40,9 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
+    <Reference Include="De.TorstenMandelkow.MetroChart">
+      <HintPath>..\MetroChart\De.TorstenMandelkow.MetroChart.WPF\bin\Debug\De.TorstenMandelkow.MetroChart.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -63,6 +66,8 @@
     <Compile Include="Common\History\Parser.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Data\DataConvertManager.cs" />
+    <Compile Include="Models\ExtendedObservableCollection.cs" />
+    <Compile Include="Models\History.cs" />
     <Compile Include="Models\MontlyReport.cs" />
     <Compile Include="Models\PriceHistory.cs" />
     <Compile Include="Models\TransactionItem.cs" />
@@ -71,6 +76,7 @@
     <Compile Include="ViewModels\InformationViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\StateViewModel.cs" />
+    <Compile Include="ViewModels\TransactionItemShortViewModel.cs" />
     <Compile Include="ViewModels\TransactionItemViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Page Include="Controls\AccountListControl.xaml">
@@ -163,8 +169,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\Converted\" />
-    <Folder Include="Data\Mails\" />
+    <Folder Include="Data\Converted\History\" />
+    <Folder Include="Data\Converted\Mails\" />
+    <Folder Include="Data\Converted\old\" />
+    <Folder Include="Data\Sources\Mails\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +180,9 @@
       <Project>{57e0cb10-1c4a-4bd8-9667-7a8dbd4d75e5}</Project>
       <Name>DataGridFilterLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\Sources\History\Courses.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />

@@ -1,9 +1,11 @@
-﻿namespace Economy.Common
-{
-    public interface IParser<T>
-    {
-        T TryParse(string filePath);
+﻿
 
-        T Parse(string filePath);
+namespace Economy.Common
+{
+    public interface IParser
+    {
+        object TryParse(string filePath);
+
+        object Parse(string filePath);
     }
 }

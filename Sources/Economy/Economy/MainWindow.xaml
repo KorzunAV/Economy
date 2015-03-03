@@ -28,9 +28,13 @@
                 <ColumnDefinition Width="270"/>
                 <ColumnDefinition Width="97*"/>
             </Grid.ColumnDefinitions>
-            <cntrl:AccountListControl Grid.Column="0"/>
-            <cntrl:TransactionListControl Grid.Column="1" Grid.Row="0" />
-            <cntrl:MessageControl Grid.Column="1" Grid.Row="0" VerticalAlignment="Bottom"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <cntrl:AccountListControl Grid.Column="0" Grid.RowSpan="4" />
+            <cntrl:TransactionListControl Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" />
+            <cntrl:MessageControl Grid.Column="1" Grid.Row="1"/>
         </Grid>
 
         <StatusBar Grid.Row="2">

@@ -13,9 +13,11 @@ namespace Economy.ViewModels
         {
             get
             {
-                return (Application.Current == null) || (Application.Current.GetType() == typeof(Application));
+                return !_isDebug && (Application.Current == null || Application.Current.GetType() == typeof(Application));
             }
         }
+
+        protected bool _isDebug;
 
         #region INotifyPropertyChanged Members
 
@@ -91,5 +93,14 @@ namespace Economy.ViewModels
         
        
         #endregion
+
+        protected ViewModelBase(bool isDebug)
+        {
+            _isDebug = isDebug;
+        }
+
+        protected ViewModelBase() : this(false)
+        {
+        }
     }
 }

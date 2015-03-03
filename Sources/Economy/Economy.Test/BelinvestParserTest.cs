@@ -24,13 +24,6 @@ namespace Economy.Test
         }
 
         [Test]
-        public void TryConvertTest()
-        {
-            var manager = new ConvertManager();
-            manager.TryConvert(DirPath, DirPathOut);
-        }
-
-        [Test]
         public void ReadTest()
         {
             var convertedPaths = Directory.GetFiles(DirPathOut);
