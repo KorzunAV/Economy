@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Media;
-using Economy.Models;
+﻿using System.Windows.Media;
 
 namespace Economy.ViewModels
 {
@@ -10,6 +8,10 @@ namespace Economy.ViewModels
         public string Data { get; set; }
         public decimal Income { get; set; }
         public decimal Outcome { get; set; }
+
+        public decimal IncomeWithoutLocal { get; set; }
+        public decimal OutcomeWithoutLocal { get; set; }
+
 
         public decimal InOut
         {

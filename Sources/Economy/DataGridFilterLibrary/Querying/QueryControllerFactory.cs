@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Collections;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Data;
 using DataGridFilterLibrary.Support;
-using System.Collections;
 
 namespace DataGridFilterLibrary.Querying
 {

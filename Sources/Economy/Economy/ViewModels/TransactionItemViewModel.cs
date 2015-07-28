@@ -120,6 +120,11 @@ namespace Economy.ViewModels
             }
         }
 
+        /// <summary>
+        /// Является ли транцакция внутри счетов (по своим карточкам)
+        /// </summary>
+        public bool IsLocalTransaction { get; set; }
+
         #endregion Свойства
 
         public TransactionItemViewModel()

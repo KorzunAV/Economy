@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace Economy.Common
+namespace Economy.Data.Parsers
 {
     public class MailParser
     {

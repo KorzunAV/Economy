@@ -77,7 +77,7 @@ namespace Economy.Models
         {
             get
             {
-                var date1 = PeriodInfo.Substring(PeriodInfo.IndexOf("-") - 2, 10);
+                var date1 = PeriodInfo.Substring(PeriodInfo.IndexOf("-", StringComparison.Ordinal) - 2, 10);
                 return DateTime.Parse(date1);
             }
         }
@@ -86,7 +86,7 @@ namespace Economy.Models
         {
             get
             {
-                var date2 = PeriodInfo.Substring(PeriodInfo.LastIndexOf("-") - 5, 10);
+                var date2 = PeriodInfo.Substring(PeriodInfo.LastIndexOf("-", StringComparison.Ordinal) - 5, 10);
                 return DateTime.Parse(date2);
             }
         }
@@ -95,7 +95,7 @@ namespace Economy.Models
         {
             get
             {
-                var date = CreationInfo.Substring(CreationInfo.IndexOf("-") - 2, 19);
+                var date = CreationInfo.Substring(CreationInfo.IndexOf("-", StringComparison.Ordinal) - 2, 19);
                 return DateTime.Parse(date);
             }
         }

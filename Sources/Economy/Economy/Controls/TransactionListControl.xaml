@@ -39,6 +39,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn Header="Номер счета" Binding="{Binding Path=AccountNumber}"/>
+                    <DataGridTextColumn Header="Перевод между картами" Binding="{Binding Path=IsLocalTransaction}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </TabItem>
@@ -54,7 +55,7 @@
                       filter:DataGridExtensions.IsClearButtonVisible="False"
                       filter:DataGridExtensions.IsFilterVisible="True" AutoGenerateColumns="False" x:Name="dgIncomeOutcome">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Дата" Binding="{Binding Path=Data}"/>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding Path=Data}" SortDirection="Descending" CanUserSort="True"/>
                         <DataGridTextColumn Header="Получено" Binding="{Binding Path=Income, StringFormat={}{0:### ### ###}}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style>
@@ -63,6 +64,20 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                         <DataGridTextColumn Header="Потрачено" Binding="{Binding Path=Outcome, StringFormat={}{0:### ### ###}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Получено (без внутренних переводов)" Binding="{Binding Path=IncomeWithoutLocal, StringFormat={}{0:### ### ###}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Потрачено (без внутренних переводов)" Binding="{Binding Path=OutcomeWithoutLocal, StringFormat={}{0:### ### ###}}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style>
                                     <Setter Property="TextBlock.TextAlignment" Value="Right"/>
@@ -88,7 +103,7 @@
                 </DataGrid>
 
                 <Label Grid.Row="1" Content="Баланс по счетам на текущий день:"/>
-                <Label Grid.Row="2" x:Name="BalanceNow"/>
+                <Label Grid.Row="2" x:Name="BalanceNow" ContentStringFormat="{}{0:### ### ###}"/>
             </Grid>
 
         </TabItem>

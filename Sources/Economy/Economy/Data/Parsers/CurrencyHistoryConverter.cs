@@ -5,23 +5,18 @@ using System.IO;
 using System.Text;
 using Economy.Models;
 
-namespace Economy.Common.History
+namespace Economy.Data.Parsers
 {
-    public class Parser : IParser
+    public class CurrencyHistoryConverter : IConverter
     {
-        public object TryParse(string filePath)
+        private DateTime ParseDateTime(string value)
         {
-            try
-            {
-                return Parse(filePath);
-            }
-            catch (Exception)
-            {
-            }
-            return null;
+            value = value.Trim();
+            return DateTime.ParseExact(value, new[] { "dd.MM.yyyy", "dd.MM.yyyy HH:mm" }, new CultureInfo("ru-RU"),
+                DateTimeStyles.None);
         }
 
-        public object Parse(string filePath)
+        public void ConvertAndSave(string filePath, string outFilePath)
         {
             var set = new List<PriceHistory>();
             using (var sr = new StreamReader(filePath, Encoding.GetEncoding("windows-1251")))
@@ -29,6 +24,8 @@ namespace Economy.Common.History
                 while (!sr.EndOfStream)
                 {
                     var line = sr.ReadLine();
+                    if (line == null) continue;
+
                     var date = line.Split('\t');
                     if (date.Length != 7)
                         throw new ArgumentException("Ожидалось 7 колонок");
@@ -57,14 +54,8 @@ namespace Economy.Common.History
                 }
             }
 
-            return new Models.History { PriceHistories = set };
-        }
-
-        private DateTime ParseDateTime(string value)
-        {
-            value = value.Trim();
-            return DateTime.ParseExact(value, new string[] {"dd.MM.yyyy", "dd.MM.yyyy HH:mm"}, new CultureInfo("ru-RU"),
-                DateTimeStyles.None);
+            var model = new Models.History { PriceHistories = set };
+            CommonLibs.Serialization.XmlSerialization.Serialize(model, outFilePath, FileMode.OpenOrCreate);
         }
     }
 }

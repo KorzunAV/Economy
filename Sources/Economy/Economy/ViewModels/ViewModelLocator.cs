@@ -2,19 +2,45 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Economy.Common.FileSystem;
-using Economy.Models;
 using Economy.Data;
+using Economy.Models;
+using CommonLibs.Serialization;
 
 namespace Economy.ViewModels
 {
     public class ViewModelLocator : ViewModelBase
     {
-        const string DataDir = @"..\..\..\Economy\Data\";
-        const string DirPath = DataDir + @"Sources\Mails\";
-        const string DirHistoryPath = DataDir + @"Sources\History\";
-        const string DirPathOut = DataDir + @"Converted\Mails\";
-        const string DirHistoryPathOut = DataDir + @"Converted\History\";
+        public const string DataDir = @"..\..\..\Economy\Data\";
+        public const string DirPath = DataDir + @"Sources\Mails\";
+        public const string DirHistoryPath = DataDir + @"Sources\History\";
+        public const string DirPathOut = DataDir + @"Converted\Mails\";
+        public const string DirHistoryPathOut = DataDir + @"Converted\History\";
+
+        public static decimal TotalBalance
+        {
+            get
+            {
+                if (History == null)
+                    return 0;
+
+                decimal result = 0;
+                foreach (var account in Accounts)
+                {
+                    if (History.MainCurrency.Equals(account.Currency, StringComparison.OrdinalIgnoreCase))
+                    {
+                        result += account.Balance;
+                    }
+                    else
+                    {
+                        var historyPrice = History.PriceHistories
+                            .OrderByDescending(i => i.Date)
+                            .FirstOrDefault(i => i.Currency.Equals(account.Currency));
+                        result += account.Balance * historyPrice.Buy;
+                    }
+                }
+                return result;
+            }
+        }
 
         public static ExtendedObservableCollection<AccountViewModel> Accounts { get; set; }
 
@@ -34,7 +60,7 @@ namespace Economy.ViewModels
         /// История курсов валют
         /// </summary>
         public static History History { get; set; }
-        
+
         /// <summary>
         /// Статус процесса
         /// </summary>
@@ -75,19 +101,21 @@ namespace Economy.ViewModels
             ValidateReports(accountViewModels, montlyReport);
             Accounts.Clear();
             Accounts.AddRange(accountViewModels);
+
+            FindLocalTransactions();
         }
 
         private static List<MontlyReport> LoadMontlyReports()
         {
             var convertedPaths = Directory.GetFiles(DirPathOut);
-            return convertedPaths.Select(Deserialization.Load<MontlyReport>).ToList();
+            return Enumerable.ToList(convertedPaths.Select(XmlSerialization.Deserialize<MontlyReport>));
         }
 
         private static History LoadHistory()
         {
             if (!File.Exists(DirHistoryPathOut + "Courses.xml"))
                 return null;
-            return Deserialization.Load<History>(DirHistoryPathOut + "Courses.xml");
+            return XmlSerialization.Deserialize<History>(DirHistoryPathOut + "Courses.xml");
         }
 
         private static List<AccountViewModel> ConvertMontlyReportToAccountReport(IEnumerable<MontlyReport> montlyReport)
@@ -168,6 +196,64 @@ namespace Economy.ViewModels
         private static void UpdateDataFilesState(string fileName, int fileCount, int index)
         {
             State.CreateUpdateAction(StateViewModel.Actions.MailConvert, string.Format("Обработка почты: {0} из {1} выполнено", fileCount, index));
+        }
+
+        public static decimal GetCashInMainCurrency(TransactionItemViewModel model)
+        {
+            if (History.MainCurrency.Equals(model.Account.Currency, StringComparison.OrdinalIgnoreCase))
+            {
+                if (model.AmountByAccount != 0)
+                    return model.AmountByAccount;
+            }
+            if (History.MainCurrency.Equals(model.Currency))
+            {
+                return model.AmountByCurrency;
+            }
+            var currency = string.IsNullOrEmpty(model.Currency) ? model.Account.Currency : model.Currency;
+            var historyPrice = History.PriceHistories
+                .FirstOrDefault(i => i.Date.Date == model.TransactionDate.Date && i.Currency.Equals(currency));
+            if (historyPrice != null)
+                return model.AmountByAccount * historyPrice.Buy;
+
+            throw new ArithmeticException("Недостаточно данных для формирования отчета.");
+        }
+
+        private static void FindLocalTransactions()
+        {
+            var transactions = new List<TransactionItemViewModel>();
+            foreach (var account in Accounts)
+            {
+                transactions.AddRange(account.TransactionItems);
+            }
+
+            foreach (var group in transactions.Where(i => i.AmountByCurrency != 0).GroupBy(t => t.TransactionDate))
+            {
+                if (group.Count() == 1)
+                    continue;
+                foreach (var subGroup in group.GroupBy(g => g.Currency))
+                {
+                    if (subGroup.Count() == 1)
+                        continue;
+                    foreach (var subGroup2 in subGroup.GroupBy(g => Math.Abs(g.AmountByCurrency)))
+                    {
+                        if (subGroup2.Count() == 1)
+                            continue;
+
+                        var buf = subGroup2.ToArray();
+                        for (int i = 0; i < buf.Length - 1; i++)
+                        {
+                            for (int j = 1; j < buf.Length; j++)
+                            {
+                                if (buf[i].AmountByCurrency == -buf[j].AmountByCurrency)
+                                {
+                                    buf[i].IsLocalTransaction = true;
+                                    buf[j].IsLocalTransaction = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

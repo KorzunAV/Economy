@@ -23,7 +23,7 @@ namespace Economy.ViewModels
             set { SetProperty(ref _messageGroupBoxVisibility, value); }
         }
 
-        public RelayCommand ShowErrorCommand { get; set; }
+        public RelayCommand ShowErrorCommand { get; private set; }
 
         public RelayCommand HideErrorCommand { get; set; }
 

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Windows;
 using Economy.ViewModels;
 
@@ -11,11 +12,17 @@ namespace Economy
         public MainWindow()
         {
             InitializeComponent();
+            ViewModelLocator.UpdateDataFiles();
         }
-        
-        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+
+        private void UpdateDataFiles(object sender, RoutedEventArgs e)
         {
            ViewModelLocator.UpdateDataFiles();
+        }
+
+        private void OpenHistory(object sender, RoutedEventArgs e)
+        {
+            Process.Start(ViewModelLocator.DirHistoryPath);
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Economy.Models
 {
 
     [Serializable]
-    public class PriceHistory
+    public class PriceHistory 
     {
         /// <summary>
         /// Дата записи

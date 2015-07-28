@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
 
 namespace Economy.Models
 {
@@ -12,9 +11,9 @@ namespace Economy.Models
         {
             if (collection == null || Items == null)
                 return;
-            base.CheckReentrancy();
+            CheckReentrancy();
 
-            IList<T> items = this.Items;
+            IList<T> items = Items;
             foreach (T obj in collection)
                 items.Add(obj);
 

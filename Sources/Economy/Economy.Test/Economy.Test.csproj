@@ -46,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\CommonLibs\Sources\CommonLibs.Serialization\CommonLibs.Serialization.csproj">
+      <Project>{64115506-8242-4ac7-8cee-5ef3a5f5aa94}</Project>
+      <Name>CommonLibs.Serialization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Economy\Economy.csproj">
       <Project>{fb0c0289-a5ff-4e3c-8f2b-1a8eff03b07d}</Project>
       <Name>Economy</Name>

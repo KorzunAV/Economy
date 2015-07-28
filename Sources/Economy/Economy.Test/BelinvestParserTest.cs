@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Economy.Common.Belinvest;
-using Economy.Common.FileSystem;
 using Economy.Data;
 using Economy.Models;
 using NUnit.Framework;
+using CommonLibs.Serialization;
 
 namespace Economy.Test
 {
@@ -31,7 +30,7 @@ namespace Economy.Test
 
             foreach (var filePath in convertedPaths)
             {
-                var montlyReport = Deserialization.Load<MontlyReport>(filePath);
+                var montlyReport = XmlSerialization.Deserialize<MontlyReport>(filePath);
                 Assert.IsNotNull(montlyReport);
                 statistic.Add(montlyReport);
             }

@@ -40,9 +40,6 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="De.TorstenMandelkow.MetroChart">
-      <HintPath>..\MetroChart\De.TorstenMandelkow.MetroChart.WPF\bin\Debug\De.TorstenMandelkow.MetroChart.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -62,8 +59,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Common\IParser.cs" />
-    <Compile Include="Common\History\Parser.cs" />
+    <Compile Include="Data\IConverter.cs" />
+    <Compile Include="Data\Parsers\CurrencyHistoryConverter.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Data\DataConvertManager.cs" />
     <Compile Include="Models\ExtendedObservableCollection.cs" />
@@ -103,10 +100,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Common\Belinvest\Parser.cs" />
-    <Compile Include="Common\FileSystem\Deserialization.cs" />
-    <Compile Include="Common\FileSystem\Serialization.cs" />
-    <Compile Include="Common\MailParser.cs" />
+    <Compile Include="Data\Parsers\BelinvestConverter.cs" />
+    <Compile Include="Data\Parsers\MailParser.cs" />
     <Compile Include="Controls\AccountListControl.xaml.cs">
       <DependentUpon>AccountListControl.xaml</DependentUpon>
     </Compile>
@@ -176,6 +171,10 @@
     <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\CommonLibs\Sources\CommonLibs.Serialization\CommonLibs.Serialization.csproj">
+      <Project>{64115506-8242-4ac7-8cee-5ef3a5f5aa94}</Project>
+      <Name>CommonLibs.Serialization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataGridFilterLibrary\DataGridFilterLibrary.csproj">
       <Project>{57e0cb10-1c4a-4bd8-9667-7a8dbd4d75e5}</Project>
       <Name>DataGridFilterLibrary</Name>

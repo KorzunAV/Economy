@@ -17,7 +17,10 @@
 
         <Menu Grid.Row="0" >
             <MenuItem Header="Меню" >
-                <MenuItem Header="Обновить" Click="MenuItem_OnClick" />
+                <MenuItem Header="Исходные данные">
+                    <MenuItem Header="Курсы валют" Click="OpenHistory" />
+                </MenuItem>
+                <MenuItem Header="Обновить" Click="UpdateDataFiles" />
                 <MenuItem Header="Настройки" />
             </MenuItem>
             <MenuItem Header="О програме"  />

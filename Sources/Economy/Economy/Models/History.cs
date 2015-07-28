@@ -6,7 +6,7 @@ namespace Economy.Models
     [Serializable]
     public class History
     {
-        public string MainCurency
+        public string MainCurrency
         {
             get
             {

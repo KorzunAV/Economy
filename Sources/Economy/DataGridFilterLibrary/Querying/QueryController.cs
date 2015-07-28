@@ -1,14 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Linq.Dynamic;
-using DataGridFilterLibrary.Support;
-using System.Collections;
-using System.Windows.Data;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
+using System.Windows.Data;
 using System.Windows.Threading;
+using DataGridFilterLibrary.Support;
 
 namespace DataGridFilterLibrary.Querying
 {

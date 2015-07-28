@@ -7,23 +7,11 @@ using System.Text;
 using System.Xml.Linq;
 using Economy.Models;
 
-namespace Economy.Common.Belinvest
+namespace Economy.Data.Parsers
 {
-    public class Parser : MailParser, IParser
+    public class BelinvestConverter : MailParser, IConverter
     {
-        public object TryParse(string filePath)
-        {
-            try
-            {
-                return Parse(filePath);
-            }
-            catch (Exception)
-            {
-            }
-            return null;
-        }
-
-        public object Parse(string filePath)
+        public void ConvertAndSave(string filePath, string outFilePath)
         {
             string file;
             using (var sr = new StreamReader(filePath, Encoding.GetEncoding("windows-1251")))
@@ -46,10 +34,8 @@ namespace Economy.Common.Belinvest
             if (!result)
                 throw new ArithmeticException("Где то несраслось.");
 
-            return montlyReport;
+            CommonLibs.Serialization.XmlSerialization.Serialize(montlyReport, outFilePath, FileMode.OpenOrCreate);
         }
-
-
 
         private bool ReadPreambula(XElement root)
         {
@@ -184,5 +170,6 @@ namespace Economy.Common.Belinvest
             return dateTime;
         }
 
+      
     }
 }

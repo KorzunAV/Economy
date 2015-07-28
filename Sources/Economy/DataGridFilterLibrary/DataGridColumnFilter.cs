@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Collections;
-using DataGridFilterLibrary.Support;
-using System.Reflection;
-using DataGridFilterLibrary.Querying;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using DataGridFilterLibrary.Querying;
+using DataGridFilterLibrary.Support;
 
 namespace DataGridFilterLibrary
 {
