@@ -1,0 +1,62 @@
+﻿<GroupBox x:Class="Economy.Controls.AddCashControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding AddCash, Source={StaticResource Locator}}"
+             Style="{DynamicResource ResourceKey=AddCashGroupBox}" 
+             Visibility="{Binding AddCashGroupBoxVisibility}">
+    <GroupBox.Resources>
+        <ResourceDictionary Source="/Economy;component/Skins/AddCashControl.xaml" />
+    </GroupBox.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition  Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="Счет" />
+        <ComboBox Style="{DynamicResource AddCashComboBox}" Grid.Row="0" Grid.Column="1" 
+                  ItemsSource="{Binding Accounts}" SelectedValue="{Binding SelectedAccount}"/>
+        <Button Style="{DynamicResource AddCashButtonClose}" Command="{Binding HideCommand}" Grid.Row="0" Grid.Column="1" />
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Дата регистрации" />
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TransactionItem.RegistrationDate}" />
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Дата транзакции" />
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding TransactionItem.TransactionDate}" />
+
+        <Label Grid.Row="3" Grid.Column="0" Content="Номер транзакции/ документа" />
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding TransactionItem.Code}" />
+
+        <Label Grid.Row="4" Grid.Column="0" Content="Описание" />
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding TransactionItem.Description}" />
+
+        <Label Grid.Row="5" Grid.Column="0" Content="Валюта транзакции" />
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding TransactionItem.Currency}" />
+
+        <Label Grid.Row="6" Grid.Column="0" Content="Сумма в валюте транзакции" />
+        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding TransactionItem.QuantityByCurrency}" />
+
+        <Label Grid.Row="7" Grid.Column="0" Content="Сумма в валюте счета" />
+        <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding TransactionItem.QuantityByAccount}" />
+
+        <Label Grid.Row="8" Grid.Column="0" Content="Сумма в валюте счета" />
+        <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding TransactionItem.QuantityByAccount}" />
+
+        <Button Grid.Row="9" Grid.Column="1" Command="{Binding SaveCommand}"  Content="Сохранить" Style="{DynamicResource Button}"/>
+    </Grid>
+</GroupBox>

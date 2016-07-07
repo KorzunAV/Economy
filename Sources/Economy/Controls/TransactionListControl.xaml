@@ -1,0 +1,130 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:filter="clr-namespace:DataGridFilterLibrary;assembly=DataGridFilterLibrary"
+             xmlns:converters="clr-namespace:Economy.Converters"
+             x:Class="Economy.Controls.TransactionListControl"
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="840">
+
+    <UserControl.Resources>
+        <converters:TransactionSumConverter x:Key="TransactionSumConverter"/>
+    </UserControl.Resources>
+    <TabControl>
+        <TabItem Header="По дням">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <DataGrid AutoGenerateColumns="False" x:Name="dgAll">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Дата регистрации" Binding="{Binding RegistrationDate, StringFormat=dd.MM.yyyy}" Width="70"/>
+                        <DataGridTextColumn Header="Дата транзакции" Binding="{Binding TransactionDate, StringFormat=dd.MM.yyyy}"  Width="70"/>
+                        <DataGridTextColumn Header="Номер транзакции" Binding="{Binding TransactionCode}"/>
+                        <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="200">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                    <Setter Property="TextBlock.TextAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Валюта транзакции" Binding="{Binding Currency}" Width="30"/>
+                        <DataGridTextColumn Header="Сумма в валюте транзакции" 
+							Binding="{Binding AmountByCurrency, StringFormat=\{0:### ### ###\}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.Foreground" Value="{Binding DataRowColor}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Сумма в валюте счета" Binding="{Binding AmountByAccount, StringFormat=\{0:### ### ###\}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.Foreground" Value="{Binding DataRowColor}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Сумма в валюте расчета" Binding="{Binding AmountByMainCurrency, StringFormat=\{0:### ### ###\}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.Foreground" Value="{Binding DataRowColor}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Номер счета" Binding="{Binding AccountNumber}"/>
+                        <DataGridTextColumn Header="Перевод между картами" Binding="{Binding IsLocalTransaction}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Label Content="{Binding Items, ConverterParameter=1, Converter={StaticResource TransactionSumConverter}, ElementName=dgAll}"/>
+                    <Label Content="d"/>
+                    <Label Content="d"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="По месяцам">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DataGrid AutoGenerateColumns="False" x:Name="dgIncomeOutcome">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding Data}" SortDirection="Descending" CanUserSort="True"/>
+                        <DataGridTextColumn Header="Получено" Binding="{Binding Income, StringFormat=\{0:### ### ###\}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Потрачено" Binding="{Binding Outcome, StringFormat=\{0:### ### ###\}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Получено (без внутренних переводов)" Binding="{Binding IncomeWithoutLocal, StringFormat=\{0:### ### ###\}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Потрачено (без внутренних переводов)" Binding="{Binding OutcomeWithoutLocal, StringFormat=\{0:### ### ###\}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Приход/Расход" Binding="{Binding InOut, StringFormat=\{0:### ### ###\}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextAlignment" Value="Right"/>
+                                    <Setter Property="TextBlock.Foreground" Value="{Binding DataRowColor}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Баланс" Binding="{Binding Balance, StringFormat=\{0:### ### ###\}}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.TextAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Label Grid.Row="1" Content="Баланс по счетам на текущий день:"/>
+                <Label Grid.Row="2" x:Name="BalanceNow" ContentStringFormat="{}{0:### ### ###}"/>
+            </Grid>
+
+        </TabItem>
+    </TabControl>
+</UserControl>
