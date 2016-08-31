@@ -1,4 +1,4 @@
-﻿namespace Economy.Data
+﻿namespace Economy.Parsers
 {
     public interface IConverter
     {

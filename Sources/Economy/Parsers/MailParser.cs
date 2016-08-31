@@ -5,7 +5,7 @@ using CQRS.Logic;
 using Economy.Dtos;
 using Economy.Logic.Queries;
 
-namespace Economy.Data.Parsers
+namespace Economy.Parsers
 {
     public class MailParser
     {

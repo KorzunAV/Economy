@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using CQRS.Logic;
 using Economy.Dtos;
-using Economy.Models;
 using Economy.Helpers;
+using Economy.Models;
 
-namespace Economy.Data.Parsers
+namespace Economy.Parsers
 {
     public class PriorConverter : MailParser, IConverter
     {

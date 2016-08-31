@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Economy.Data;
 using Economy.Models;
 using CommonLibs.Serialization;
 using CQRS.Logic;
@@ -12,6 +11,7 @@ using Economy.Dtos;
 using Economy.IoC;
 using Economy.Logic.IoC;
 using Economy.Logic.Queries;
+using Economy.Parsers;
 using Ninject;
 
 namespace Economy.ViewModels

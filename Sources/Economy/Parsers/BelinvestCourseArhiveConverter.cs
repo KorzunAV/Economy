@@ -9,7 +9,7 @@ using Economy.Helpers;
 using Economy.Logic.Commands;
 using Economy.Logic.Queries;
 
-namespace Economy.Data.Parsers
+namespace Economy.Parsers
 {
     public class BelinvestCourseArhiveConverter : IConverter
     {

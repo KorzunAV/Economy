@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Economy.Helpers;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,9 +7,10 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using CQRS.Logic;
 using Economy.Dtos;
+using Economy.Helpers;
 using Economy.Logic.Commands;
 
-namespace Economy.Data.Parsers
+namespace Economy.Parsers
 {
     public class BelinvestConverter : MailParser, IConverter
     {

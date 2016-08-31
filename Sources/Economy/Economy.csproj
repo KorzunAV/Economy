@@ -67,9 +67,9 @@
       <DependentUpon>AddCashControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\TransactionSumConverter.cs" />
-    <Compile Include="Data\IConverter.cs" />
-    <Compile Include="Data\Parsers\PriorConverter.cs" />
-    <Compile Include="Data\Parsers\BelinvestCourseArhiveConverter.cs" />
+    <Compile Include="Parsers\IConverter.cs" />
+    <Compile Include="Parsers\PriorConverter.cs" />
+    <Compile Include="Parsers\BelinvestCourseArhiveConverter.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Helpers\StringConverter.cs" />
     <Compile Include="IoC\ConvertersModule.cs" />
@@ -113,8 +113,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\Parsers\BelinvestConverter.cs" />
-    <Compile Include="Data\Parsers\MailParser.cs" />
+    <Compile Include="Parsers\BelinvestConverter.cs" />
+    <Compile Include="Parsers\MailParser.cs" />
     <Compile Include="Controls\AccountListControl.xaml.cs">
       <DependentUpon>AccountListControl.xaml</DependentUpon>
     </Compile>
