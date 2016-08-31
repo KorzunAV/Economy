@@ -20,10 +20,13 @@ namespace Economy.DataAccess.BlToolkit.AutomapperMappings
             Mapper.CreateMap<SystemUserEntity, SystemUserDto>();
             Mapper.CreateMap<SystemUserDto, SystemUserEntity>();
 
-            Mapper.CreateMap<BelinvestCourseArhiveEntity, BelinvestCourseArhiveDto>()
+            Mapper.CreateMap<CourseArhiveEntity, CourseArhiveDto>()
                 .ForMember(dto => dto.CurrencyTypeDto, ent => ent.MapFrom(src => new CurrencyTypeDto { Id = src.CurrencyTypeId }));
-            Mapper.CreateMap<BelinvestCourseArhiveDto, BelinvestCourseArhiveEntity>()
-                 .ForMember(ent => ent.CurrencyType, dto => dto.MapFrom(src => src.CurrencyTypeDto.Id));
+            Mapper.CreateMap<CourseArhiveDto, CourseArhiveEntity>()
+                 .ForMember(ent => ent.CurrencyTypeId, dto => dto.MapFrom(src => src.CurrencyTypeDto.Id));
+
+
+
         }
     }
 }

@@ -8,39 +8,39 @@ using Economy.Dtos;
 
 namespace Economy.DataAccess.BlToolkit.Daos
 {
-    public partial class BelinvestCourseArhiveDao : BaseDao
+    public partial class CourseArhiveDao : BaseDao
     {
         #region Commands
-        public void Save(List<BelinvestCourseArhiveDto> dtos, IBaseSessionManager manager)
+        public void Save(List<CourseArhiveDto> dtos, IBaseSessionManager manager)
         {
             var db = (EconomyDb)manager;
-            var entities = Mapper.Map<List<BelinvestCourseArhiveDto>, List<BelinvestCourseArhiveEntity>>(dtos);
+            var entities = Mapper.Map<List<CourseArhiveDto>, List<CourseArhiveEntity>>(dtos);
             db.InsertBatch(entities);
         }
         #endregion
 
         #region Queries
-        public List<BelinvestCourseArhiveDto> GetAll(IBaseSessionManager manager)
+        public List<CourseArhiveDto> GetAll(IBaseSessionManager manager)
         {
             var db = (EconomyDb)manager;
-            var query = from c in db.BelinvestCourseArhiveTable
+            var query = from c in db.CourseArhiveTable
                         select c;
             var entities = query.ToList();
-            return Mapper.Map<List<BelinvestCourseArhiveEntity>, List<BelinvestCourseArhiveDto>>(entities);
+            return Mapper.Map<List<CourseArhiveEntity>, List<CourseArhiveDto>>(entities);
         }
 
-        public BelinvestCourseArhiveDto GetLast(IBaseSessionManager manager)
+        public CourseArhiveDto GetLast(IBaseSessionManager manager)
         {
             var db = (EconomyDb)manager;
 
-            var sortedRows = from b in db.BelinvestCourseArhiveTable
+            var sortedRows = from b in db.CourseArhiveTable
                              orderby b.RegDate descending
                              select b;
             var lastest = sortedRows.Take(1);
             if (lastest.Any())
             {
                 var value = lastest.FirstOrDefault();
-                return Mapper.Map<BelinvestCourseArhiveEntity, BelinvestCourseArhiveDto>(value);
+                return Mapper.Map<CourseArhiveEntity, CourseArhiveDto>(value);
             }
 
             return null;

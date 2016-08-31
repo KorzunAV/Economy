@@ -3,7 +3,7 @@ using CQRS.Logic.Queries;
 
 namespace Economy.Logic.Queries
 {
-    public class BelinvestCourseArhiveGetLastQuery : BaseQuery
+    public class CourseArhiveGetLastQuery : BaseQuery
     {
         public static Guid Id = new Guid("D53E8CE3-E79E-4733-93EC-BCDC02365C3B");
 

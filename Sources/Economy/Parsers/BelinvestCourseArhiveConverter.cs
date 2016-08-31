@@ -11,11 +11,11 @@ using Economy.Logic.Queries;
 
 namespace Economy.Parsers
 {
-    public class BelinvestCourseArhiveConverter : IConverter
+    public class CourseArhiveConverter : IConverter
     {
         protected ICommandQueryDispatcher CommandQueryDispatcher;
 
-        public BelinvestCourseArhiveConverter(ICommandQueryDispatcher commandQueryDispatcher)
+        public CourseArhiveConverter(ICommandQueryDispatcher commandQueryDispatcher)
         {
             CommandQueryDispatcher = commandQueryDispatcher;
         }
@@ -23,9 +23,9 @@ namespace Economy.Parsers
         public void ConvertAndSave(string filePath, string outFilePath)
         {
             var currencyTypeDtos = CommandQueryDispatcher.ExecuteQuery<List<CurrencyTypeDto>>(new CurrencyTypeGetAllQuery()).Data;
-            var lastBelinvestCourseArhive = CommandQueryDispatcher.ExecuteQuery<BelinvestCourseArhiveDto>(new BelinvestCourseArhiveGetLastQuery()).Data;
+            var lastCourseArhive = CommandQueryDispatcher.ExecuteQuery<CourseArhiveDto>(new CourseArhiveGetLastQuery()).Data;
 
-            var set = new List<BelinvestCourseArhiveDto>();
+            var set = new List<CourseArhiveDto>();
             using (var sr = new StreamReader(filePath, Encoding.GetEncoding("windows-1251")))
             {
                 while (!sr.EndOfStream)
@@ -38,7 +38,7 @@ namespace Economy.Parsers
                         throw new ArgumentException("Ожидалось 7 колонок");
 
                     var dt = StringConverter.StringToDateTime(date[0]);
-                    if (lastBelinvestCourseArhive != null && dt <= lastBelinvestCourseArhive.RegDate)
+                    if (lastCourseArhive != null && dt <= lastCourseArhive.RegDate)
                         break;
 
                     TryAddItem(dt, date, 1, currencyTypeDtos, "USD", set);
@@ -49,14 +49,14 @@ namespace Economy.Parsers
 
             if (set.Any())
             {
-                var command = new BelinvestCourseArhiveSaveCommand { Dtos = set };
+                var command = new CourseArhiveSaveCommand { Dtos = set };
                 CommandQueryDispatcher.ExecuteCommand<bool>(command);
             }
         }
 
-        private void TryAddItem(DateTime dt, string[] date, int from, List<CurrencyTypeDto> currencyTypeDtos, string currencyTypeShortName, List<BelinvestCourseArhiveDto> set)
+        private void TryAddItem(DateTime dt, string[] date, int from, List<CurrencyTypeDto> currencyTypeDtos, string currencyTypeShortName, List<CourseArhiveDto> set)
         {
-            var itm = new BelinvestCourseArhiveDto
+            var itm = new CourseArhiveDto
             {
                 RegDate = dt,
                 Sel = StringConverter.StringToDecimal(date[from++]),

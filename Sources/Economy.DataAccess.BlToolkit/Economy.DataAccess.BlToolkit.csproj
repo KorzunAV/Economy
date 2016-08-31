@@ -87,6 +87,11 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="IoC\DataAccessModule.cs" />
     <Compile Include="IoC\NinjectExtensions.cs" />
+    <Compile Include="Templates\EconomyDbDtoGenerator.generated.cs">
+      <DependentUpon>EconomyDbDtoGenerator.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Templates\EconomyDb.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -96,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Templates\BLToolkitDto.ttinclude" />
     <None Include="Templates\BLToolkit.ttinclude" />
     <None Include="packages.config" />
     <None Include="Templates\PostgreSQL.ttinclude" />
@@ -107,7 +113,10 @@
   <ItemGroup>
     <Content Include="BulkCopyConfig.xml" />
     <Content Include="DataSchema\SQL\Create.sql" />
-    <Content Include="Readme!!!.txt" />
+    <Content Include="Templates\EconomyDbDtoGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EconomyDbDtoGenerator.generated.cs</LastGenOutput>
+    </Content>
     <Content Include="Templates\EconomyDb.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EconomyDb.generated.cs</LastGenOutput>

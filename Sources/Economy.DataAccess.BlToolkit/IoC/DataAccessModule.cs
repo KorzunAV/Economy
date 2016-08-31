@@ -36,7 +36,7 @@ namespace Economy.DataAccess.BlToolkit.IoC
                 .ToSelf()
                 .InSingletonScope();
 
-            Bind<BelinvestCourseArhiveDao>()
+            Bind<CourseArhiveDao>()
                 .ToSelf()
                 .InSingletonScope();
 

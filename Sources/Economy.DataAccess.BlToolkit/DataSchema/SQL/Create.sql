@@ -60,10 +60,10 @@ SET default_with_oids = false;
 
 --
 -- TOC entry 187 (class 1259 OID 16701)
--- Name: BelinvestCourseArhive; Type: TABLE; Schema: public; Owner: postgres
+-- Name: CourseArhive; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE "BelinvestCourseArhive" (
+CREATE TABLE "CourseArhive" (
     "CurrencyTypeId" integer NOT NULL,
     "RegDate" timestamp with time zone NOT NULL,
     "Buy" double precision DEFAULT 0 NOT NULL,
@@ -71,51 +71,51 @@ CREATE TABLE "BelinvestCourseArhive" (
 );
 
 
-ALTER TABLE "BelinvestCourseArhive" OWNER TO postgres;
+ALTER TABLE "CourseArhive" OWNER TO postgres;
 
 --
 -- TOC entry 2150 (class 0 OID 0)
 -- Dependencies: 187
--- Name: TABLE "BelinvestCourseArhive"; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: TABLE "CourseArhive"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON TABLE "BelinvestCourseArhive" IS 'РєСѓСЂСЃС‹ РїСЂРёРІРµРґРµРЅРёСЏ РІР°Р»СЋС‚ byr-Р±Р°Р·Р° / РєСѓСЂСЃ Р±РµР»РёРІРµСЃС‚Р±Р°РЅРє';
+COMMENT ON TABLE "CourseArhive" IS 'РєСѓСЂСЃС‹ РїСЂРёРІРµРґРµРЅРёСЏ РІР°Р»СЋС‚ byr-Р±Р°Р·Р° / РєСѓСЂСЃ Р±РµР»РёРІРµСЃС‚Р±Р°РЅРє';
 
 
 --
 -- TOC entry 2151 (class 0 OID 0)
 -- Dependencies: 187
--- Name: COLUMN "BelinvestCourseArhive"."CurrencyTypeId"; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN "CourseArhive"."CurrencyTypeId"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "BelinvestCourseArhive"."CurrencyTypeId" IS 'РІР°Р»СЋС‚Р°';
+COMMENT ON COLUMN "CourseArhive"."CurrencyTypeId" IS 'РІР°Р»СЋС‚Р°';
 
 
 --
 -- TOC entry 2152 (class 0 OID 0)
 -- Dependencies: 187
--- Name: COLUMN "BelinvestCourseArhive"."RegDate"; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN "CourseArhive"."RegDate"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "BelinvestCourseArhive"."RegDate" IS 'РґР°С‚Р°';
+COMMENT ON COLUMN "CourseArhive"."RegDate" IS 'РґР°С‚Р°';
 
 
 --
 -- TOC entry 2153 (class 0 OID 0)
 -- Dependencies: 187
--- Name: COLUMN "BelinvestCourseArhive"."Buy"; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN "CourseArhive"."Buy"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "BelinvestCourseArhive"."Buy" IS 'С†РµРЅР° РїРѕРєСѓРїРєРё';
+COMMENT ON COLUMN "CourseArhive"."Buy" IS 'С†РµРЅР° РїРѕРєСѓРїРєРё';
 
 
 --
 -- TOC entry 2154 (class 0 OID 0)
 -- Dependencies: 187
--- Name: COLUMN "BelinvestCourseArhive"."Sel"; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN "CourseArhive"."Sel"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "BelinvestCourseArhive"."Sel" IS 'С†РµРЅР° РїСЂРѕРґР°Р¶Рё';
+COMMENT ON COLUMN "CourseArhive"."Sel" IS 'С†РµРЅР° РїСЂРѕРґР°Р¶Рё';
 
 
 --
@@ -490,7 +490,7 @@ ALTER TABLE ONLY "CurrencyType" ALTER COLUMN "Id" SET DEFAULT nextval('currency_
 -- Name: pk_belinvest_currency_cur_data; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "BelinvestCourseArhive"
+ALTER TABLE ONLY "CourseArhive"
     ADD CONSTRAINT pk_belinvest_currency_cur_data PRIMARY KEY ("CurrencyTypeId", "RegDate");
 
 
@@ -541,11 +541,11 @@ ALTER TABLE ONLY "SystemUser"
 
 --
 -- TOC entry 2027 (class 2606 OID 16706)
--- Name: FK_BelinvestCourseArhive_CurrencyType; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: FK_CourseArhive_CurrencyType; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "BelinvestCourseArhive"
-    ADD CONSTRAINT "FK_BelinvestCourseArhive_CurrencyType" FOREIGN KEY ("CurrencyTypeId") REFERENCES "CurrencyType"("Id");
+ALTER TABLE ONLY "CourseArhive"
+    ADD CONSTRAINT "FK_CourseArhive_CurrencyType" FOREIGN KEY ("CurrencyTypeId") REFERENCES "CurrencyType"("Id");
 
 
 --

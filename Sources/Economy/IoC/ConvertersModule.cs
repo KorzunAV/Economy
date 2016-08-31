@@ -12,7 +12,7 @@ namespace Economy.IoC
         public override void Load()
         {
             Bind<IConverter>()
-                .To<BelinvestCourseArhiveConverter>()
+                .To<CourseArhiveConverter>()
                 .InSingletonScope()
                 .Named(HistoryConverter);
 

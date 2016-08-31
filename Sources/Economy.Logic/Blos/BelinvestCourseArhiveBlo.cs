@@ -14,29 +14,29 @@ using Economy.Logic.Queries;
 
 namespace Economy.Logic.Blos
 {
-    public class BelinvestCourseArhiveBlo : BaseBlo
+    public class CourseArhiveBlo : BaseBlo
     {
-        private BelinvestCourseArhiveDao BelinvestCourseArhiveDao { get; set; }
+        private CourseArhiveDao CourseArhiveDao { get; set; }
         private CurrencyTypeDao CurrencyTypeDao { get; set; }
 
-        public BelinvestCourseArhiveBlo(ValidationManager validationManager, BelinvestCourseArhiveDao belinvestCourseArhiveDao, CurrencyTypeDao currencyTypeDao)
+        public CourseArhiveBlo(ValidationManager validationManager, CourseArhiveDao belinvestCourseArhiveDao, CurrencyTypeDao currencyTypeDao)
             : base(validationManager)
         {
-            BelinvestCourseArhiveDao = belinvestCourseArhiveDao;
+            CourseArhiveDao = belinvestCourseArhiveDao;
             CurrencyTypeDao = currencyTypeDao;
         }
 
         private ExecutionResult<bool> Save(BaseCommand command, IBaseSessionManager manager)
         {
-            var dtos = ((BelinvestCourseArhiveSaveCommand)command).Dtos;
+            var dtos = ((CourseArhiveSaveCommand)command).Dtos;
             //Validate(period);
-            BelinvestCourseArhiveDao.Save(dtos, manager);
+            CourseArhiveDao.Save(dtos, manager);
             return new ExecutionResult<bool> { Data = true };
         }
 
-        private ExecutionResult<List<BelinvestCourseArhiveDto>> GetAll(BaseQuery query, IBaseSessionManager manager)
+        private ExecutionResult<List<CourseArhiveDto>> GetAll(BaseQuery query, IBaseSessionManager manager)
         {
-            var arhive = BelinvestCourseArhiveDao.GetAll(manager);
+            var arhive = CourseArhiveDao.GetAll(manager);
             var cTDs = CurrencyTypeDao.GetAll(manager);
             foreach (var item in arhive)
             {
@@ -45,22 +45,22 @@ namespace Economy.Logic.Blos
                     Mapper.Map(cdt, item.CurrencyTypeDto);
             }
 
-            return new ExecutionResult<List<BelinvestCourseArhiveDto>> { Data = arhive };
+            return new ExecutionResult<List<CourseArhiveDto>> { Data = arhive };
         }
 
-        private ExecutionResult<BelinvestCourseArhiveDto> GetLast(BaseQuery query, IBaseSessionManager manager)
+        private ExecutionResult<CourseArhiveDto> GetLast(BaseQuery query, IBaseSessionManager manager)
         {
-            var dto = BelinvestCourseArhiveDao.GetLast(manager);
-            return new ExecutionResult<BelinvestCourseArhiveDto> { Data = dto };
+            var dto = CourseArhiveDao.GetLast(manager);
+            return new ExecutionResult<CourseArhiveDto> { Data = dto };
         }
 
         public override void RegisterCommandsAndQueries(ICommandQueryRegistrator commandQueryRegistrator)
         {
             // RegisterCommands
-            commandQueryRegistrator.RegisterCommand(BelinvestCourseArhiveSaveCommand.Id, Save);
+            commandQueryRegistrator.RegisterCommand(CourseArhiveSaveCommand.Id, Save);
             // RegisterQueries
-            commandQueryRegistrator.RegisterQuery(BelinvestCourseArhiveGetAllQuery.Id, GetAll);
-            commandQueryRegistrator.RegisterQuery(BelinvestCourseArhiveGetLastQuery.Id, GetLast);
+            commandQueryRegistrator.RegisterQuery(CourseArhiveGetAllQuery.Id, GetAll);
+            commandQueryRegistrator.RegisterQuery(CourseArhiveGetLastQuery.Id, GetLast);
         }
     }
 }

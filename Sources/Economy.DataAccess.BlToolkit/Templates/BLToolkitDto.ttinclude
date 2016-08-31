@@ -20,7 +20,6 @@
 
 static Dictionary<string,string> Assemblies = new Dictionary<string,string>();
 
-static Action<GeneratedTextTransformation,string> WriteComment        = (tt,s) => tt.WriteLine("//{0}", s);
 static Action<GeneratedTextTransformation,string> WriteSummary        = (tt,s) => 
 {
 	if (!string.IsNullOrWhiteSpace(s))
@@ -30,38 +29,6 @@ static Action<GeneratedTextTransformation,string> WriteSummary        = (tt,s) =
 		tt.WriteLine("/// </summary>");
 	}
 };
-static Action<GeneratedTextTransformation,string> WriteUsing          = (tt,s) => tt.WriteLine("using {0};", s);
-static Action<GeneratedTextTransformation,string> WriteBeginNamespace = (tt,s) => { tt.WriteLine("namespace {0}", s); tt.WriteLine("{"); };
-static Action<GeneratedTextTransformation>        WriteEndNamespace   =  tt    => tt.WriteLine("}");
-static Action<GeneratedTextTransformation,string,string> WriteBeginClass = (tt,cl,bc) =>
-{
-	tt.Write("internal partial class {0}", cl);
-	if (!string.IsNullOrEmpty(bc))
-		tt.Write(" : {0}", bc);
-	tt.WriteLine("");
-	tt.WriteLine("{");
-};
-static Action<GeneratedTextTransformation,string,string> WriteBeginEntityClass = (tt,cl,bc) =>
-{
-	tt.Write("internal partial class {0}Entity", cl);
-	if (!string.IsNullOrEmpty(bc))
-		tt.Write(" : {0}", bc);
-	tt.WriteLine("");
-	tt.WriteLine("{");
-};
-static Action<GeneratedTextTransformation>        WriteEndClass       =  tt   => tt.WriteLine("}");
-static Func<string,string,string>                 MakeGenericType     = (c,t) => string.Format("{0}<{1}>", c, t);
-static Func<string,string>                        MakeType            = t     => t;
-
-delegate void WriteTablePropertyAction(GeneratedTextTransformation tt, string name, string pname, int maxlen, int maxplen, string desc);
-
-static WriteTablePropertyAction WriteTableProperty = (tt,name,pname,maxlen,maxplen,desc) =>
-{
-	WriteSummary(tt,desc);
-	tt.WriteLine("public Table<{0}{2}> {1}{3} {{ get {{ return this.GetTable<{0}Entity>(); }} }}", name, pname, tt.EntityPrefix, tt.TablePrefix);
-};
-static Action<GeneratedTextTransformation,string> WriteAttribute      = (tt,a) => tt.Write("[{0}]", a);
-static Action<GeneratedTextTransformation>        WriteAttributeLine  =  tt    => tt.WriteLine("");
 
 static string ConnectionString;
 static string ConnectionType;
@@ -73,8 +40,6 @@ string Namespace                = "DataModel";
 string BaseDataContextClass     = null;
 string BaseEntityClass          = "BaseEntity";
 string OneToManyAssociationType = "IEnumerable<{0}>";
-string EntityPrefix				= "Entity";
-string TablePrefix				= "Table";
 
 string OwnerToInclude           = null;
 string[] DatabaseQuote          = null;
@@ -88,34 +53,10 @@ bool   IsMetadataLoaded;
 int MaxColumnTypeLen;
 int MaxColumnMemberLen;
 
-static Action<GeneratedTextTransformation,Column,int[],string[]> RenderColumn = (tt,c,maxLens,attrs) =>
+static Action<GeneratedTextTransformation,Column> RenderDtoProperty = (tt,c) =>
 {
 	WriteSummary(tt,c.Description);
 	
-	if (maxLens.Sum() > 0)
-	{
-		if (attrs.Any(_ => _ != null))
-		{
-			tt.Write("[");
-
-			for (var i = 0; i < attrs.Length; i++)
-			{
-				if (attrs[i] != null)
-				{
-					tt.Write(attrs[i]);
-
-					if (attrs.Skip(i + 1).Any(_ => _ != null))
-						tt.Write(", ");
-				}
-			}
-			tt.Write("]\r\n");
-		}
-		else
-		{
-			tt.WriteSpace(1);
-		}
-	}
-
 	tt.Write("public {0} {1}", c.Type, c.MemberName);
 
 	if (tt.RenderField)
@@ -127,67 +68,20 @@ static Action<GeneratedTextTransformation,Column,int[],string[]> RenderColumn = 
 	else
 		tt.Write(" { get; set; }");
 
-	if (c.ColumnType != null)
-	{
-		tt.Write(" // {0}", c.ColumnType);
-		
-		if (c.Length != 0)
-			tt.Write("({0})", c.Length);
-
-		if (c.Precision != 0)
-		{
-			if (c.Scale == 0)
-				tt.Write("({0})", c.Precision);
-			else
-				tt.Write("({0},{1})", c.Precision, c.Scale);
-		}
-	}
-
 	tt.WriteLine("\r\n");
 };
 
-static Action<GeneratedTextTransformation,ForeignKey> RenderForeignKey = (tt,key) =>
-{
-	WriteComment(tt, " " + key.KeyName);
-	tt.WriteLine("[Association(ThisKey = \"{0}\", OtherKey = \"{1}\", CanBeNull = {2})]",
-		string.Join(", ", (from c in key.ThisColumns  select (c.MemberName[0] >= 'A' && c.MemberName[0] <= 'Z') ? "\\\""+c.MemberName+"\\\"" : c.MemberName).ToArray()),
-		string.Join(", ", (from c in key.OtherColumns select (c.MemberName[0] >= 'A' && c.MemberName[0] <= 'Z') ? "\\\""+c.MemberName+"\\\"" : c.MemberName).ToArray()),
-		key.CanBeNull ? "true" : "false");
-
-	if (key.Attributes.Count > 0)
-	{
-		WriteAttribute(tt, string.Join(", ", key.Attributes.Distinct().ToArray()));
-		WriteAttributeLine(tt);
-	}
-
-	tt.Write("public ");
-
-	if (key.AssociationType == AssociationType.OneToMany)
-		tt.Write(tt.OneToManyAssociationType, key.OtherTable.ClassName + tt.EntityPrefix);
-	else
-		tt.Write(key.OtherTable.ClassName + tt.EntityPrefix);
-
-	tt.Write(" ");
-	tt.Write(key.MemberName);
-
-	if (tt.RenderField)
-		tt.WriteLine(";");
-	else
-		tt.WriteLine(" { get; set; }");
-};
-
-static Action<GeneratedTextTransformation,Table, bool> RenderTable = (tt,t, renderForeignKeys) =>
+static Action<GeneratedTextTransformation,Table, bool> RenderDto = (tt,t, renderForeignKeys) =>
 {
 	WriteSummary(tt,t.Description);
 
 	if (t.IsView)
 	{
-		WriteComment(tt, " View");
+		tt.WriteLine("// View");
 	}
 
-	RenderTableAttributes(tt, t);
-
-	WriteBeginEntityClass(tt, t.ClassName, t.BaseClassName);
+	tt.Write("internal partial class {0}BaseDto : BaseDto", t.ClassName);
+	tt.WriteLine("{");
 	
 	tt.PushIndent("    ");
 
@@ -196,66 +90,14 @@ static Action<GeneratedTextTransformation,Table, bool> RenderTable = (tt,t, rend
 		tt.MaxColumnTypeLen   = t.Columns.Values.Max(_ => _.Type.Length);
 		tt.MaxColumnMemberLen = t.Columns.Values.Max(_ => _.MemberName.Length);
 
-		var maxLens = new int[]
-		{
-			t.Columns.Values.Max(_ => _.MemberName == _.ColumnName ? 0 : "MapField('')".Length + _.ColumnName.Length),
-			t.Columns.Values.Max(_ => _.IsNullable                 ? "Nullable".Length : _.IsIdentity ? "Identity".Length : 0),
-			t.Columns.Values.Max(_ => _.IsIdentity && _.IsNullable ? "Identity".Length : 0),
-			t.Columns.Values.Max(_ => _.IsPrimaryKey               ? string.Format("PrimaryKey({0})", _.PKIndex).Length : 0),
-			t.Columns.Values.Max(_ => _.Attributes.Count == 0      ? 0 : string.Join(", ", _.Attributes.Distinct().ToArray()).Length),
-		};
-
 		foreach (var c in from c in t.Columns.Values orderby c.ID select c)
-		{
-			var attrs = new string[]
-			{
-				c.MemberName == c.ColumnName ? (c.ColumnName[0] >= 'A' && c.ColumnName[0] <= 'Z') ? string.Format("MapField(\"\\\"{0}\\\"\")", c.ColumnName): null : string.Format("MapField(\"{0}\")", c.ColumnName),
-				c.IsNullable                 ? "Nullable" : c.IsIdentity ? "Identity" : null,
-				c.IsIdentity && c.IsNullable ? "Identity" : null,
-				c.IsPrimaryKey               ? string.Format("PrimaryKey({0})", c.PKIndex) : null,
-				c.Attributes.Count == 0      ? null : string.Join(", ", c.Attributes.Distinct().ToArray()),
-			};
-
-			RenderColumn(tt, c, maxLens, attrs);
+		{			
+			RenderDtoProperty(tt, c);
 		}
 	}
-
-	if (renderForeignKeys && t.ForeignKeys.Count > 0)
-	{
-		foreach (var key in t.ForeignKeys.Values.Where(k => tt.RenderBackReferences || k.BackReference != null))
-		{
-			tt.WriteLine("");
-			RenderForeignKey(tt, key);
-		}
-	}
-
+	
 	tt.PopIndent();
-	WriteEndClass(tt);
-};
-
-static Action<GeneratedTextTransformation,Table> RenderTableAttributes = (tt,t) =>
-{
-	if (t.Attributes.Count > 0)
-	{
-		WriteAttribute(tt, string.Join(", ", t.Attributes.Distinct().ToArray()));
-		WriteAttributeLine(tt);
-	}
-
-	string tbl = "TableName(";
-
-	if (!string.IsNullOrEmpty(tt.DatabaseName))
-		tbl += string.Format("Database = \"{0}\", ", tt.DatabaseName);
-
-	if (!string.IsNullOrEmpty(t.Owner))
-		tbl += string.Format("Owner = \"{0}\", ", t.Owner);
-
-	if (t.TableName[0] >= 'A' && t.TableName[0] <= 'Z')
-		tbl += string.Format("Name = \"\\\"{0}\\\"\")", t.TableName);
-	else
-		tbl += string.Format("Name = \"{0}\")", t.TableName);
-
-	WriteAttribute(tt, tbl);
-	WriteAttributeLine(tt);
+	tt.WriteLine("}");
 };
 
 List<string> Usings = new List<string>()
@@ -269,30 +111,9 @@ List<string> Usings = new List<string>()
 	"Economy.DataAccess.BlToolkit.Entities",
 };
 
-static Action<GeneratedTextTransformation> RenderUsing = tt =>
-{
-	var q =
-		from ns in tt.Usings.Distinct()
-		group ns by ns.Split('.')[0];
-
-	var groups =
-		(from ns in q where ns.Key == "System"                select ns).Concat
-		(from ns in q where ns.Key != "System" orderby ns.Key select ns);
-
-	foreach (var gr in groups)
-	{
-		foreach (var ns in from s in gr orderby s select s)
-			WriteUsing(tt, ns);
-
-		tt.WriteLine("");
-	}
-};
-
 Action<GeneratedTextTransformation> BeforeGenerateModel = _ => {};
 Action<GeneratedTextTransformation> AfterGenerateModel  = _ => {};
 
-Action<GeneratedTextTransformation> BeforeWriteTableProperty = _ => {};
-Action<GeneratedTextTransformation> AfterWriteTableProperty  = _ => {};
 
 void GenerateModel()
 {
@@ -306,49 +127,20 @@ void GenerateModel()
 
 	LoadMetadata();
 
-	BeforeGenerateModel(this);
-
-	WriteComment(this, "---------------------------------------------------------------------------------------------------");
-	WriteComment(this, " <auto-generated>");
-	WriteComment(this, "    This code was generated by BLToolkit template for T4.");
-	WriteComment(this, "    Changes to this file may cause incorrect behavior and will be lost if the code is regenerated.");
-	WriteComment(this, " </auto-generated>");
-	WriteComment(this, "---------------------------------------------------------------------------------------------------");
-
-	RenderUsing(this);
-
-	WriteBeginNamespace(this, Namespace);
-	PushIndent("    ");
-
-	WriteBeginClass(this, DataContextName, BaseDataContextClass);
-
+	WriteLine("//---------------------------------------------------------------------------------------------------");
+	WriteLine("// <auto-generated>");
+	WriteLine("//    This code was generated by BLToolkit template for T4.");
+	WriteLine("//    Changes to this file may cause incorrect behavior and will be lost if the code is regenerated.");
+	WriteLine("// </auto-generated>");
+	WriteLine("//---------------------------------------------------------------------------------------------------");
+	WriteLine("/*");
 	var tlist   = (from t in Tables.Values orderby t.TableName select t).ToList();
-	var maxlen  = tlist.Max(_ => _.ClassName.Length);
-	var maxplen = tlist.Max(_ => (_.DataContextPropertyName ?? _.ClassName).Length);
-
-	PushIndent("    ");
-
-	BeforeWriteTableProperty(this);
-
-	foreach (var t in tlist)
-		WriteTableProperty(this, t.ClassName, t.DataContextPropertyName ?? t.ClassName, maxlen, maxplen, t.Description);
-
-	AfterWriteTableProperty(this);
-
-	PopIndent();
-
-	WriteEndClass(this);
-
 	foreach (var t in tlist)
 	{
 		WriteLine("");
-		RenderTable(this, t, RenderForeignKeys);
+		RenderDto(this, t, RenderForeignKeys);
 	}
-
-	PopIndent();
-	WriteEndNamespace(this);
-
-	AfterGenerateModel(this);
+	WriteLine("*/");
 }
 
 string LenDiff(int max, string str)

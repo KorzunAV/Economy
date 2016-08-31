@@ -36,7 +36,6 @@
   <ItemGroup>
     <Compile Include="BaseDto.cs" />
     <Compile Include="CourseArhiveDto.cs" />
-    <Compile Include="BelinvestCourseArhiveDto.cs" />
     <Compile Include="CurrencyTypeDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemUserDto.cs" />

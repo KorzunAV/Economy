@@ -5,7 +5,7 @@ using Economy.Dtos;
 
 namespace Economy.Logic.Commands
 {
-    public class BelinvestCourseArhiveSaveCommand : BaseCommand
+    public class CourseArhiveSaveCommand : BaseCommand
     {
         public static readonly Guid Id = new Guid("61520B67-92D6-4ED5-BECA-D0A61CE94704");
 
@@ -14,6 +14,6 @@ namespace Economy.Logic.Commands
             get { return Id; }
         }
 
-        public List<BelinvestCourseArhiveDto> Dtos { get; set; }
+        public List<CourseArhiveDto> Dtos { get; set; }
     }
 }

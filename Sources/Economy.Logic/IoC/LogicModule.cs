@@ -26,7 +26,7 @@ namespace Economy.Logic.IoC
                 .InSingletonScope();
 
             Bind<BaseBlo>()
-                .To<BelinvestCourseArhiveBlo>()
+                .To<CourseArhiveBlo>()
                 .InSingletonScope();
 
             Bind<BaseBlo>()

@@ -7,14 +7,14 @@ namespace Economy.Models
     [Serializable]
     public class History
     {
-        readonly Dictionary<long, BelinvestCourseArhiveDto> _priceHistories;
+        readonly Dictionary<long, CourseArhiveDto> _priceHistories;
 
         public CurrencyTypeDto MainCurrency { get; }
 
-        public History(List<BelinvestCourseArhiveDto> dtos, CurrencyTypeDto mainCurrency)
+        public History(List<CourseArhiveDto> dtos, CurrencyTypeDto mainCurrency)
         {
             MainCurrency = mainCurrency;
-            _priceHistories = new Dictionary<long, BelinvestCourseArhiveDto>();
+            _priceHistories = new Dictionary<long, CourseArhiveDto>();
             foreach (var dto in dtos)
             {
                 _priceHistories.Add(GetKey(dto.RegDate, dto.CurrencyTypeDto), dto);
@@ -26,19 +26,19 @@ namespace Economy.Models
             return currencyType.Id * 1000000000000 + date.Year * 100000000 + date.Month * 1000000 + date.Day * 10000 + date.Hour * 100 + date.Minute;
         }
 
-        public List<BelinvestCourseArhiveDto> PriceHistories
+        public List<CourseArhiveDto> PriceHistories
         {
             get;
             set;
         }
 
-        public BelinvestCourseArhiveDto GetNearest(DateTime date, CurrencyTypeDto currencyType)
+        public CourseArhiveDto GetNearest(DateTime date, CurrencyTypeDto currencyType)
         {
             var key = GetKey(date, currencyType);
             if (_priceHistories.ContainsKey(key))
                 return _priceHistories[key];
 
-            BelinvestCourseArhiveDto result = null;
+            CourseArhiveDto result = null;
             for (int i = 0; i < _priceHistories.Count; i++)
             {
                 var itm = _priceHistories[i];

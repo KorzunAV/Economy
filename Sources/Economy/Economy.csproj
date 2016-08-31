@@ -220,7 +220,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Data\Sources\History\Courses.txt" />
+    <None Include="Data\Sources\History\Courses.txt" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

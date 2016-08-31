@@ -153,7 +153,7 @@ namespace Economy.ViewModels
 
         private History LoadHistory()
         {
-            var result = CommandQueryDispatcher.ExecuteQuery<List<BelinvestCourseArhiveDto>>(new BelinvestCourseArhiveGetAllQuery());
+            var result = CommandQueryDispatcher.ExecuteQuery<List<CourseArhiveDto>>(new CourseArhiveGetAllQuery());
 
             return new History(result.Data, new CurrencyTypeDto());
         }
