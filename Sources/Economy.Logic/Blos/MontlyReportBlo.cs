@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CQRS.Common;
 using CQRS.Logic;
 using CQRS.Logic.Blos;

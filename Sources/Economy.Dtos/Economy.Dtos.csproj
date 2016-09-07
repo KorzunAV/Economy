@@ -34,6 +34,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BankDto.cs" />
     <Compile Include="BaseDto.cs" />
     <Compile Include="CourseArhiveDto.cs" />
     <Compile Include="CurrencyTypeDto.cs" />

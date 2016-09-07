@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="AutomapperMappings\EntityDtoMappings.cs" />
     <Compile Include="Daos\BaseDao.cs" />
+    <Compile Include="Daos\BankDao.cs" />
     <Compile Include="Daos\BelinvestCourseArhiveDao.cs" />
     <Compile Include="Daos\CurrencyTypeDao.cs" />
     <Compile Include="Daos\MontlyReportDao.cs" />
@@ -87,17 +88,18 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="IoC\DataAccessModule.cs" />
     <Compile Include="IoC\NinjectExtensions.cs" />
-    <Compile Include="Templates\EconomyDbDtoGenerator.generated.cs">
-      <DependentUpon>EconomyDbDtoGenerator.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Templates\EconomyDb.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EconomyDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Templates\EconomyDbDtoGenerator.generated.cs">
+      <DependentUpon>EconomyDbDtoGenerator.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -113,13 +115,13 @@
   <ItemGroup>
     <Content Include="BulkCopyConfig.xml" />
     <Content Include="DataSchema\SQL\Create.sql" />
-    <Content Include="Templates\EconomyDbDtoGenerator.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EconomyDbDtoGenerator.generated.cs</LastGenOutput>
-    </Content>
     <Content Include="Templates\EconomyDb.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EconomyDb.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\EconomyDbDtoGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EconomyDbDtoGenerator.generated.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

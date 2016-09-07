@@ -1,9 +1,6 @@
-﻿
-
-namespace Economy.DataAccess.BlToolkit.Daos
+﻿namespace Economy.DataAccess.BlToolkit.Daos
 {
     public abstract class BaseDao
     {
-       
     }
 }

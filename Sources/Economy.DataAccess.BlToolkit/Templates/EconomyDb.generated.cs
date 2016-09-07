@@ -50,17 +50,17 @@ namespace Economy.DataAccess.BlToolkit.DbManagers
         [MapField("\"RegDate\""), Required]
         public DateTime RegDate { get; set; } // timestamp with time zone
 
-        [MapField("\"Buy\""), Required]
-        public Double Buy { get; set; } // double precision
-
-        [MapField("\"Sel\""), Required]
-        public Double Sel { get; set; } // double precision
-
         [MapField("\"CurrencyTypeBaseId\""), Required]
         public Int32 CurrencyTypeBaseId { get; set; } // integer
 
         [MapField("\"BankId\""), PrimaryKey(6), Required]
         public Int32 BankId { get; set; } // integer
+
+        [MapField("\"Buy\""), Required]
+        public Decimal Buy { get; set; } // money
+
+        [MapField("\"Sel\""), Required]
+        public Decimal Sel { get; set; } // money
 
 
         // fk_coursearhive_currencytype

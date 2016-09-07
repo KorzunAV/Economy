@@ -54,7 +54,7 @@ namespace Economy.Parsers
                 };
 
                 montlyReportByYearMonth.TransactionDtos = group.ToList();
-                montlyReportByYearMonth.EndBalance = montlyReportByYearMonth.TransactionDtos.Sum(i => i.QuantityByAccount.Value);
+                montlyReportByYearMonth.EndBalance = montlyReportByYearMonth.TransactionDtos.Sum(i => i.QuantityByWallet.Value);
             }
 
             CommandQueryDispatcher.ExecuteCommand<bool>(new MontlyReportSaveAllCommand(montlyReportDtos));
@@ -140,7 +140,7 @@ namespace Economy.Parsers
                 }
             }
 
-            var cur = montlyReport.TransactionDtos.Sum(itm => itm.QuantityByAccount);
+            var cur = montlyReport.TransactionDtos.Sum(itm => itm.QuantityByWallet);
             if (cur + montlyReport.StartBalance != sumAll)
             {
                 throw new ArithmeticException("Суммы не сошлись");
@@ -175,8 +175,8 @@ namespace Economy.Parsers
                 Code = cols[index++].Value.Trim(),
                 Description = cols[index++].Value.Trim(),
                 CurrencyType = CurrencyTypeDtos.FirstOrDefault(i => i.ShortName.Equals(cols[index++].Value.Trim())),
-                QuantityByCurrency = StringConverter.StringToDecimal(cols[index++].Value),
-                QuantityByAccount = StringConverter.StringToDecimal(cols[index].Value)
+                QuantityByTransaction = StringConverter.StringToDecimal(cols[index++].Value),
+                QuantityByWallet = StringConverter.StringToDecimal(cols[index].Value)
             };
 
             return item;

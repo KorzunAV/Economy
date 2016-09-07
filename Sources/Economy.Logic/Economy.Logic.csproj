@@ -59,13 +59,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutomapperMappings\DtoMappings.cs" />
+    <Compile Include="Blos\BankBlo.cs" />
     <Compile Include="Blos\MontlyReportBlo.cs" />
     <Compile Include="Blos\SystemUserBlo.cs" />
     <Compile Include="Blos\WalletBlo.cs" />
+    <Compile Include="Commands\BankSaveCommand.cs" />
+    <Compile Include="Queries\BankGetAllQuery.cs" />
     <Compile Include="Queries\MontlyReportGetAllQuery.cs" />
     <Compile Include="Blos\TransactionBlo.cs" />
     <Compile Include="Blos\CurrencyTypeBlo.cs" />
-    <Compile Include="Blos\BelinvestCourseArhiveBlo.cs" />
+    <Compile Include="Blos\CourseArhiveBlo.cs" />
     <Compile Include="Commands\MontlyReportSaveAllCommand.cs" />
     <Compile Include="Commands\TransactionSaveRangeCommand.cs" />
     <Compile Include="Commands\CurrencyTypeSaveCommand.cs" />

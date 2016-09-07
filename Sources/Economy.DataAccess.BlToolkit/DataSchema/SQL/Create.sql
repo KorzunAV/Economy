@@ -4,7 +4,7 @@
 
 -- Dumped from database version 9.3.5
 -- Dumped by pg_dump version 9.3.5
--- Started on 2016-09-01 17:54:39
+-- Started on 2016-09-07 16:45:16
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -81,10 +81,10 @@ ALTER SEQUENCE "Bank_Id_seq" OWNED BY "Bank"."Id";
 CREATE TABLE "CourseArhive" (
     "CurrencyTypeId" integer NOT NULL,
     "RegDate" timestamp with time zone NOT NULL,
-    "Buy" double precision DEFAULT 0 NOT NULL,
-    "Sel" double precision DEFAULT 0 NOT NULL,
     "CurrencyTypeBaseId" integer NOT NULL,
-    "BankId" integer NOT NULL
+    "BankId" integer NOT NULL,
+    "Buy" money DEFAULT 0 NOT NULL,
+    "Sel" money DEFAULT 0 NOT NULL
 );
 
 
@@ -96,7 +96,7 @@ ALTER TABLE public."CourseArhive" OWNER TO postgres;
 -- Name: TABLE "CourseArhive"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON TABLE "CourseArhive" IS 'РєСѓСЂСЃС‹ РїСЂРёРІРµРґРµРЅРёСЏ РІР°Р»СЋС‚ byr-Р±Р°Р·Р° / РєСѓСЂСЃ Р±РµР»РёРІРµСЃС‚Р±Р°РЅРє';
+COMMENT ON TABLE "CourseArhive" IS 'Р С”РЎС“РЎР‚РЎРѓРЎвЂ№ Р С—РЎР‚Р С‘Р Р†Р ВµР Т‘Р ВµР Р…Р С‘РЎРЏ Р Р†Р В°Р В»РЎР‹РЎвЂљ byr-Р В±Р В°Р В·Р В° / Р С”РЎС“РЎР‚РЎРѓ Р В±Р ВµР В»Р С‘Р Р†Р ВµРЎРѓРЎвЂљР В±Р В°Р Р…Р С”';
 
 
 --
@@ -105,7 +105,7 @@ COMMENT ON TABLE "CourseArhive" IS 'РєСѓСЂСЃС‹ РїСЂРёРІРµР
 -- Name: COLUMN "CourseArhive"."CurrencyTypeId"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "CourseArhive"."CurrencyTypeId" IS 'РІР°Р»СЋС‚Р°';
+COMMENT ON COLUMN "CourseArhive"."CurrencyTypeId" IS 'Р Р†Р В°Р В»РЎР‹РЎвЂљР В°';
 
 
 --
@@ -114,43 +114,43 @@ COMMENT ON COLUMN "CourseArhive"."CurrencyTypeId" IS 'РІР°Р»СЋС‚Р°'
 -- Name: COLUMN "CourseArhive"."RegDate"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "CourseArhive"."RegDate" IS 'РґР°С‚Р°';
+COMMENT ON COLUMN "CourseArhive"."RegDate" IS 'Р Т‘Р В°РЎвЂљР В°';
 
 
 --
 -- TOC entry 2001 (class 0 OID 0)
 -- Dependencies: 176
--- Name: COLUMN "CourseArhive"."Buy"; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN "CourseArhive"."CurrencyTypeBaseId"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "CourseArhive"."Buy" IS 'С†РµРЅР° РїРѕРєСѓРїРєРё';
+COMMENT ON COLUMN "CourseArhive"."CurrencyTypeBaseId" IS 'РўРёРї Р±Р°Р·РѕРІРѕР№ РІР°Р»СЋС‚С‹';
 
 
 --
 -- TOC entry 2002 (class 0 OID 0)
 -- Dependencies: 176
--- Name: COLUMN "CourseArhive"."Sel"; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN "CourseArhive"."BankId"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "CourseArhive"."Sel" IS 'С†РµРЅР° РїСЂРѕРґР°Р¶Рё';
+COMMENT ON COLUMN "CourseArhive"."BankId" IS 'РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р±Р°РЅРєР°';
 
 
 --
 -- TOC entry 2003 (class 0 OID 0)
 -- Dependencies: 176
--- Name: COLUMN "CourseArhive"."CurrencyTypeBaseId"; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN "CourseArhive"."Buy"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "CourseArhive"."CurrencyTypeBaseId" IS 'Тип базовой валюты';
+COMMENT ON COLUMN "CourseArhive"."Buy" IS 'РЎвЂ Р ВµР Р…Р В° Р С—Р С•Р С”РЎС“Р С—Р С”Р С‘';
 
 
 --
 -- TOC entry 2004 (class 0 OID 0)
 -- Dependencies: 176
--- Name: COLUMN "CourseArhive"."BankId"; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN "CourseArhive"."Sel"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "CourseArhive"."BankId" IS 'Идентификатор банка';
+COMMENT ON COLUMN "CourseArhive"."Sel" IS 'РЎвЂ Р ВµР Р…Р В° Р С—РЎР‚Р С•Р Т‘Р В°Р В¶Р С‘';
 
 
 --
@@ -173,7 +173,7 @@ ALTER TABLE public."CurrencyType" OWNER TO postgres;
 -- Name: TABLE "CurrencyType"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON TABLE "CurrencyType" IS 'С‚Р°Р±Р»РёС†Р° РЅР°РёРјРµРЅРѕРІР°РЅРёР№ РІР°Р»СЋС‚';
+COMMENT ON TABLE "CurrencyType" IS 'РЎвЂљР В°Р В±Р В»Р С‘РЎвЂ Р В° Р Р…Р В°Р С‘Р СР ВµР Р…Р С•Р Р†Р В°Р Р…Р С‘Р в„– Р Р†Р В°Р В»РЎР‹РЎвЂљ';
 
 
 --
@@ -182,7 +182,7 @@ COMMENT ON TABLE "CurrencyType" IS 'С‚Р°Р±Р»РёС†Р° РЅР°Рё�
 -- Name: COLUMN "CurrencyType"."Id"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "CurrencyType"."Id" IS 'РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ';
+COMMENT ON COLUMN "CurrencyType"."Id" IS 'Р С‘Р Т‘Р ВµР Р…РЎвЂљР С‘РЎвЂћР С‘Р С”Р В°РЎвЂљР С•РЎР‚';
 
 
 --
@@ -191,7 +191,7 @@ COMMENT ON COLUMN "CurrencyType"."Id" IS 'РёРґРµРЅС‚РёС„РёРє
 -- Name: COLUMN "CurrencyType"."Name"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "CurrencyType"."Name" IS 'РЅР°РёРјРµРЅРѕРІР°РЅРёРµ РІР°Р»СЋС‚С‹';
+COMMENT ON COLUMN "CurrencyType"."Name" IS 'Р Р…Р В°Р С‘Р СР ВµР Р…Р С•Р Р†Р В°Р Р…Р С‘Р Вµ Р Р†Р В°Р В»РЎР‹РЎвЂљРЎвЂ№';
 
 
 --
@@ -200,7 +200,7 @@ COMMENT ON COLUMN "CurrencyType"."Name" IS 'РЅР°РёРјРµРЅРѕРІР°
 -- Name: COLUMN "CurrencyType"."ShortName"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "CurrencyType"."ShortName" IS 'С‚СЂРµС…Р±СѓРєРІРµРЅРЅРѕРµ РѕР±РѕР·РЅР°С‡РµРЅРёРµ';
+COMMENT ON COLUMN "CurrencyType"."ShortName" IS 'РЎвЂљРЎР‚Р ВµРЎвЂ¦Р В±РЎС“Р С”Р Р†Р ВµР Р…Р Р…Р С•Р Вµ Р С•Р В±Р С•Р В·Р Р…Р В°РЎвЂЎР ВµР Р…Р С‘Р Вµ';
 
 
 --
@@ -225,7 +225,7 @@ ALTER TABLE public."MontlyReport" OWNER TO postgres;
 -- Name: TABLE "MontlyReport"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON TABLE "MontlyReport" IS 'РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ РѕС‚С‡РµС‚ Р·Р° РјРµСЃСЏС†';
+COMMENT ON TABLE "MontlyReport" IS 'Р С—Р С•Р В»РЎРЉР В·Р С•Р Р†Р В°РЎвЂљР ВµР В»РЎРЉРЎРѓР С”Р С‘Р в„– Р С•РЎвЂљРЎвЂЎР ВµРЎвЂљ Р В·Р В° Р СР ВµРЎРѓРЎРЏРЎвЂ ';
 
 
 --
@@ -234,7 +234,7 @@ COMMENT ON TABLE "MontlyReport" IS 'РїРѕР»СЊР·РѕРІР°С‚РµР�
 -- Name: COLUMN "MontlyReport"."Id"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "MontlyReport"."Id" IS 'РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ';
+COMMENT ON COLUMN "MontlyReport"."Id" IS 'Р С‘Р Т‘Р ВµР Р…РЎвЂљР С‘РЎвЂћР С‘Р С”Р В°РЎвЂљР С•РЎР‚';
 
 
 --
@@ -243,7 +243,7 @@ COMMENT ON COLUMN "MontlyReport"."Id" IS 'РёРґРµРЅС‚РёС„РёРє
 -- Name: COLUMN "MontlyReport"."StartBalance"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "MontlyReport"."StartBalance" IS 'Р±Р°Р»Р°РЅСЃ РЅР° РЅР°С‡Р°Р»Рѕ РјРµСЃСЏС†Р°';
+COMMENT ON COLUMN "MontlyReport"."StartBalance" IS 'Р В±Р В°Р В»Р В°Р Р…РЎРѓ Р Р…Р В° Р Р…Р В°РЎвЂЎР В°Р В»Р С• Р СР ВµРЎРѓРЎРЏРЎвЂ Р В°';
 
 
 --
@@ -252,7 +252,7 @@ COMMENT ON COLUMN "MontlyReport"."StartBalance" IS 'Р±Р°Р»Р°РЅСЃ Р�
 -- Name: COLUMN "MontlyReport"."EndBalance"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "MontlyReport"."EndBalance" IS 'Р±Р°Р»Р°РЅСЃ РЅР° РєРѕРЅРµС† РјРµСЃСЏС†Р°';
+COMMENT ON COLUMN "MontlyReport"."EndBalance" IS 'Р В±Р В°Р В»Р В°Р Р…РЎРѓ Р Р…Р В° Р С”Р С•Р Р…Р ВµРЎвЂ  Р СР ВµРЎРѓРЎРЏРЎвЂ Р В°';
 
 
 --
@@ -261,7 +261,7 @@ COMMENT ON COLUMN "MontlyReport"."EndBalance" IS 'Р±Р°Р»Р°РЅСЃ РЅ�
 -- Name: COLUMN "MontlyReport"."StartDate"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "MontlyReport"."StartDate" IS 'РџРµСЂРёРѕРґ РґРµР№СЃС‚РІРёСЏ (РіРѕРґ РјРµСЃСЏС†)';
+COMMENT ON COLUMN "MontlyReport"."StartDate" IS 'Р СџР ВµРЎР‚Р С‘Р С•Р Т‘ Р Т‘Р ВµР в„–РЎРѓРЎвЂљР Р†Р С‘РЎРЏ (Р С–Р С•Р Т‘ Р СР ВµРЎРѓРЎРЏРЎвЂ )';
 
 
 --
@@ -270,7 +270,7 @@ COMMENT ON COLUMN "MontlyReport"."StartDate" IS 'РџРµСЂРёРѕРґ РґР
 -- Name: COLUMN "MontlyReport"."WalletId"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "MontlyReport"."WalletId" IS 'РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РєРѕС€РµР»СЊРєР°';
+COMMENT ON COLUMN "MontlyReport"."WalletId" IS 'Р ВР Т‘Р ВµР Р…РЎвЂљР С‘РЎвЂћР С‘Р С”Р В°РЎвЂљР С•РЎР‚ Р С”Р С•РЎв‚¬Р ВµР В»РЎРЉР С”Р В°';
 
 
 --
@@ -292,7 +292,7 @@ ALTER TABLE public."SystemUser" OWNER TO postgres;
 -- Name: COLUMN "SystemUser"."Id"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "SystemUser"."Id" IS 'РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ';
+COMMENT ON COLUMN "SystemUser"."Id" IS 'Р С‘Р Т‘Р ВµР Р…РЎвЂљР С‘РЎвЂћР С‘Р С”Р В°РЎвЂљР С•РЎР‚ Р С—Р С•Р В»РЎРЉР В·Р С•Р Р†Р В°РЎвЂљР ВµР В»РЎРЏ';
 
 
 --
@@ -324,7 +324,7 @@ ALTER TABLE public."Transaction" OWNER TO postgres;
 -- Name: COLUMN "Transaction"."Id"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Transaction"."Id" IS 'РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ';
+COMMENT ON COLUMN "Transaction"."Id" IS 'Р С‘Р Т‘Р ВµР Р…РЎвЂљР С‘РЎвЂћР С‘Р С”Р В°РЎвЂљР С•РЎР‚';
 
 
 --
@@ -333,7 +333,7 @@ COMMENT ON COLUMN "Transaction"."Id" IS 'РёРґРµРЅС‚РёС„РёРє�
 -- Name: COLUMN "Transaction"."RegistrationDate"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Transaction"."RegistrationDate" IS 'РґР°С‚Р° СЂРµРіРёСЃС‚СЂР°С†РёРё С‚СЂР°РЅР·Р°РєС†РёРё РІ СЃРёСЃС‚РµРјРµ';
+COMMENT ON COLUMN "Transaction"."RegistrationDate" IS 'Р Т‘Р В°РЎвЂљР В° РЎР‚Р ВµР С–Р С‘РЎРѓРЎвЂљРЎР‚Р В°РЎвЂ Р С‘Р С‘ РЎвЂљРЎР‚Р В°Р Р…Р В·Р В°Р С”РЎвЂ Р С‘Р С‘ Р Р† РЎРѓР С‘РЎРѓРЎвЂљР ВµР СР Вµ';
 
 
 --
@@ -342,7 +342,7 @@ COMMENT ON COLUMN "Transaction"."RegistrationDate" IS 'РґР°С‚Р° СЂР�
 -- Name: COLUMN "Transaction"."TransactionDate"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Transaction"."TransactionDate" IS 'РґР°С‚Р° СЃРѕРІРµСЂС€РµРЅРёСЏ С‚СЂР°РЅР·Р°РєС†РёРё';
+COMMENT ON COLUMN "Transaction"."TransactionDate" IS 'Р Т‘Р В°РЎвЂљР В° РЎРѓР С•Р Р†Р ВµРЎР‚РЎв‚¬Р ВµР Р…Р С‘РЎРЏ РЎвЂљРЎР‚Р В°Р Р…Р В·Р В°Р С”РЎвЂ Р С‘Р С‘';
 
 
 --
@@ -351,7 +351,7 @@ COMMENT ON COLUMN "Transaction"."TransactionDate" IS 'РґР°С‚Р° СЃРѕ
 -- Name: COLUMN "Transaction"."Code"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Transaction"."Code" IS 'РєРѕРґ С‚СЂР°РЅР·Р°РєС†РёРё';
+COMMENT ON COLUMN "Transaction"."Code" IS 'Р С”Р С•Р Т‘ РЎвЂљРЎР‚Р В°Р Р…Р В·Р В°Р С”РЎвЂ Р С‘Р С‘';
 
 
 --
@@ -360,7 +360,7 @@ COMMENT ON COLUMN "Transaction"."Code" IS 'РєРѕРґ С‚СЂР°РЅР·Р�
 -- Name: COLUMN "Transaction"."Description"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Transaction"."Description" IS 'РєРѕРјРјРµРЅС‚Р°СЂРёР№';
+COMMENT ON COLUMN "Transaction"."Description" IS 'Р С”Р С•Р СР СР ВµР Р…РЎвЂљР В°РЎР‚Р С‘Р в„–';
 
 
 --
@@ -369,7 +369,7 @@ COMMENT ON COLUMN "Transaction"."Description" IS 'РєРѕРјРјРµРЅС‚�
 -- Name: COLUMN "Transaction"."CurrencyTypeId"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Transaction"."CurrencyTypeId" IS 'РІР°Р»СЋС‚Р° С‚СЂР°РЅР·Р°РєС†РёРё';
+COMMENT ON COLUMN "Transaction"."CurrencyTypeId" IS 'Р Р†Р В°Р В»РЎР‹РЎвЂљР В° РЎвЂљРЎР‚Р В°Р Р…Р В·Р В°Р С”РЎвЂ Р С‘Р С‘';
 
 
 --
@@ -378,7 +378,7 @@ COMMENT ON COLUMN "Transaction"."CurrencyTypeId" IS 'РІР°Р»СЋС‚Р° �
 -- Name: COLUMN "Transaction"."QuantityByTransaction"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Transaction"."QuantityByTransaction" IS 'СЃСѓРјРјР° РІ РІР°Р»СЋС‚Рµ С‚СЂР°РЅР·Р°РєС†РёРё';
+COMMENT ON COLUMN "Transaction"."QuantityByTransaction" IS 'РЎРѓРЎС“Р СР СР В° Р Р† Р Р†Р В°Р В»РЎР‹РЎвЂљР Вµ РЎвЂљРЎР‚Р В°Р Р…Р В·Р В°Р С”РЎвЂ Р С‘Р С‘';
 
 
 --
@@ -387,7 +387,7 @@ COMMENT ON COLUMN "Transaction"."QuantityByTransaction" IS 'СЃСѓРјРјР°
 -- Name: COLUMN "Transaction"."QuantityByWallet"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Transaction"."QuantityByWallet" IS 'СЃСѓРјРјР° РІ РІР°Р»СЋС‚Рµ СЃС‡РµС‚Р°';
+COMMENT ON COLUMN "Transaction"."QuantityByWallet" IS 'РЎРѓРЎС“Р СР СР В° Р Р† Р Р†Р В°Р В»РЎР‹РЎвЂљР Вµ РЎРѓРЎвЂЎР ВµРЎвЂљР В°';
 
 
 --
@@ -396,7 +396,7 @@ COMMENT ON COLUMN "Transaction"."QuantityByWallet" IS 'СЃСѓРјРјР° РІ
 -- Name: COLUMN "Transaction"."Commission"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Transaction"."Commission" IS 'РєРѕРјРёСЃСЃРёСЏ';
+COMMENT ON COLUMN "Transaction"."Commission" IS 'Р С”Р С•Р СР С‘РЎРѓРЎРѓР С‘РЎРЏ';
 
 
 --
@@ -405,7 +405,7 @@ COMMENT ON COLUMN "Transaction"."Commission" IS 'РєРѕРјРёСЃСЃРёС�
 -- Name: COLUMN "Transaction"."FromWalletId"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Transaction"."FromWalletId" IS 'РїРµСЂРµРІРѕРґ СЃ СЃС‡РµС‚Р°';
+COMMENT ON COLUMN "Transaction"."FromWalletId" IS 'Р С—Р ВµРЎР‚Р ВµР Р†Р С•Р Т‘ РЎРѓ РЎРѓРЎвЂЎР ВµРЎвЂљР В°';
 
 
 --
@@ -414,7 +414,7 @@ COMMENT ON COLUMN "Transaction"."FromWalletId" IS 'РїРµСЂРµРІРѕРґ 
 -- Name: COLUMN "Transaction"."ToWalletId"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Transaction"."ToWalletId" IS 'РїРµСЂРµРІРѕРґ РЅР° СЃС‡РµС‚';
+COMMENT ON COLUMN "Transaction"."ToWalletId" IS 'Р С—Р ВµРЎР‚Р ВµР Р†Р С•Р Т‘ Р Р…Р В° РЎРѓРЎвЂЎР ВµРЎвЂљ';
 
 
 --
@@ -440,7 +440,7 @@ ALTER TABLE public."Wallet" OWNER TO postgres;
 -- Name: TABLE "Wallet"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON TABLE "Wallet" IS 'РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёРµ СЃС‡РµС‚Р°';
+COMMENT ON TABLE "Wallet" IS 'Р С—Р С•Р В»РЎРЉР В·Р С•Р Р†Р В°РЎвЂљР ВµР В»РЎРЉРЎРѓР С”Р С‘Р Вµ РЎРѓРЎвЂЎР ВµРЎвЂљР В°';
 
 
 --
@@ -449,7 +449,7 @@ COMMENT ON TABLE "Wallet" IS 'РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ�
 -- Name: COLUMN "Wallet"."Id"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Wallet"."Id" IS 'РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ';
+COMMENT ON COLUMN "Wallet"."Id" IS 'Р С‘Р Т‘Р ВµР Р…РЎвЂљР С‘РЎвЂћР С‘Р С”Р В°РЎвЂљР С•РЎР‚';
 
 
 --
@@ -458,7 +458,7 @@ COMMENT ON COLUMN "Wallet"."Id" IS 'РёРґРµРЅС‚РёС„РёРєР°С
 -- Name: COLUMN "Wallet"."StartBalance"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Wallet"."StartBalance" IS 'РїРµСЂРІРѕРЅР°С‡Р°Р»СЊРЅС‹Р№ Р±Р°Р»Р°РЅСЃ СЃС‡РµС‚Р°';
+COMMENT ON COLUMN "Wallet"."StartBalance" IS 'Р С—Р ВµРЎР‚Р Р†Р С•Р Р…Р В°РЎвЂЎР В°Р В»РЎРЉР Р…РЎвЂ№Р в„– Р В±Р В°Р В»Р В°Р Р…РЎРѓ РЎРѓРЎвЂЎР ВµРЎвЂљР В°';
 
 
 --
@@ -467,7 +467,7 @@ COMMENT ON COLUMN "Wallet"."StartBalance" IS 'РїРµСЂРІРѕРЅР°С‡�
 -- Name: COLUMN "Wallet"."Balance"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Wallet"."Balance" IS 'РёС‚РѕРіРѕРІРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ СЃС‡РµС‚Р°';
+COMMENT ON COLUMN "Wallet"."Balance" IS 'Р С‘РЎвЂљР С•Р С–Р С•Р Р†Р С•Р Вµ РЎРѓР С•РЎРѓРЎвЂљР С•РЎРЏР Р…Р С‘Р Вµ РЎРѓРЎвЂЎР ВµРЎвЂљР В°';
 
 
 --
@@ -476,7 +476,7 @@ COMMENT ON COLUMN "Wallet"."Balance" IS 'РёС‚РѕРіРѕРІРѕРµ СЃ�
 -- Name: COLUMN "Wallet"."SystemUserId"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Wallet"."SystemUserId" IS 'РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ';
+COMMENT ON COLUMN "Wallet"."SystemUserId" IS 'Р С—Р С•Р В»РЎРЉР В·Р С•Р Р†Р В°РЎвЂљР ВµР В»РЎРЉ';
 
 
 --
@@ -485,7 +485,7 @@ COMMENT ON COLUMN "Wallet"."SystemUserId" IS 'РїРѕР»СЊР·РѕРІР°С
 -- Name: COLUMN "Wallet"."CurrencyTypeId"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Wallet"."CurrencyTypeId" IS 'РІР°Р»СЋС‚Р° РєРѕС€РµР»СЊРєР°';
+COMMENT ON COLUMN "Wallet"."CurrencyTypeId" IS 'Р Р†Р В°Р В»РЎР‹РЎвЂљР В° Р С”Р С•РЎв‚¬Р ВµР В»РЎРЉР С”Р В°';
 
 
 --
@@ -693,7 +693,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2016-09-01 17:54:40
+-- Completed on 2016-09-07 16:45:17
 
 --
 -- PostgreSQL database dump complete

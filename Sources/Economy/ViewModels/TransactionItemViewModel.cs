@@ -179,8 +179,8 @@ namespace Economy.ViewModels
             _code = dto.Code;
             _description = dto.Description;
             _currencyType = dto.CurrencyType;
-            _quantityByCurrency = dto.QuantityByCurrency;
-            _quantityByAccount = dto.QuantityByAccount;
+            _quantityByCurrency = dto.QuantityByTransaction;
+            _quantityByAccount = dto.QuantityByWallet;
             Account = account;
         }
 

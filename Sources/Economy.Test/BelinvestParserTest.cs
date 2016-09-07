@@ -36,7 +36,7 @@ namespace Economy.Test
                 {
                     if (balans == item.PrevBalance)
                     {
-                        balans += item.TransactionDtos.Sum(i => i.QuantityByAccount.Value);
+                        balans += item.TransactionDtos.Sum(i => i.QuantityByWallet.Value);
                     }
                     else
                     {
