@@ -208,7 +208,7 @@ namespace Economy.ViewModels
                     startDate = item.StartDate;
                     endDate = item.EndDate;
                     createdDateTime = item.CreatedDateTime;
-                    balans = item.PrevBalance + item.TransactionDtos.Sum(i => i.QuantityByAccount.Value);
+                    balans = item.PrevBalance + item.TransactionDtos.Sum(i => i.QuantityByWallet.Value);
                 }
                 var accountViewModel = accountViewModels.SingleOrDefault(i => i.AccountNumber == itemList.Key);
                 if (accountViewModel == null)

@@ -53,11 +53,64 @@ bool   IsMetadataLoaded;
 int MaxColumnTypeLen;
 int MaxColumnMemberLen;
 
+
+static Action<GeneratedTextTransformation,Column, String> RenderDtoPropertyName = (tt,c,d) =>
+{
+	tt.WriteLine("public static readonly string Prop{0} = TypeHelper<{1}>.PropertyName(x => x.{0});", c.MemberName, d);
+};
+
+
+static string ConvertTypes(string bdType)
+{
+	switch (bdType)
+    {
+        case "String":
+        {
+			return "string";
+        }
+		case "Decimal":
+        {
+			return "decimal";
+        }
+		case "Decimal?":
+        {
+			return "decimal?";
+        }
+		case "Double":
+        {
+			return "double";
+        }
+		case "Double?":
+        {
+			return "double?";
+        }
+		case "Int32":
+        {
+			return "int";
+        }
+		case "Int32?":
+        {
+			return "int?";
+        }
+		case "Int64":
+        {
+			return "long";
+        }
+		case "Int64?":
+        {
+			return "long?";
+        }
+    }
+	return bdType;
+}
+
 static Action<GeneratedTextTransformation,Column> RenderDtoProperty = (tt,c) =>
 {
 	WriteSummary(tt,c.Description);
 	
-	tt.Write("public {0} {1}", c.Type, c.MemberName);
+	var type = ConvertTypes(c.Type);
+	
+	tt.Write("public {0} {1}", type, c.MemberName);
 
 	if (tt.RenderField)
 	{
@@ -80,10 +133,27 @@ static Action<GeneratedTextTransformation,Table, bool> RenderDto = (tt,t, render
 		tt.WriteLine("// View");
 	}
 
-	tt.Write("internal partial class {0}BaseDto : BaseDto", t.ClassName);
+	tt.Write("public partial class {0}Dto : BaseDto", t.ClassName);
 	tt.WriteLine("{");
 	
 	tt.PushIndent("    ");
+
+	tt.WriteLine("#region [ Property names ]");
+	tt.WriteLine("");
+	if (t.Columns.Count > 0)
+	{
+		tt.MaxColumnTypeLen   = t.Columns.Values.Max(_ => _.Type.Length);
+		tt.MaxColumnMemberLen = t.Columns.Values.Max(_ => _.MemberName.Length);
+
+		foreach (var c in from c in t.Columns.Values orderby c.ID select c)
+		{	
+			RenderDtoPropertyName(tt, c, t.ClassName+"Dto");
+		}
+	}
+	tt.WriteLine("");
+	tt.Write("#endregion [ Property names ]");
+	tt.WriteLine("");
+	tt.WriteLine("");
 
 	if (t.Columns.Count > 0)
 	{
@@ -134,12 +204,21 @@ void GenerateModel()
 	WriteLine("// </auto-generated>");
 	WriteLine("//---------------------------------------------------------------------------------------------------");
 	WriteLine("/*");
+
+	WriteLine("using System;");
+	WriteLine("using CQRS.Common;");
+	WriteLine("namespace Economy.Dtos");
+	WriteLine("{");
+	WriteLine("");
+	WriteLine("public class BaseDto { }");
+	WriteLine("");
 	var tlist   = (from t in Tables.Values orderby t.TableName select t).ToList();
 	foreach (var t in tlist)
 	{
 		WriteLine("");
 		RenderDto(this, t, RenderForeignKeys);
 	}
+	WriteLine("}");
 	WriteLine("*/");
 }
 

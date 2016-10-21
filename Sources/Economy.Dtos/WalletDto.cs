@@ -2,34 +2,8 @@
 
 namespace Economy.Dtos
 {
-    public class WalletDto : BaseDto
+    public partial class WalletDto
     {
-        private Guid _id = Guid.Empty;
-
-        /// <summary>
-        /// Идентификатор
-        /// </summary>
-        public Guid Id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
-
-        /// <summary>
-        /// Дата регистрации
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// первоначальный баланс счета
-        /// </summary>
-        public decimal StartBalance { get; set; }
-
-        /// <summary>
-        /// итоговое состояние счета
-        /// </summary>
-        public decimal Balance { get; set; }
-
         /// <summary>
         /// пользователь
         /// </summary>

@@ -5,44 +5,87 @@
 // </auto-generated>
 //---------------------------------------------------------------------------------------------------
 /*
+using System;
+using CQRS.Common;
+namespace Economy.Dtos
+{
 
-internal partial class BankBaseDto : BaseDto{
-    public Int32 Id { get; set; }
+public class BaseDto { }
 
-    public String Name { get; set; }
+
+public partial class BankDto : BaseDto{
+    #region [ Property names ]
+
+    public static readonly string PropId = TypeHelper<BankDto>.PropertyName(x => x.Id);
+    public static readonly string PropName = TypeHelper<BankDto>.PropertyName(x => x.Name);
+
+    #endregion [ Property names ]
+
+    public int Id { get; set; }
+
+    public string Name { get; set; }
 
 }
 
-internal partial class CourseArhiveBaseDto : BaseDto{
-    public Int32 CurrencyTypeId { get; set; }
+public partial class CourseArhiveDto : BaseDto{
+    #region [ Property names ]
+
+    public static readonly string PropCurrencyTypeId = TypeHelper<CourseArhiveDto>.PropertyName(x => x.CurrencyTypeId);
+    public static readonly string PropRegDate = TypeHelper<CourseArhiveDto>.PropertyName(x => x.RegDate);
+    public static readonly string PropCurrencyTypeBaseId = TypeHelper<CourseArhiveDto>.PropertyName(x => x.CurrencyTypeBaseId);
+    public static readonly string PropBankId = TypeHelper<CourseArhiveDto>.PropertyName(x => x.BankId);
+    public static readonly string PropBuy = TypeHelper<CourseArhiveDto>.PropertyName(x => x.Buy);
+    public static readonly string PropSel = TypeHelper<CourseArhiveDto>.PropertyName(x => x.Sel);
+
+    #endregion [ Property names ]
+
+    public int CurrencyTypeId { get; set; }
 
     public DateTime RegDate { get; set; }
 
-    public Double Buy { get; set; }
+    public int CurrencyTypeBaseId { get; set; }
 
-    public Double Sel { get; set; }
+    public int BankId { get; set; }
 
-    public Int32 CurrencyTypeBaseId { get; set; }
+    public decimal Buy { get; set; }
 
-    public Int32 BankId { get; set; }
-
-}
-
-internal partial class CurrencyTypeBaseDto : BaseDto{
-    public Int32 Id { get; set; }
-
-    public String Name { get; set; }
-
-    public String ShortName { get; set; }
+    public decimal Sel { get; set; }
 
 }
 
-internal partial class MontlyReportBaseDto : BaseDto{
+public partial class CurrencyTypeDto : BaseDto{
+    #region [ Property names ]
+
+    public static readonly string PropId = TypeHelper<CurrencyTypeDto>.PropertyName(x => x.Id);
+    public static readonly string PropName = TypeHelper<CurrencyTypeDto>.PropertyName(x => x.Name);
+    public static readonly string PropShortName = TypeHelper<CurrencyTypeDto>.PropertyName(x => x.ShortName);
+
+    #endregion [ Property names ]
+
+    public int Id { get; set; }
+
+    public string Name { get; set; }
+
+    public string ShortName { get; set; }
+
+}
+
+public partial class MontlyReportDto : BaseDto{
+    #region [ Property names ]
+
+    public static readonly string PropId = TypeHelper<MontlyReportDto>.PropertyName(x => x.Id);
+    public static readonly string PropStartBalance = TypeHelper<MontlyReportDto>.PropertyName(x => x.StartBalance);
+    public static readonly string PropEndBalance = TypeHelper<MontlyReportDto>.PropertyName(x => x.EndBalance);
+    public static readonly string PropStartDate = TypeHelper<MontlyReportDto>.PropertyName(x => x.StartDate);
+    public static readonly string PropWalletId = TypeHelper<MontlyReportDto>.PropertyName(x => x.WalletId);
+
+    #endregion [ Property names ]
+
     public Guid Id { get; set; }
 
-    public Decimal? StartBalance { get; set; }
+    public decimal? StartBalance { get; set; }
 
-    public Decimal? EndBalance { get; set; }
+    public decimal? EndBalance { get; set; }
 
     public DateTime StartDate { get; set; }
 
@@ -50,31 +93,55 @@ internal partial class MontlyReportBaseDto : BaseDto{
 
 }
 
-internal partial class SystemUserBaseDto : BaseDto{
+public partial class SystemUserDto : BaseDto{
+    #region [ Property names ]
+
+    public static readonly string PropId = TypeHelper<SystemUserDto>.PropertyName(x => x.Id);
+    public static readonly string PropName = TypeHelper<SystemUserDto>.PropertyName(x => x.Name);
+
+    #endregion [ Property names ]
+
     public Guid Id { get; set; }
 
-    public String Name { get; set; }
+    public string Name { get; set; }
 
 }
 
-internal partial class TransactionBaseDto : BaseDto{
+public partial class TransactionDto : BaseDto{
+    #region [ Property names ]
+
+    public static readonly string PropId = TypeHelper<TransactionDto>.PropertyName(x => x.Id);
+    public static readonly string PropRegistrationDate = TypeHelper<TransactionDto>.PropertyName(x => x.RegistrationDate);
+    public static readonly string PropTransactionDate = TypeHelper<TransactionDto>.PropertyName(x => x.TransactionDate);
+    public static readonly string PropCode = TypeHelper<TransactionDto>.PropertyName(x => x.Code);
+    public static readonly string PropDescription = TypeHelper<TransactionDto>.PropertyName(x => x.Description);
+    public static readonly string PropCurrencyTypeId = TypeHelper<TransactionDto>.PropertyName(x => x.CurrencyTypeId);
+    public static readonly string PropQuantityByTransaction = TypeHelper<TransactionDto>.PropertyName(x => x.QuantityByTransaction);
+    public static readonly string PropQuantityByWallet = TypeHelper<TransactionDto>.PropertyName(x => x.QuantityByWallet);
+    public static readonly string PropCommission = TypeHelper<TransactionDto>.PropertyName(x => x.Commission);
+    public static readonly string PropFromWalletId = TypeHelper<TransactionDto>.PropertyName(x => x.FromWalletId);
+    public static readonly string PropToWalletId = TypeHelper<TransactionDto>.PropertyName(x => x.ToWalletId);
+    public static readonly string PropMontlyReportId = TypeHelper<TransactionDto>.PropertyName(x => x.MontlyReportId);
+
+    #endregion [ Property names ]
+
     public Guid Id { get; set; }
 
     public DateTime RegistrationDate { get; set; }
 
     public DateTime? TransactionDate { get; set; }
 
-    public String Code { get; set; }
+    public string Code { get; set; }
 
-    public String Description { get; set; }
+    public string Description { get; set; }
 
-    public Int32 CurrencyTypeId { get; set; }
+    public int CurrencyTypeId { get; set; }
 
-    public Decimal QuantityByTransaction { get; set; }
+    public decimal QuantityByTransaction { get; set; }
 
-    public Decimal? QuantityByWallet { get; set; }
+    public decimal? QuantityByWallet { get; set; }
 
-    public Decimal? Commission { get; set; }
+    public decimal? Commission { get; set; }
 
     public Guid? FromWalletId { get; set; }
 
@@ -84,18 +151,30 @@ internal partial class TransactionBaseDto : BaseDto{
 
 }
 
-internal partial class WalletBaseDto : BaseDto{
+public partial class WalletDto : BaseDto{
+    #region [ Property names ]
+
+    public static readonly string PropId = TypeHelper<WalletDto>.PropertyName(x => x.Id);
+    public static readonly string PropName = TypeHelper<WalletDto>.PropertyName(x => x.Name);
+    public static readonly string PropStartBalance = TypeHelper<WalletDto>.PropertyName(x => x.StartBalance);
+    public static readonly string PropBalance = TypeHelper<WalletDto>.PropertyName(x => x.Balance);
+    public static readonly string PropSystemUserId = TypeHelper<WalletDto>.PropertyName(x => x.SystemUserId);
+    public static readonly string PropCurrencyTypeId = TypeHelper<WalletDto>.PropertyName(x => x.CurrencyTypeId);
+
+    #endregion [ Property names ]
+
     public Guid Id { get; set; }
 
-    public String Name { get; set; }
+    public string Name { get; set; }
 
-    public Decimal? StartBalance { get; set; }
+    public decimal? StartBalance { get; set; }
 
-    public Decimal? Balance { get; set; }
+    public decimal? Balance { get; set; }
 
     public Guid? SystemUserId { get; set; }
 
-    public Int32 CurrencyTypeId { get; set; }
+    public int CurrencyTypeId { get; set; }
 
+}
 }
 */

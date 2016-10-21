@@ -19,10 +19,9 @@ namespace Economy.Logic.IoC
               .ToSelf()
               .InSingletonScope()
               .InstantlyCreate();
-
-
+            
             Bind<BaseBlo>()
-                .To<CurrencyTypeBlo>()
+                .To<BankBlo>()
                 .InSingletonScope();
 
             Bind<BaseBlo>()
@@ -30,7 +29,23 @@ namespace Economy.Logic.IoC
                 .InSingletonScope();
 
             Bind<BaseBlo>()
+                .To<CurrencyTypeBlo>()
+                .InSingletonScope();
+            
+            Bind<BaseBlo>()
+               .To<MontlyReportBlo>()
+               .InSingletonScope();
+
+            Bind<BaseBlo>()
+               .To<SystemUserBlo>()
+               .InSingletonScope();
+
+            Bind<BaseBlo>()
                .To<TransactionBlo>()
+               .InSingletonScope();
+
+            Bind<BaseBlo>()
+               .To<WalletBlo>()
                .InSingletonScope();
 
             Bind<ICommandQueryDispatcher, ICommandQueryRegistrator>()
