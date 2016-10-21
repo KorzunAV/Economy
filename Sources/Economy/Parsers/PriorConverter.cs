@@ -37,7 +37,8 @@ namespace Economy.Parsers
             montlyReport.ImmutableBalance = StringConverter.StringToDecimal(lines[i++]);
             montlyReport.AccountNumber = lines[i++];
             montlyReport.MinBalance = StringConverter.StringToDecimal(lines[i++]);
-            montlyReport.AccountCurrency = CurrencyTypeDtos.FirstOrDefault(itm => itm.ShortName.Equals(lines[i++]));
+            montlyReport.AccountCurrency = CurrencyTypeDtos.FirstOrDefault(itm => itm.ShortName.Equals(lines[i]));
+            i++;
             montlyReport.AvailibleCredit = StringConverter.StringToDecimal(lines[i++]);
             montlyReport.PrevBalance = StringConverter.StringToDecimal(lines[i++]);
 
@@ -63,15 +64,14 @@ namespace Economy.Parsers
         {
             var items = line.Split('\t');
             int i = 0;
-            var rez = new TransactionDto
-            {
-                TransactionDate = StringConverter.StringToDateTime(items[i++]),
-                Description = items[i++].Trim(),
-                QuantityByCurrency = StringConverter.StringToDecimal(items[i++]),
-                CurrencyType = CurrencyTypeDtos.FirstOrDefault(itm => itm.ShortName.Equals(items[i++].Trim())),
-                RegistrationDate = StringConverter.StringToDateTime(items[i++]),
-                QuantityByAccount = StringConverter.StringToDecimal(items[i])
-            };
+            var rez = new TransactionDto();
+            rez.TransactionDate = StringConverter.StringToDateTime(items[i++]);
+            rez.Description = items[i++].Trim();
+            rez.QuantityByCurrency = StringConverter.StringToDecimal(items[i++]);
+            rez.CurrencyType = CurrencyTypeDtos.FirstOrDefault(itm => itm.ShortName.Equals(items[i].Trim()));
+            i++;
+            rez.RegistrationDate = StringConverter.StringToDateTime(items[i++]);
+            rez.QuantityByAccount = StringConverter.StringToDecimal(items[i]);
             return rez;
         }
 

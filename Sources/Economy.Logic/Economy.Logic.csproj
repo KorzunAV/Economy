@@ -62,14 +62,15 @@
     <Compile Include="Blos\MontlyReportBlo.cs" />
     <Compile Include="Blos\SystemUserBlo.cs" />
     <Compile Include="Blos\WalletBlo.cs" />
+    <Compile Include="IoC\LogicTestModule.cs" />
     <Compile Include="Queries\MontlyReportGetAllQuery.cs" />
     <Compile Include="Blos\TransactionBlo.cs" />
     <Compile Include="Blos\CurrencyTypeBlo.cs" />
-    <Compile Include="Blos\BelinvestCourseArhiveBlo.cs" />
+    <Compile Include="Blos\CourseArhiveBlo.cs" />
     <Compile Include="Commands\MontlyReportSaveAllCommand.cs" />
     <Compile Include="Commands\TransactionSaveRangeCommand.cs" />
     <Compile Include="Commands\CurrencyTypeSaveCommand.cs" />
-    <Compile Include="Commands\BelinvestCourseArhiveSaveCommand.cs" />
+    <Compile Include="Commands\CourseArhiveSaveCommand.cs" />
     <Compile Include="IoC\LogicModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\BelinvestCourseArhiveGetLastQuery.cs" />

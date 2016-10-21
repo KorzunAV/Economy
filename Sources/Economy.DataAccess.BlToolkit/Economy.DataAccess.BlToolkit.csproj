@@ -74,9 +74,10 @@
   <ItemGroup>
     <Compile Include="AutomapperMappings\EntityDtoMappings.cs" />
     <Compile Include="Daos\BaseDao.cs" />
-    <Compile Include="Daos\BelinvestCourseArhiveDao.cs" />
+    <Compile Include="Daos\CourseArhiveDao.cs" />
     <Compile Include="Daos\CurrencyTypeDao.cs" />
     <Compile Include="Daos\MontlyReportDao.cs" />
+    <Compile Include="Daos\QueryBuilderHelper.cs" />
     <Compile Include="Daos\SystemUserDao.cs" />
     <Compile Include="Daos\TransactionDao.cs" />
     <Compile Include="Daos\WalletDao.cs" />

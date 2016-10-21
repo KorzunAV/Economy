@@ -79,13 +79,13 @@ namespace Economy.DataAccess.BlToolkit.DbManagers
     [TableName(Database = "economy", Owner = "public", Name = "\"CurrencyType\"")]
     internal partial class CurrencyTypeEntity : BaseEntity
     {
-        [MapField("\"Id\""), Identity, PrimaryKey(1), Required]
+        [MapField("\"Id\""), Identity, PrimaryKey(1)]
         public Int32 Id { get; set; } // integer
 
-        [MapField("\"Name\""), Required]
+        [MapField("\"Name\"")]
         public String Name { get; set; } // character varying
 
-        [MapField("\"ShortName\""), Required]
+        [MapField("\"ShortName\"")]
         public String ShortName { get; set; } // character varying(3)(3)
 
     }

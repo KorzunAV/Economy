@@ -244,15 +244,19 @@ namespace Economy.ViewModels
 
                 foreach (var filePath in paths)
                 {
-                    index++;
-                    var fpwe = Path.GetFileNameWithoutExtension(filePath) ?? string.Empty;
-                    if (!convertedPaths.Any(f => fpwe.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.CurrentCultureIgnoreCase)) || parserKey == ConvertersModule.HistoryConverter)
+                    if (Path.GetExtension(filePath) == ".txt")
                     {
-                        var outpath = Path.Combine(dirPathOut, Path.GetFileNameWithoutExtension(filePath) + ".xml");
-                        parser.ConvertAndSave(filePath, outpath);
+                        index++;
+                        var fpwe = Path.GetFileNameWithoutExtension(filePath) ?? string.Empty;
+                        if (!convertedPaths.Any(f => fpwe.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.CurrentCultureIgnoreCase)) ||
+                            parserKey == ConvertersModule.HistoryConverter)
+                        {
+                            var outpath = Path.Combine(dirPathOut, Path.GetFileNameWithoutExtension(filePath) + ".xml");
+                            parser.ConvertAndSave(filePath, outpath);
+                        }
+                        if (callback != null)
+                            callback(fpwe, paths.Length, index);
                     }
-                    if (callback != null)
-                        callback(fpwe, paths.Length, index);
                 }
             }
             catch (Exception exception)

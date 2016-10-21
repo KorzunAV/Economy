@@ -8,13 +8,11 @@ using CommonLibs.Serialization;
 
 namespace Economy.Test
 {
-    [TestFixture]
     public class BelinvestParserTest
     {
         const string DirPath = @"..\..\..\Economy\Data\Mails\";
         const string DirPathOut = @"..\..\..\Economy\Data\Converted\";
-
-        [Test]
+        
         public void ReadTest()
         {
             var convertedPaths = Directory.GetFiles(DirPathOut);

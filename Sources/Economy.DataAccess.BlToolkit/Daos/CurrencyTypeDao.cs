@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using BLToolkit.Data.Linq;
 using CQRS.Common;
 using Economy.DataAccess.BlToolkit.DbManagers;
 using Economy.Dtos;
@@ -13,10 +12,7 @@ namespace Economy.DataAccess.BlToolkit.Daos
         #region Commands
         public int Save(CurrencyTypeDto dto, IBaseSessionManager manager)
         {
-            var db = (EconomyDb)manager;
-            var entiy = Mapper.Map<CurrencyTypeDto, CurrencyTypeEntity>(dto);
-            var entityId = (int)db.CurrencyTypeTable.InsertWithIdentity(() => entiy);
-            return entityId;
+            return Insert<CurrencyTypeEntity, CurrencyTypeDto>((EconomyDb)manager, dto);
         }
         #endregion
 

@@ -31,8 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -45,6 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BelinvestParserTest.cs" />
+    <Compile Include="LogicTests\CurrencyTypeTest.cs" />
+    <Compile Include="LogicTests\TestFixtureBase.cs" />
+    <Compile Include="LogicTests\CourseArhive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -52,9 +59,21 @@
       <Project>{64115506-8242-4ac7-8cee-5ef3a5f5aa94}</Project>
       <Name>CommonLibs.Serialization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\CQRS\Sources\CQRS\CQRS.Logic\CQRS.Logic.csproj">
+      <Project>{9CEF3F17-2101-4A7E-9EB4-0315674BE22A}</Project>
+      <Name>CQRS.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Economy.DataAccess.BlToolkit\Economy.DataAccess.BlToolkit.csproj">
+      <Project>{2387ad02-99a3-4822-9691-505991db451d}</Project>
+      <Name>Economy.DataAccess.BlToolkit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Economy.Dtos\Economy.Dtos.csproj">
       <Project>{3ab5334c-2a84-42a6-89e3-dbe03906193e}</Project>
       <Name>Economy.Dtos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Economy.Logic\Economy.Logic.csproj">
+      <Project>{35E99CF0-2689-48CD-8CB1-6DC7A5ED6030}</Project>
+      <Name>Economy.Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Economy\Economy.csproj">
       <Project>{fb0c0289-a5ff-4e3c-8f2b-1a8eff03b07d}</Project>
@@ -65,9 +84,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataAccess\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
