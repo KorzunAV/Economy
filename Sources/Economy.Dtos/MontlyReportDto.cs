@@ -1,38 +1,49 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using CQRS.Common;
+using CQRS.Dtos;
 
 namespace Economy.Dtos
 {
-    /// <summary>
-    /// Месячный отчет
-    /// </summary>
-    public partial class MontlyReportDto
+    public class MontlyReportDto : BaseDto
     {
-        private List<TransactionDto> _transactionDtos = new List<TransactionDto>();
-        private WalletDto _walletDto = new WalletDto();
-        
+        /// <summary>
+        ///идентификатор
+        /// </summary>
+        public virtual Guid Id { get; set; }
 
         /// <summary>
-        /// Кошелек
+        ///баланс на начало месяца
         /// </summary>
-        public WalletDto WalletDto
-        {
-            get { return _walletDto; }
-            set { _walletDto = value; }
-        }
+        public virtual decimal StartBalance { get; set; }
 
         /// <summary>
-        /// Список транзакций за период
+        ///баланс на конец месяца
         /// </summary>
-        public List<TransactionDto> TransactionDtos
-        {
-            get { return _transactionDtos; }
-            set { _transactionDtos = value; }
-        }
+        public virtual decimal EndBalance { get; set; }
 
-        public bool IsNew
-        {
-            get { return Id == Guid.Empty || WalletDto.IsNew; }
-        }
+        /// <summary>
+        ///Период действия (год месяц)
+        /// </summary>
+        public virtual DateTime StartDate { get; set; }
+
+        /// <summary>
+        ///Идентификатор кошелька
+        /// </summary>
+        public virtual Guid WalletId { get; set; }
+
+        public virtual WalletDto Wallet { get; set; }
+
+        /// <summary>
+        ///Версия для оптимистической блокировки
+        /// </summary>
+        public virtual int Version { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual List<TransactionDto> Transactions { get; set; }
+
+    
     }
 }

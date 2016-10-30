@@ -1,26 +1,48 @@
-﻿using CQRS.Common;
+using System;
+using System.Collections.Generic;
+using CQRS.Common;
+using CQRS.Dtos;
 
 namespace Economy.Dtos
 {
-    public partial class CourseArhiveDto
+    public class CourseArhiveDto : BaseDto
     {
-        #region [ Property names ]
-        
-        public static readonly string PropCurrency = TypeHelper<CourseArhiveDto>.PropertyName(x => x.CurrencyTypeDto);
+        /// <summary>
+        ///валюта
+        /// </summary>
+        public virtual int CurrencyTypeId { get; set; }
 
-        #endregion
-   
+        public virtual CurrencyTypeDto CurrencyType { get; set; }
 
         /// <summary>
-        /// Валюта
+        ///дата
         /// </summary>
-        public CurrencyTypeDto CurrencyTypeDto { get; set; }
+        public virtual DateTime RegDate { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual int CurrencyTypeBaseId { get; set; }
 
-        
-        public bool Equals(CourseArhiveDto obj)
-        {
-            return RegDate == obj.RegDate && CurrencyTypeDto.Id == obj.CurrencyTypeDto.Id;
-        }
+        public virtual CurrencyTypeDto CurrencyTypeBase { get; set; }
+
+        /// <summary>
+        ///Банк
+        /// </summary>
+        public virtual int BankId { get; set; }
+
+        public virtual BankDto Bank { get; set; }
+
+        /// <summary>
+        ///цена покупки
+        /// </summary>
+        public virtual decimal Buy { get; set; }
+
+        /// <summary>
+        ///цена продажи
+        /// </summary>
+        public virtual decimal Sel { get; set; }
+
+    
     }
 }

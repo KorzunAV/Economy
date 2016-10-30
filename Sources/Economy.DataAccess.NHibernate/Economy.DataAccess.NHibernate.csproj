@@ -33,8 +33,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FluentNHibernate, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -59,10 +67,6 @@
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.3.5\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Npgsql, Version=3.1.4.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.3.1.4\lib\net451\Npgsql.dll</HintPath>
       <Private>True</Private>
@@ -74,27 +78,40 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutomapperMappings\EntityDtoMappings.cs" />
+    <Compile Include="Daos\BankDao.cs" />
     <Compile Include="Daos\BaseDao.cs" />
-    <Compile Include="Daos\BelinvestCourseArhiveDao.cs" />
-    <Compile Include="Daos\BelinvestCourseArhiveDao.Command.cs">
-      <DependentUpon>BelinvestCourseArhiveDao.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Daos\BelinvestCourseArhiveDao.Query.cs">
-      <DependentUpon>BelinvestCourseArhiveDao.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\BelinvestCourseArhiveEntity.cs" />
-    <Compile Include="Entities\CurrencyEntity.cs" />
+    <Compile Include="Daos\CourseArhiveDao.cs" />
+    <Compile Include="Daos\CurrencyTypeDao.cs" />
+    <Compile Include="Daos\MontlyReportDao.cs" />
+    <Compile Include="Daos\SystemUserDao.cs" />
+    <Compile Include="Daos\TransactionDao.cs" />
+    <Compile Include="Daos\WalletDao.cs" />
+    <Compile Include="Entities\BankEntity.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\CourseArhiveEntity.cs" />
+    <Compile Include="Entities\CurrencyTypeEntity.cs" />
+    <Compile Include="Entities\MontlyReportEntity.cs" />
+    <Compile Include="Entities\SystemUserEntity.cs" />
+    <Compile Include="Entities\TransactionEntity.cs" />
+    <Compile Include="Entities\WalletEntity.cs" />
     <Compile Include="IoC\DataAccessModule.cs" />
     <Compile Include="NHibernate\AdoNet\PostgresClientBatchingBatcher.cs" />
     <Compile Include="NHibernate\AdoNet\PostgresClientBatchingBatcherFactory.cs" />
     <Compile Include="NHibernate\ConcurrencyException.cs" />
     <Compile Include="NHibernate\FlushEntityEventListener.cs" />
+    <Compile Include="NHibernate\ISessionManager.cs" />
     <Compile Include="NHibernate\ISessionStorage.cs" />
     <Compile Include="NHibernate\NHibernateSessionStorage.cs" />
     <Compile Include="NHibernate\SessionManager.cs" />
     <Compile Include="NHibernate\ValidateFieldsEventListener.cs" />
-    <Compile Include="NHMappings\ClassMapBase.cs" />
+    <Compile Include="NHMappings\BankMapping.cs" />
+    <Compile Include="NHMappings\BaseMapping.cs" />
+    <Compile Include="NHMappings\CourseArhiveMapping.cs" />
+    <Compile Include="NHMappings\CurrencyTypeMapping.cs" />
+    <Compile Include="NHMappings\MontlyReportMapping.cs" />
+    <Compile Include="NHMappings\SystemUserMapping.cs" />
+    <Compile Include="NHMappings\TransactionMapping.cs" />
+    <Compile Include="NHMappings\WalletMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -103,7 +120,11 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="DataSchema\Create.sql" />
+    <Content Include="DataSchema\Sql\Indexes\ReadMe.txt" />
+    <Content Include="DataSchema\Sql\Procedures\ReadMe.txt" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CQRS\Sources\CQRS\CQRS.Common\CQRS.Common.csproj">
       <Project>{03a0ec23-3dfb-450e-a5ca-cd0e400babdd}</Project>
@@ -117,6 +138,9 @@
       <Project>{da3e478a-466f-45b5-aef2-ab151ff7c2b0}</Project>
       <Name>Economy.Dtos</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataSchema\Updates\Sql\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

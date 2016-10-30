@@ -3,11 +3,12 @@ using System.Linq;
 using AutoMapper;
 using CQRS.Common;
 using Economy.DataAccess.BlToolkit.DbManagers;
+using Economy.DataAccess.BlToolkit.Entities;
 using Economy.Dtos;
 
 namespace Economy.DataAccess.BlToolkit.Daos
 {
-    public partial class CurrencyTypeDao : BaseDao
+    public class CurrencyTypeDao : BaseDao
     {
         #region Commands
         public int Save(CurrencyTypeDto dto, IBaseSessionManager manager)

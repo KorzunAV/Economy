@@ -1,18 +1,28 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Economy.DataAccess.NHibernate.Entities;
-using Economy.Dtos.Commands;
+using Economy.Dtos;
 
 namespace Economy.DataAccess.NHibernate.AutomapperMappings
 {
     public class EntityDtoMappings
     {
-        public EntityDtoMappings()
+        public static void Initialize(IMapperConfigurationExpression cfg)
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<CurrencyEntity, Currency>();
-                cfg.CreateMap<Currency, CurrencyEntity>();
-            });
+            cfg.CreateMap<BankDto, BankEntity>();
+            cfg.CreateMap<BankEntity, BankDto>();
+            cfg.CreateMap<CourseArhiveDto, CourseArhiveEntity>();
+            cfg.CreateMap<CourseArhiveEntity, CourseArhiveDto>();
+            cfg.CreateMap<CurrencyTypeDto, CurrencyTypeEntity>();
+            cfg.CreateMap<CurrencyTypeEntity, CurrencyTypeDto>();
+            cfg.CreateMap<MontlyReportDto, MontlyReportEntity>();
+            cfg.CreateMap<MontlyReportEntity, MontlyReportDto>();
+            cfg.CreateMap<SystemUserDto, SystemUserEntity>();
+            cfg.CreateMap<SystemUserEntity, SystemUserDto>();
+            cfg.CreateMap<TransactionDto, TransactionEntity>();
+            cfg.CreateMap<TransactionEntity, TransactionDto>();
+            cfg.CreateMap<WalletDto, WalletEntity>();
+            cfg.CreateMap<WalletEntity, WalletDto>();
+
         }
     }
 }

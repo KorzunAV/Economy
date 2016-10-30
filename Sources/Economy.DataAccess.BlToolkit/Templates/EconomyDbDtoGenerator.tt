@@ -1,6 +1,6 @@
 ﻿<#@ template language="C#" debug="True" hostspecific="True" #>
 <#@ output extension=".generated.cs" #>
-<#@ assembly name="$(SolutionDir)\packages\Npgsql.2.0.12.1\lib\net40\Npgsql.dll"  #>
+<#@ assembly name="$(SolutionDir)\packages\Npgsql.3.1.8\lib\net451\Npgsql.dll"  #>
 <#@ include file="$(SolutionDir)\Economy.DataAccess.BlToolkit\Templates\BLToolkitDto.ttinclude"            #>
 <#@ include file="$(SolutionDir)\Economy.DataAccess.BlToolkit\Templates\PostgreSql.ttinclude"           #>
 <#@ include file="$(SolutionDir)\Economy.DataAccess.BlToolkit\Templates\ValidationAttributes.ttinclude" #>

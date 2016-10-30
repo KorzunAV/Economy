@@ -43,7 +43,7 @@ static Action<GeneratedTextTransformation,string,string> WriteBeginClass = (tt,c
 };
 static Action<GeneratedTextTransformation,string,string> WriteBeginEntityClass = (tt,cl,bc) =>
 {
-	tt.Write("internal partial class {0}Entity", cl);
+	tt.Write("internal partial class {0}{1}", cl, tt.BaseEntityPrefix);
 	if (!string.IsNullOrEmpty(bc))
 		tt.Write(" : {0}", bc);
 	tt.WriteLine("");
@@ -58,7 +58,7 @@ delegate void WriteTablePropertyAction(GeneratedTextTransformation tt, string na
 static WriteTablePropertyAction WriteTableProperty = (tt,name,pname,maxlen,maxplen,desc) =>
 {
 	WriteSummary(tt,desc);
-	tt.WriteLine("public Table<{0}{2}> {1}{3} {{ get {{ return this.GetTable<{0}Entity>(); }} }}", name, pname, tt.EntityPrefix, tt.TablePrefix);
+	tt.WriteLine("public Table<{0}{2}> {1}{3} {{ get {{ return this.GetTable<{0}{2}>(); }} }}", name, pname, tt.EntityPrefix, tt.TablePrefix);
 };
 static Action<GeneratedTextTransformation,string> WriteAttribute      = (tt,a) => tt.Write("[{0}]", a);
 static Action<GeneratedTextTransformation>        WriteAttributeLine  =  tt    => tt.WriteLine("");
@@ -72,7 +72,7 @@ string DataContextName          = null;
 string Namespace                = "DataModel";
 string BaseDataContextClass     = null;
 string BaseEntityClass          = "BaseEntity";
-string OneToManyAssociationType = "IEnumerable<{0}>";
+string BaseEntityPrefix			= "BaseEntity";
 string EntityPrefix				= "Entity";
 string TablePrefix				= "Table";
 
@@ -116,7 +116,7 @@ static Action<GeneratedTextTransformation,Column,int[],string[]> RenderColumn = 
 		}
 	}
 
-	tt.Write("public {0} {1}", c.Type, c.MemberName);
+	tt.Write("public virtual {0} {1}", c.Type, c.MemberName);
 
 	if (tt.RenderField)
 	{
@@ -160,20 +160,16 @@ static Action<GeneratedTextTransformation,ForeignKey> RenderForeignKey = (tt,key
 		WriteAttributeLine(tt);
 	}
 
-	tt.Write("public ");
-
 	if (key.AssociationType == AssociationType.OneToMany)
-		tt.Write(tt.OneToManyAssociationType, key.OtherTable.ClassName + tt.EntityPrefix);
+		tt.WriteLine("public virtual IEnumerable<{0}{1}> {2}", key.OtherTable.ClassName, tt.EntityPrefix,key.MemberName);
 	else
-		tt.Write(key.OtherTable.ClassName + tt.EntityPrefix);
-
-	tt.Write(" ");
-	tt.Write(key.MemberName);
-
+		tt.WriteLine("public virtual {0}{1} {2}", key.OtherTable.ClassName, tt.EntityPrefix, 
+		string.Join(", ", (from c in key.ThisColumns select c.MemberName.Replace("Id",string.Empty)).ToArray()));
+		
 	if (tt.RenderField)
-		tt.WriteLine(";");
+		tt.Write(";");
 	else
-		tt.WriteLine(" { get; set; }");
+		tt.Write(" { get; set; }");
 };
 
 static Action<GeneratedTextTransformation,Table, bool> RenderTable = (tt,t, renderForeignKeys) =>

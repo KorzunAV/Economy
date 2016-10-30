@@ -12,6 +12,21 @@
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +46,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
@@ -59,13 +78,17 @@
       <Project>{64115506-8242-4ac7-8cee-5ef3a5f5aa94}</Project>
       <Name>CommonLibs.Serialization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\CQRS\Sources\CQRS\CQRS.Dtos\CQRS.Dtos.csproj">
+      <Project>{9523c3d1-4343-4062-b447-0ac313f87346}</Project>
+      <Name>CQRS.Dtos</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\CQRS\Sources\CQRS\CQRS.Logic\CQRS.Logic.csproj">
       <Project>{9CEF3F17-2101-4A7E-9EB4-0315674BE22A}</Project>
       <Name>CQRS.Logic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Economy.DataAccess.BlToolkit\Economy.DataAccess.BlToolkit.csproj">
-      <Project>{2387ad02-99a3-4822-9691-505991db451d}</Project>
-      <Name>Economy.DataAccess.BlToolkit</Name>
+    <ProjectReference Include="..\Economy.DataAccess.NHibernate\Economy.DataAccess.NHibernate.csproj">
+      <Project>{be121dfa-94a4-48e8-ab0b-a8987856a664}</Project>
+      <Name>Economy.DataAccess.NHibernate</Name>
     </ProjectReference>
     <ProjectReference Include="..\Economy.Dtos\Economy.Dtos.csproj">
       <Project>{3ab5334c-2a84-42a6-89e3-dbe03906193e}</Project>
@@ -84,7 +107,27 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Economy.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Economy_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>Economy.mdf</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

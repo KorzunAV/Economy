@@ -35,8 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
@@ -206,9 +206,9 @@
       <Project>{57e0cb10-1c4a-4bd8-9667-7a8dbd4d75e5}</Project>
       <Name>DataGridFilterLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Economy.DataAccess.BlToolkit\Economy.DataAccess.BlToolkit.csproj">
-      <Project>{2387ad02-99a3-4822-9691-505991db451d}</Project>
-      <Name>Economy.DataAccess.BlToolkit</Name>
+    <ProjectReference Include="..\Economy.DataAccess.NHibernate\Economy.DataAccess.NHibernate.csproj">
+      <Project>{be121dfa-94a4-48e8-ab0b-a8987856a664}</Project>
+      <Name>Economy.DataAccess.NHibernate</Name>
     </ProjectReference>
     <ProjectReference Include="..\Economy.Dtos\Economy.Dtos.csproj">
       <Project>{3ab5334c-2a84-42a6-89e3-dbe03906193e}</Project>

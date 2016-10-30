@@ -1,23 +1,56 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using CQRS.Common;
+using CQRS.Dtos;
 
 namespace Economy.Dtos
 {
-    public partial class WalletDto
+    public class WalletDto : BaseDto
     {
         /// <summary>
-        /// пользователь
+        ///идентификатор
         /// </summary>
-        public SystemUserDto User { get; set; }
+        public virtual Guid Id { get; set; }
 
         /// <summary>
-        /// валюта кошелька
+        ///
         /// </summary>
-        public CurrencyTypeDto CurrencyType { get; set; }
+        public virtual string Name { get; set; }
 
+        /// <summary>
+        ///первоначальный баланс счета
+        /// </summary>
+        public virtual decimal? StartBalance { get; set; }
 
-        public bool IsNew
-        {
-            get { return Id == Guid.Empty || User.IsNew || CurrencyType.IsNew; }
-        }
+        /// <summary>
+        ///итоговое состояние счета
+        /// </summary>
+        public virtual decimal? Balance { get; set; }
+
+        /// <summary>
+        ///пользователь
+        /// </summary>
+        public virtual Guid SystemUserId { get; set; }
+
+        public virtual SystemUserDto SystemUser { get; set; }
+
+        /// <summary>
+        ///валюта кошелька
+        /// </summary>
+        public virtual int CurrencyTypeId { get; set; }
+
+        public virtual CurrencyTypeDto CurrencyType { get; set; }
+
+        /// <summary>
+        ///Версия для оптимистической блокировки
+        /// </summary>
+        public virtual int Version { get; set; }
+
+        /// <summary>
+        ///Идентификатор кошелька
+        /// </summary>
+        public virtual List<MontlyReportDto> MontlyReports { get; set; }
+
+    
     }
 }

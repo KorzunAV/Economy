@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace Economy.Test.LogicTests
 {
     [TestFixture]
-    class CurrencyTypeTest : TestFixtureBase
+    public class CurrencyTypeTest : TestFixtureBase
     {
         [Test]
         public void CurrencyTypeInsertTest()

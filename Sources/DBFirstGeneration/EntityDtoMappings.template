@@ -1,0 +1,14 @@
+﻿using AutoMapper;
+using Economy.DataAccess.NHibernate.Entities;
+using Economy.Dtos;
+
+namespace Economy.DataAccess.NHibernate.AutomapperMappings
+{{
+    public class EntityDtoMappings
+    {{
+        public static void Initialize(IMapperConfigurationExpression cfg)
+        {{
+{0}
+        }}
+    }}
+}}

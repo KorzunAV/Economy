@@ -32,10 +32,13 @@ public partial class CourseArhiveDto : BaseDto{
 
     public static readonly string PropCurrencyTypeId = TypeHelper<CourseArhiveDto>.PropertyName(x => x.CurrencyTypeId);
     public static readonly string PropRegDate = TypeHelper<CourseArhiveDto>.PropertyName(x => x.RegDate);
-    public static readonly string PropCurrencyTypeBaseId = TypeHelper<CourseArhiveDto>.PropertyName(x => x.CurrencyTypeBaseId);
-    public static readonly string PropBankId = TypeHelper<CourseArhiveDto>.PropertyName(x => x.BankId);
     public static readonly string PropBuy = TypeHelper<CourseArhiveDto>.PropertyName(x => x.Buy);
     public static readonly string PropSel = TypeHelper<CourseArhiveDto>.PropertyName(x => x.Sel);
+    public static readonly string PropCurrencyTypeBaseId = TypeHelper<CourseArhiveDto>.PropertyName(x => x.CurrencyTypeBaseId);
+    public static readonly string PropBankId = TypeHelper<CourseArhiveDto>.PropertyName(x => x.BankId);
+    public static readonly string PropCurrencyType = TypeHelper<CourseArhiveDto>.PropertyName(x => x.CurrencyType);
+    public static readonly string PropCurrencyTypeBase = TypeHelper<CourseArhiveDto>.PropertyName(x => x.CurrencyTypeBase);
+    public static readonly string PropBank = TypeHelper<CourseArhiveDto>.PropertyName(x => x.Bank);
 
     #endregion [ Property names ]
 
@@ -43,14 +46,17 @@ public partial class CourseArhiveDto : BaseDto{
 
     public DateTime RegDate { get; set; }
 
+    public double Buy { get; set; }
+
+    public double Sel { get; set; }
+
     public int CurrencyTypeBaseId { get; set; }
 
     public int BankId { get; set; }
 
-    public decimal Buy { get; set; }
-
-    public decimal Sel { get; set; }
-
+    public CurrencyTypeDto CurrencyType { get; set; }
+    public CurrencyTypeBaseDto CurrencyTypeBase { get; set; }
+    public BankDto Bank { get; set; }
 }
 
 public partial class CurrencyTypeDto : BaseDto{
@@ -78,6 +84,7 @@ public partial class MontlyReportDto : BaseDto{
     public static readonly string PropEndBalance = TypeHelper<MontlyReportDto>.PropertyName(x => x.EndBalance);
     public static readonly string PropStartDate = TypeHelper<MontlyReportDto>.PropertyName(x => x.StartDate);
     public static readonly string PropWalletId = TypeHelper<MontlyReportDto>.PropertyName(x => x.WalletId);
+    public static readonly string PropWallet = TypeHelper<MontlyReportDto>.PropertyName(x => x.Wallet);
 
     #endregion [ Property names ]
 
@@ -91,6 +98,7 @@ public partial class MontlyReportDto : BaseDto{
 
     public Guid WalletId { get; set; }
 
+    public WalletDto Wallet { get; set; }
 }
 
 public partial class SystemUserDto : BaseDto{
@@ -122,6 +130,10 @@ public partial class TransactionDto : BaseDto{
     public static readonly string PropFromWalletId = TypeHelper<TransactionDto>.PropertyName(x => x.FromWalletId);
     public static readonly string PropToWalletId = TypeHelper<TransactionDto>.PropertyName(x => x.ToWalletId);
     public static readonly string PropMontlyReportId = TypeHelper<TransactionDto>.PropertyName(x => x.MontlyReportId);
+    public static readonly string PropCurrencyType = TypeHelper<TransactionDto>.PropertyName(x => x.CurrencyType);
+    public static readonly string PropMontlyReport = TypeHelper<TransactionDto>.PropertyName(x => x.MontlyReport);
+    public static readonly string PropFromWallet = TypeHelper<TransactionDto>.PropertyName(x => x.FromWallet);
+    public static readonly string PropToWallet = TypeHelper<TransactionDto>.PropertyName(x => x.ToWallet);
 
     #endregion [ Property names ]
 
@@ -149,6 +161,10 @@ public partial class TransactionDto : BaseDto{
 
     public Guid? MontlyReportId { get; set; }
 
+    public CurrencyTypeDto CurrencyType { get; set; }
+    public MontlyReportDto MontlyReport { get; set; }
+    public FromWalletDto FromWallet { get; set; }
+    public ToWalletDto ToWallet { get; set; }
 }
 
 public partial class WalletDto : BaseDto{
@@ -160,6 +176,8 @@ public partial class WalletDto : BaseDto{
     public static readonly string PropBalance = TypeHelper<WalletDto>.PropertyName(x => x.Balance);
     public static readonly string PropSystemUserId = TypeHelper<WalletDto>.PropertyName(x => x.SystemUserId);
     public static readonly string PropCurrencyTypeId = TypeHelper<WalletDto>.PropertyName(x => x.CurrencyTypeId);
+    public static readonly string PropCurrencyType = TypeHelper<WalletDto>.PropertyName(x => x.CurrencyType);
+    public static readonly string PropSystemUser = TypeHelper<WalletDto>.PropertyName(x => x.SystemUser);
 
     #endregion [ Property names ]
 
@@ -175,6 +193,8 @@ public partial class WalletDto : BaseDto{
 
     public int CurrencyTypeId { get; set; }
 
+    public CurrencyTypeDto CurrencyType { get; set; }
+    public SystemUserDto SystemUser { get; set; }
 }
 }
 */

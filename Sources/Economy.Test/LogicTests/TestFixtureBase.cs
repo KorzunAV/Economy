@@ -1,5 +1,8 @@
-﻿using CQRS.Logic;
-using Economy.DataAccess.BlToolkit.IoC;
+﻿using AutoMapper;
+using CQRS.Logic;
+using Economy.DataAccess.NHibernate.AutomapperMappings;
+using Economy.DataAccess.NHibernate.IoC;
+using Economy.Logic.AutomapperMappings;
 using Economy.Logic.IoC;
 using Ninject;
 using NUnit.Framework;
@@ -10,10 +13,16 @@ namespace Economy.Test.LogicTests
     {
         protected ICommandQueryDispatcher CommandQueryDispatcher;
         protected IKernel Kernel;
-        
-        [TestFixtureSetUp]
-        public virtual void TestFixtureSetUp()
+
+        [OneTimeSetUp]
+        public virtual void OneTimeSetUp()
         {
+            Mapper.Initialize(cfg =>
+            {
+                EntityDtoMappings.Initialize(cfg);
+                DtoMappings.Initialize(cfg);
+            });
+
             Kernel = new StandardKernel(new DataAccessModule(), new LogicTestModule());
             CommandQueryDispatcher = Kernel.Get<ICommandQueryDispatcher>();
         }

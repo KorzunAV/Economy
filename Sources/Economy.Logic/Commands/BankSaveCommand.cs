@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using CQRS.Logic.Commands;
 using Economy.Dtos;
 
@@ -14,6 +13,6 @@ namespace Economy.Logic.Commands
             get { return Id; }
         }
 
-        public List<BankDto> Dtos { get; set; }
+        public BankDto Dtos { get; set; }
     }
 }

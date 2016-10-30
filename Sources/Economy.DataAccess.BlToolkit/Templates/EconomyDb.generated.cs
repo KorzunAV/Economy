@@ -31,185 +31,185 @@ namespace Economy.DataAccess.BlToolkit.DbManagers
     }
 
     [TableName(Database = "economy", Owner = "public", Name = "\"Bank\"")]
-    internal partial class BankEntity : BaseEntity
+    internal partial class BankBaseEntity : BaseEntity
     {
         [MapField("\"Id\""), Identity, PrimaryKey(1), Required]
-        public Int32 Id { get; set; } // integer
+        public virtual Int32 Id { get; set; } // integer
 
         [MapField("\"Name\""), Required]
-        public String Name { get; set; } // character varying
+        public virtual String Name { get; set; } // character varying
 
     }
 
     [TableName(Database = "economy", Owner = "public", Name = "\"CourseArhive\"")]
-    internal partial class CourseArhiveEntity : BaseEntity
+    internal partial class CourseArhiveBaseEntity : BaseEntity
     {
         [MapField("\"CurrencyTypeId\""), Required]
-        public Int32 CurrencyTypeId { get; set; } // integer
+        public virtual Int32 CurrencyTypeId { get; set; } // integer
 
         [MapField("\"RegDate\""), Required]
-        public DateTime RegDate { get; set; } // timestamp with time zone
-
-        [MapField("\"CurrencyTypeBaseId\""), Required]
-        public Int32 CurrencyTypeBaseId { get; set; } // integer
-
-        [MapField("\"BankId\""), PrimaryKey(6), Required]
-        public Int32 BankId { get; set; } // integer
+        public virtual DateTime RegDate { get; set; } // timestamp with time zone
 
         [MapField("\"Buy\""), Required]
-        public Decimal Buy { get; set; } // money
+        public virtual Double Buy { get; set; } // double precision
 
         [MapField("\"Sel\""), Required]
-        public Decimal Sel { get; set; } // money
+        public virtual Double Sel { get; set; } // double precision
+
+        [MapField("\"CurrencyTypeBaseId\""), Required]
+        public virtual Int32 CurrencyTypeBaseId { get; set; } // integer
+
+        [MapField("\"BankId\""), PrimaryKey(6), Required]
+        public virtual Int32 BankId { get; set; } // integer
 
 
         // fk_coursearhive_currencytype
         [Association(ThisKey = "\"CurrencyTypeId\"", OtherKey = "\"Id\"", CanBeNull = false)]
-        public CurrencyTypeEntity fkcoursearhivecurrencytype { get; set; }
-
+        public virtual CurrencyTypeEntity CurrencyType
+         { get; set; }
         // fk_coursearhive_currencytypebase
         [Association(ThisKey = "\"CurrencyTypeBaseId\"", OtherKey = "\"Id\"", CanBeNull = false)]
-        public CurrencyTypeEntity fkcoursearhivecurrencytypebase { get; set; }
-
+        public virtual CurrencyTypeEntity CurrencyTypeBase
+         { get; set; }
         // fk_coursearhive_bank
         [Association(ThisKey = "\"BankId\"", OtherKey = "\"Id\"", CanBeNull = false)]
-        public BankEntity fkcoursearhivebank { get; set; }
-    }
+        public virtual BankEntity Bank
+         { get; set; }}
 
     [TableName(Database = "economy", Owner = "public", Name = "\"CurrencyType\"")]
-    internal partial class CurrencyTypeEntity : BaseEntity
+    internal partial class CurrencyTypeBaseEntity : BaseEntity
     {
-        [MapField("\"Id\""), Identity, PrimaryKey(1)]
-        public Int32 Id { get; set; } // integer
+        [MapField("\"Id\""), Identity, PrimaryKey(1), Required]
+        public virtual Int32 Id { get; set; } // integer
 
-        [MapField("\"Name\"")]
-        public String Name { get; set; } // character varying
+        [MapField("\"Name\""), Required]
+        public virtual String Name { get; set; } // character varying
 
-        [MapField("\"ShortName\"")]
-        public String ShortName { get; set; } // character varying(3)(3)
+        [MapField("\"ShortName\""), Required]
+        public virtual String ShortName { get; set; } // character varying(3)(3)
 
     }
 
     [TableName(Database = "economy", Owner = "public", Name = "\"MontlyReport\"")]
-    internal partial class MontlyReportEntity : BaseEntity
+    internal partial class MontlyReportBaseEntity : BaseEntity
     {
         [MapField("\"Id\""), PrimaryKey(1), Required]
-        public Guid Id { get; set; } // uuid
+        public virtual Guid Id { get; set; } // uuid
 
         [MapField("\"StartBalance\""), Nullable]
-        public Decimal? StartBalance { get; set; } // money
+        public virtual Decimal? StartBalance { get; set; } // money
 
         [MapField("\"EndBalance\""), Nullable]
-        public Decimal? EndBalance { get; set; } // money
+        public virtual Decimal? EndBalance { get; set; } // money
 
         [MapField("\"StartDate\""), Required]
-        public DateTime StartDate { get; set; } // timestamp without time zone
+        public virtual DateTime StartDate { get; set; } // timestamp without time zone
 
         [MapField("\"WalletId\""), Required]
-        public Guid WalletId { get; set; } // uuid
+        public virtual Guid WalletId { get; set; } // uuid
 
 
         // pk_montlyreport_wallet
         [Association(ThisKey = "\"WalletId\"", OtherKey = "\"Id\"", CanBeNull = false)]
-        public WalletEntity pkmontlyreportwallet { get; set; }
-    }
+        public virtual WalletEntity Wallet
+         { get; set; }}
 
     [TableName(Database = "economy", Owner = "public", Name = "\"SystemUser\"")]
-    internal partial class SystemUserEntity : BaseEntity
+    internal partial class SystemUserBaseEntity : BaseEntity
     {
         [MapField("\"Id\""), PrimaryKey(1), Required]
-        public Guid Id { get; set; } // uuid
+        public virtual Guid Id { get; set; } // uuid
 
         [MapField("\"Name\""), Required]
-        public String Name { get; set; } // character varying
+        public virtual String Name { get; set; } // character varying
 
     }
 
     [TableName(Database = "economy", Owner = "public", Name = "\"Transaction\"")]
-    internal partial class TransactionEntity : BaseEntity
+    internal partial class TransactionBaseEntity : BaseEntity
     {
         [MapField("\"Id\""), PrimaryKey(1), Required]
-        public Guid Id { get; set; } // uuid
+        public virtual Guid Id { get; set; } // uuid
 
         [MapField("\"RegistrationDate\""), Required]
-        public DateTime RegistrationDate { get; set; } // timestamp without time zone
+        public virtual DateTime RegistrationDate { get; set; } // timestamp without time zone
 
         [MapField("\"TransactionDate\""), Nullable]
-        public DateTime? TransactionDate { get; set; } // timestamp without time zone
+        public virtual DateTime? TransactionDate { get; set; } // timestamp without time zone
 
         [MapField("\"Code\""), Required]
-        public String Code { get; set; } // character varying
+        public virtual String Code { get; set; } // character varying
 
         [MapField("\"Description\""), Required]
-        public String Description { get; set; } // character varying
+        public virtual String Description { get; set; } // character varying
 
         [MapField("\"CurrencyTypeId\""), Required]
-        public Int32 CurrencyTypeId { get; set; } // integer
+        public virtual Int32 CurrencyTypeId { get; set; } // integer
 
         [MapField("\"QuantityByTransaction\""), Required]
-        public Decimal QuantityByTransaction { get; set; } // money
+        public virtual Decimal QuantityByTransaction { get; set; } // money
 
         [MapField("\"QuantityByWallet\""), Nullable]
-        public Decimal? QuantityByWallet { get; set; } // money
+        public virtual Decimal? QuantityByWallet { get; set; } // money
 
         [MapField("\"Commission\""), Nullable]
-        public Decimal? Commission { get; set; } // money
+        public virtual Decimal? Commission { get; set; } // money
 
         [MapField("\"FromWalletId\""), Nullable]
-        public Guid? FromWalletId { get; set; } // uuid
+        public virtual Guid? FromWalletId { get; set; } // uuid
 
         [MapField("\"ToWalletId\""), Required]
-        public Guid ToWalletId { get; set; } // uuid
+        public virtual Guid ToWalletId { get; set; } // uuid
 
         [MapField("\"MontlyReportId\""), Nullable]
-        public Guid? MontlyReportId { get; set; } // uuid
+        public virtual Guid? MontlyReportId { get; set; } // uuid
 
 
         // fk_transaction_currency
         [Association(ThisKey = "\"CurrencyTypeId\"", OtherKey = "\"Id\"", CanBeNull = false)]
-        public CurrencyTypeEntity fktransactioncurrency { get; set; }
-
+        public virtual CurrencyTypeEntity CurrencyType
+         { get; set; }
         // fk_transaction_montly_report
         [Association(ThisKey = "\"MontlyReportId\"", OtherKey = "\"Id\"", CanBeNull = true)]
-        public MontlyReportEntity fktransactionmontlyreport { get; set; }
-
+        public virtual MontlyReportEntity MontlyReport
+         { get; set; }
         // fk_transactionfromwallet_wallet
         [Association(ThisKey = "\"FromWalletId\"", OtherKey = "\"Id\"", CanBeNull = true)]
-        public WalletEntity fktransactionfromwalletwallet { get; set; }
-
+        public virtual WalletEntity FromWallet
+         { get; set; }
         // fk_transactiontowallet_wallet
         [Association(ThisKey = "\"ToWalletId\"", OtherKey = "\"Id\"", CanBeNull = false)]
-        public WalletEntity fktransactiontowalletwallet { get; set; }
-    }
+        public virtual WalletEntity ToWallet
+         { get; set; }}
 
     [TableName(Database = "economy", Owner = "public", Name = "\"Wallet\"")]
-    internal partial class WalletEntity : BaseEntity
+    internal partial class WalletBaseEntity : BaseEntity
     {
         [MapField("\"Id\""), PrimaryKey(1), Required]
-        public Guid Id { get; set; } // uuid
+        public virtual Guid Id { get; set; } // uuid
 
         [MapField("\"Name\""), Required]
-        public String Name { get; set; } // character varying
+        public virtual String Name { get; set; } // character varying
 
         [MapField("\"StartBalance\""), Nullable]
-        public Decimal? StartBalance { get; set; } // money
+        public virtual Decimal? StartBalance { get; set; } // money
 
         [MapField("\"Balance\""), Nullable]
-        public Decimal? Balance { get; set; } // money
+        public virtual Decimal? Balance { get; set; } // money
 
         [MapField("\"SystemUserId\""), Nullable]
-        public Guid? SystemUserId { get; set; } // uuid
+        public virtual Guid? SystemUserId { get; set; } // uuid
 
         [MapField("\"CurrencyTypeId\""), Required]
-        public Int32 CurrencyTypeId { get; set; } // integer
+        public virtual Int32 CurrencyTypeId { get; set; } // integer
 
 
         // fk_wallet_currencytype
         [Association(ThisKey = "\"CurrencyTypeId\"", OtherKey = "\"Id\"", CanBeNull = false)]
-        public CurrencyTypeEntity fkwalletcurrencytype { get; set; }
-
+        public virtual CurrencyTypeEntity CurrencyType
+         { get; set; }
         // fk_wallet_systemuser
         [Association(ThisKey = "\"SystemUserId\"", OtherKey = "\"Id\"", CanBeNull = true)]
-        public SystemUserEntity fkwalletsystemuser { get; set; }
-    }
+        public virtual SystemUserEntity SystemUser
+         { get; set; }}
 }

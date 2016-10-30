@@ -1,12 +1,32 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using CQRS.Common;
+using CQRS.Dtos;
 
 namespace Economy.Dtos
 {
-    public partial class SystemUserDto
+    public class SystemUserDto : BaseDto
     {
-        public bool IsNew
-        {
-            get { return Id == Guid.Empty; }
-        }
+        /// <summary>
+        ///идентификатор пользователя
+        /// </summary>
+        public virtual Guid Id { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual string Name { get; set; }
+
+        /// <summary>
+        ///Версия для оптимистической блокировки
+        /// </summary>
+        public virtual int Version { get; set; }
+
+        /// <summary>
+        ///пользователь
+        /// </summary>
+        public virtual List<WalletDto> Wallets { get; set; }
+
+    
     }
 }

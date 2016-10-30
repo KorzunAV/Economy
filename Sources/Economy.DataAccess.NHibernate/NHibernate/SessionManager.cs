@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Reflection;
+using Common.Logging;
 using CQRS.Common;
+using Economy.DataAccess.NHibernate.Entities;
+using Economy.DataAccess.NHibernate.NHMappings;
 using FluentNHibernate.Cfg;
 using NHibernate;
 using NHibernate.Cfg;
@@ -11,7 +15,7 @@ using NHibernate.Util;
 using NHibernate.Validator.Cfg;
 using NHibernate.Validator.Engine;
 using NHibernate.Validator.Event;
-using NLog;
+using FluentNHibernate.Automapping;
 
 namespace Economy.DataAccess.NHibernate.NHibernate
 {
@@ -19,10 +23,10 @@ namespace Economy.DataAccess.NHibernate.NHibernate
     {
         #region [ Fields ]
 
-        private readonly Logger _log;
+        private readonly ILog _log;
         private readonly ISessionFactory _factory;
         private readonly ISessionStorage _storage;
-        private ValidatorEngine _validatorEngine; 
+        private ValidatorEngine _validatorEngine;
 
         #endregion
 
@@ -55,23 +59,26 @@ namespace Economy.DataAccess.NHibernate.NHibernate
 
             try
             {
-  _factory = InitFluentMappings(configuration).BuildSessionFactory();
+                _factory = Fluently.Configure(configuration)
+                    .Database(FluentNHibernate.Cfg.Db.PostgreSQLConfiguration.Standard.ConnectionString("Server=localhost;Port=5432;Database=economy; User Id=postgres;Password=1234;Pooling=False;"))
+                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<BaseEntity>())
+                    //.Mappings(m => m.AutoMappings.Add(AutoMap.AssemblyOf<Machine>()))
+                    .BuildSessionFactory();
+                //_factory = InitFluentMappings(configuration).BuildSessionFactory();
             }
             catch (Exception ex)
             {
-                
                 throw;
             }
-          
-            _log = LogManager.GetLogger(typeof (SessionManager).Name);
+
+            _log = LogManager.GetLogger(typeof(SessionManager).Name);
         }
-        
+
         private static FluentConfiguration InitFluentMappings(Configuration configuration)
         {
             FluentConfiguration fluentConfiguration = Fluently.Configure(configuration);
 
             IEnumerable<Assembly> assemblies = GetDataAccessAssemblies();
-
             foreach (Assembly assembly in assemblies)
             {
                 Assembly temp = assembly;
@@ -88,7 +95,7 @@ namespace Economy.DataAccess.NHibernate.NHibernate
             string[] strings = Directory.GetFiles(currentDirectory, "*DataAccess*.dll");
 
             List<Assembly> list = new List<Assembly>();
-            
+
             strings.ForEach(x => list.Add(Assembly.LoadFile(x)));
 
             return list;
@@ -122,6 +129,14 @@ namespace Economy.DataAccess.NHibernate.NHibernate
             {
                 CurrentSession.Close();
                 CurrentSession = null;
+            }
+        }
+
+        public void BeginTransaction(IsolationLevel isolationLevel)
+        {
+            if (CurrentSession != null)
+            {
+                CurrentSession.BeginTransaction(isolationLevel);
             }
         }
 

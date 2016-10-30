@@ -5,7 +5,7 @@ using CQRS.Logic.Blos;
 using CQRS.Logic.Commands;
 using CQRS.Logic.Queries;
 using CQRS.Logic.Validation;
-using Economy.DataAccess.BlToolkit.Daos;
+using Economy.DataAccess.NHibernate.Daos;
 using Economy.Dtos;
 using Economy.Logic.Commands;
 using Economy.Logic.Queries;
@@ -22,26 +22,21 @@ namespace Economy.Logic.Blos
             CurrencyTypeDao = currencyTypeDao;
         }
 
-        private ExecutionResult<int> Save(BaseCommand command, IBaseSessionManager manager)
+        private ExecutionResult<int> Save(IBaseSessionManager manager, BaseCommand command)
         {
             var dto = ((CurrencyTypeSaveCommand)command).Dto;
             //Validate(period);
-            var id = CurrencyTypeDao.Save(dto, manager);
-            return new ExecutionResult<int> { Data = id };
+            var rez = CurrencyTypeDao.Save(dto);
+            return new ExecutionResult<int> { Data = rez.Id };
         }
 
-        private ExecutionResult<List<CurrencyTypeDto>> GetAll(BaseQuery query, IBaseSessionManager manager)
-        {
-            var dto = CurrencyTypeDao.GetAll(manager);
-            return new ExecutionResult<List<CurrencyTypeDto>> { Data = dto };
-        }
+        
 
         public override void RegisterCommandsAndQueries(ICommandQueryRegistrator commandQueryRegistrator)
         {
             // RegisterCommands
             commandQueryRegistrator.RegisterCommand(CurrencyTypeSaveCommand.Id, Save);
             // RegisterQueries
-            commandQueryRegistrator.RegisterQuery(CurrencyTypeGetAllQuery.Id, GetAll);
         }
 
         public static int SelectOrSave(CurrencyTypeDto currencyType)

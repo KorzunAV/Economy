@@ -14,6 +14,6 @@ namespace Economy.Logic.Commands
             get { return Id; }
         }
 
-        public List<CourseArhiveDto> Dtos { get; set; }
+        public CourseArhiveDto Dto { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿namespace Economy.DataAccess.BlToolkit.Entities
+﻿
+namespace Economy.DataAccess.BlToolkit.Entities
 {
     internal class BaseEntity
     {

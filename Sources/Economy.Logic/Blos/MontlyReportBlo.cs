@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CQRS.Common;
 using CQRS.Logic;
 using CQRS.Logic.Blos;
 using CQRS.Logic.Commands;
 using CQRS.Logic.Queries;
 using CQRS.Logic.Validation;
-using Economy.DataAccess.BlToolkit.Daos;
+using Economy.DataAccess.NHibernate.Daos;
 using Economy.Dtos;
 using Economy.Logic.Commands;
 using Economy.Logic.Queries;
@@ -22,26 +23,19 @@ namespace Economy.Logic.Blos
             MontlyReportDao = montlyReportDao;
         }
 
-        private ExecutionResult<int> SaveAll(BaseCommand command, IBaseSessionManager manager)
+        private ExecutionResult<Guid> Save(IBaseSessionManager manager, BaseCommand command)
         {
-            var dtos = ((MontlyReportSaveAllCommand)command).Dtos;
+            var dto = ((MontlyReportSaveCommand)command).Dto;
             //Validate(period);
-            var id = MontlyReportDao.Save(dtos, manager);
-            return new ExecutionResult<int> { Data = id };
+            var rez = MontlyReportDao.Save(dto);
+            return new ExecutionResult<Guid> { Data = rez.Id };
         }
         
-        private ExecutionResult<List<MontlyReportDto>> GetAll(BaseQuery query, IBaseSessionManager manager)
-        {
-            var dto = MontlyReportDao.GetAll(manager);
-            return new ExecutionResult<List<MontlyReportDto>> { Data = dto };
-        }
-
         public override void RegisterCommandsAndQueries(ICommandQueryRegistrator commandQueryRegistrator)
         {
             // RegisterCommands
-            commandQueryRegistrator.RegisterCommand(MontlyReportSaveAllCommand.Id, SaveAll);
+            commandQueryRegistrator.RegisterCommand(MontlyReportSaveCommand.Id, Save);
             // RegisterQueries
-            commandQueryRegistrator.RegisterQuery(MontlyReportGetAllQuery.Id, GetAll);
         }
     }
 }

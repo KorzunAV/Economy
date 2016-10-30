@@ -1,32 +1,29 @@
 ﻿using AutoMapper;
-using Economy.DataAccess.BlToolkit.DbManagers;
+using Economy.DataAccess.BlToolkit.Entities;
 using Economy.Dtos;
 
 namespace Economy.DataAccess.BlToolkit.AutomapperMappings
 {
     public class EntityDtoMappings
     {
-        public EntityDtoMappings()
+        public static void Initialize(IMapperConfigurationExpression cfg)
         {
-            Mapper.CreateMap<CurrencyTypeEntity, CurrencyTypeDto>();
-            Mapper.CreateMap<CurrencyTypeDto, CurrencyTypeEntity>();
+            cfg.CreateMap<CurrencyTypeEntity, CurrencyTypeDto>();
+            cfg.CreateMap<CurrencyTypeDto, CurrencyTypeEntity>();
 
-            Mapper.CreateMap<TransactionEntity, TransactionDto>();
-            Mapper.CreateMap<TransactionDto, TransactionEntity>();
+            cfg.CreateMap<TransactionEntity, TransactionDto>();
+            cfg.CreateMap<TransactionDto, TransactionEntity>();
 
-            Mapper.CreateMap<WalletEntity, WalletDto>();
-            Mapper.CreateMap<WalletDto, WalletEntity>();
+            cfg.CreateMap<WalletEntity, WalletDto>();
+            cfg.CreateMap<WalletDto, WalletEntity>();
 
-            Mapper.CreateMap<SystemUserEntity, SystemUserDto>();
-            Mapper.CreateMap<SystemUserDto, SystemUserEntity>();
+            cfg.CreateMap<SystemUserEntity, SystemUserDto>();
+            cfg.CreateMap<SystemUserDto, SystemUserEntity>();
 
-            Mapper.CreateMap<CourseArhiveEntity, CourseArhiveDto>()
-                .ForMember(dto => dto.CurrencyTypeDto, ent => ent.MapFrom(src => new CurrencyTypeDto { Id = src.CurrencyTypeId }));
-            Mapper.CreateMap<CourseArhiveDto, CourseArhiveEntity>()
-                 .ForMember(ent => ent.CurrencyTypeId, dto => dto.MapFrom(src => src.CurrencyTypeDto.Id));
-
-
-
+            cfg.CreateMap<CourseArhiveEntity, CourseArhiveDto>()
+                .ForMember(dto => dto.CurrencyType, ent => ent.MapFrom(src => new CurrencyTypeDto { Id = src.CurrencyTypeId }));
+            cfg.CreateMap<CourseArhiveDto, CourseArhiveEntity>()
+                 .ForMember(ent => ent.CurrencyTypeId, dto => dto.MapFrom(src => src.CurrencyType.Id));
         }
     }
 }

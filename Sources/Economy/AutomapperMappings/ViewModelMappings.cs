@@ -6,10 +6,10 @@ namespace Economy.AutomapperMappings
 {
     public class ViewModelMappings
     {
-        public static void InitAutoMapper()
+        public static void Initialize(IMapperConfigurationExpression cfg)
         {
-            Mapper.CreateMap<TransactionDto, TransactionItemViewModel>();
-            Mapper.CreateMap<TransactionItemViewModel, TransactionDto>();
+            cfg.CreateMap<TransactionDto, TransactionItemViewModel>();
+            cfg.CreateMap<TransactionItemViewModel, TransactionDto>();
         }
     }
 }

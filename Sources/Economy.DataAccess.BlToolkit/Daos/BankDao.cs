@@ -4,6 +4,7 @@ using AutoMapper;
 using BLToolkit.Data.Linq;
 using CQRS.Common;
 using Economy.DataAccess.BlToolkit.DbManagers;
+using Economy.DataAccess.BlToolkit.Entities;
 using Economy.Dtos;
 
 namespace Economy.DataAccess.BlToolkit.Daos
@@ -21,7 +22,7 @@ namespace Economy.DataAccess.BlToolkit.Daos
 
         #region Queries
 
-        public List<BankDto> GetAll(IBaseSessionManager manager)
+        public List<BankDto> GetAll(IBaseSessionManager manager)        
         {
             var db = (EconomyDb)manager;
             var query = from c in db.BankTable

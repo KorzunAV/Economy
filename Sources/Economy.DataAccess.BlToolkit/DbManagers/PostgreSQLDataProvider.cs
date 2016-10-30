@@ -85,11 +85,11 @@ namespace Economy.DataAccess.BlToolkit.DbManagers
                     if (value is NpgsqlException)
                     {
                         var ex = (NpgsqlException)value;
+                        return ex.ErrorCode;
+                        //foreach (NpgsqlError error in ex.Errors)
+                        //    return error.Code;
 
-                        foreach (NpgsqlError error in ex.Errors)
-                            return error.Code;
-
-                        return 0;
+                        //return 0;
                     }
 
                     break;

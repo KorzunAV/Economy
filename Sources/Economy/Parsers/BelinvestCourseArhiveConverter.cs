@@ -49,8 +49,8 @@ namespace Economy.Parsers
 
             if (set.Any())
             {
-                var command = new CourseArhiveSaveCommand { Dtos = set };
-                CommandQueryDispatcher.ExecuteCommand<bool>(command);
+                //var command = new CourseArhiveSaveCommand { Dto = set };
+                //CommandQueryDispatcher.ExecuteCommand<bool>(command);
             }
         }
 
@@ -61,9 +61,9 @@ namespace Economy.Parsers
                 RegDate = dt,
                 Sel = StringConverter.StringToDecimal(date[from++]),
                 Buy = StringConverter.StringToDecimal(date[from]),
-                CurrencyTypeDto = currencyTypeDtos.FirstOrDefault(i => i.ShortName == currencyTypeShortName)
+                CurrencyType = currencyTypeDtos.FirstOrDefault(i => i.ShortName == currencyTypeShortName)
             };
-            if (!set.Any(i => i.Equals(itm)))
+            if (!set.Any(i => i.RegDate == itm.RegDate && i.CurrencyType.Id == itm.CurrencyType.Id))
                 set.Add(itm);
         }
     }

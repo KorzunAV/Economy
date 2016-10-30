@@ -1,5 +1,4 @@
 ﻿using CQRS.Common;
-using Economy.DataAccess.NHibernate.Daos;
 using Economy.DataAccess.NHibernate.NHibernate;
 using Ninject;
 using Ninject.Modules;
@@ -32,13 +31,10 @@ namespace Economy.DataAccess.NHibernate.IoC
         
         private void BindDaos()
         {
-            Bind<BaseDao>()
-                .ToSelf()
-                .InSingletonScope();
-
-            Bind<BelinvestCourseArhiveDao>()
-                .ToSelf()
-                .InSingletonScope();
+            //Bind<BaseDao>()
+            //    .ToSelf()
+            //    .InSingletonScope();
+            
         }
 
     }

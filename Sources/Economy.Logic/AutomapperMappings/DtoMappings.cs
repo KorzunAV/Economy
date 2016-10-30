@@ -5,9 +5,9 @@ namespace Economy.Logic.AutomapperMappings
 {
     public class DtoMappings
     {
-        public DtoMappings()
+        public static void Initialize(IMapperConfigurationExpression cfg)
         {
-            Mapper.CreateMap<CurrencyTypeDto, CurrencyTypeDto>();
+            cfg.CreateMap<CurrencyTypeDto, CurrencyTypeDto>();
         }
     }
 }

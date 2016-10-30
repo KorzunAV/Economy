@@ -50,7 +50,7 @@ namespace Economy.Parsers
 
             var sumAll = StringConverter.StringToDecimal(lines[i]);
 
-            var cur = montlyReport.TransactionDtos.Sum(itm => itm.QuantityByAccount);
+            var cur = montlyReport.TransactionDtos.Sum(itm => itm.QuantityByWallet);
 
             if (cur + montlyReport.PrevBalance != sumAll)
             {
@@ -67,11 +67,11 @@ namespace Economy.Parsers
             var rez = new TransactionDto();
             rez.TransactionDate = StringConverter.StringToDateTime(items[i++]);
             rez.Description = items[i++].Trim();
-            rez.QuantityByCurrency = StringConverter.StringToDecimal(items[i++]);
+            rez.QuantityByTransaction = StringConverter.StringToDecimal(items[i++]);
             rez.CurrencyType = CurrencyTypeDtos.FirstOrDefault(itm => itm.ShortName.Equals(items[i].Trim()));
             i++;
             rez.RegistrationDate = StringConverter.StringToDateTime(items[i++]);
-            rez.QuantityByAccount = StringConverter.StringToDecimal(items[i]);
+            rez.QuantityByWallet = StringConverter.StringToDecimal(items[i]);
             return rez;
         }
 

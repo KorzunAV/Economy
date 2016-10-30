@@ -4,6 +4,7 @@ using AutoMapper;
 using BLToolkit.Data.Linq;
 using CQRS.Common;
 using Economy.DataAccess.BlToolkit.DbManagers;
+using Economy.DataAccess.BlToolkit.Entities;
 using Economy.Dtos;
 
 namespace Economy.DataAccess.BlToolkit.Daos

@@ -54,9 +54,9 @@ int MaxColumnTypeLen;
 int MaxColumnMemberLen;
 
 
-static Action<GeneratedTextTransformation,Column, String> RenderDtoPropertyName = (tt,c,d) =>
+static Action<GeneratedTextTransformation,String, String> RenderDtoPropertyName = (tt,c,d) =>
 {
-	tt.WriteLine("public static readonly string Prop{0} = TypeHelper<{1}>.PropertyName(x => x.{0});", c.MemberName, d);
+	tt.WriteLine("public static readonly string Prop{0} = TypeHelper<{1}>.PropertyName(x => x.{0});", c, d);
 };
 
 
@@ -147,8 +147,17 @@ static Action<GeneratedTextTransformation,Table, bool> RenderDto = (tt,t, render
 
 		foreach (var c in from c in t.Columns.Values orderby c.ID select c)
 		{	
-			RenderDtoPropertyName(tt, c, t.ClassName+"Dto");
+			RenderDtoPropertyName(tt, c.MemberName, t.ClassName+"Dto");
 		}
+
+		if (t.ForeignKeys.Count > 0)
+		{
+			foreach (var key in t.ForeignKeys.Values.Where(k => tt.RenderBackReferences || k.BackReference != null))
+			{
+				var colName = string.Join(", ", (from c in key.ThisColumns select c.MemberName.Replace("Id",string.Empty)).ToArray());
+				RenderDtoPropertyName(tt, colName, t.ClassName+"Dto");
+			}	
+		}		
 	}
 	tt.WriteLine("");
 	tt.Write("#endregion [ Property names ]");
@@ -164,6 +173,15 @@ static Action<GeneratedTextTransformation,Table, bool> RenderDto = (tt,t, render
 		{			
 			RenderDtoProperty(tt, c);
 		}
+
+		if (t.ForeignKeys.Count > 0)
+		{
+			foreach (var key in t.ForeignKeys.Values.Where(k => tt.RenderBackReferences || k.BackReference != null))
+			{
+				var colName = string.Join(", ", (from c in key.ThisColumns select c.MemberName.Replace("Id",string.Empty)).ToArray());
+				tt.WriteLine("public {0}Dto {0} {{ get; set; }}", colName );
+			}	
+		}	
 	}
 	
 	tt.PopIndent();

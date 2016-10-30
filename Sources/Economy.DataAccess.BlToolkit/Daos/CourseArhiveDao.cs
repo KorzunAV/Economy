@@ -1,21 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using BLToolkit.Data.Linq;
 using CQRS.Common;
 using Economy.DataAccess.BlToolkit.DbManagers;
+using Economy.DataAccess.BlToolkit.Entities;
 using Economy.Dtos;
 
 namespace Economy.DataAccess.BlToolkit.Daos
 {
-    public partial class CourseArhiveDao : BaseDao
+    public class CourseArhiveDao : BaseDao
     {
         #region Commands
-        public void Save(List<CourseArhiveDto> dtos, IBaseSessionManager manager)
+        public void SaveAll(IBaseSessionManager manager, List<CourseArhiveDto> dtos)
         {
-            var db = (EconomyDb)manager;
-            var entities = Mapper.Map<List<CourseArhiveDto>, List<CourseArhiveEntity>>(dtos);
-            db.InsertBatch(entities);
+            foreach (var dto in dtos)
+            {
+                Save(manager, dto);
+            }
+        }
+
+        public void Save(IBaseSessionManager manager, CourseArhiveDto dto)
+        {
+            Insert<CourseArhiveEntity, CourseArhiveDto>((EconomyDb)manager, dto);
         }
         #endregion
 

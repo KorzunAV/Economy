@@ -2,7 +2,6 @@
 using CQRS.Logic;
 using CQRS.Logic.Blos;
 using CQRS.Logic.Validation;
-using Economy.DataAccess.BlToolkit.IoC;
 using Economy.Logic.AutomapperMappings;
 using Economy.Logic.Blos;
 using Ninject;
@@ -15,12 +14,6 @@ namespace Economy.Logic.IoC
     {
         public override void Load()
         {
-            Bind<DtoMappings>()
-              .ToSelf()
-              .InSingletonScope()
-              .InstantlyCreate();
-
-
             Bind<BaseBlo>()
                 .To<CurrencyTypeBlo>()
                 .InSingletonScope();

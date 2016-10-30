@@ -35,13 +35,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BankDto.cs" />
-    <Compile Include="BaseDto.cs" />
     <Compile Include="CourseArhiveDto.cs" />
     <Compile Include="CurrencyTypeDto.cs" />
+    <Compile Include="MontlyReportDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemUserDto.cs" />
     <Compile Include="TransactionDto.cs" />
-    <Compile Include="MontlyReportDto.cs" />
     <Compile Include="WalletDto.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -17,7 +17,7 @@ namespace Economy.Models
             _priceHistories = new Dictionary<long, CourseArhiveDto>();
             foreach (var dto in dtos)
             {
-                _priceHistories.Add(GetKey(dto.RegDate, dto.CurrencyTypeDto), dto);
+                _priceHistories.Add(GetKey(dto.RegDate, dto.CurrencyType), dto);
             }
         }
 
@@ -42,7 +42,7 @@ namespace Economy.Models
             for (int i = 0; i < _priceHistories.Count; i++)
             {
                 var itm = _priceHistories[i];
-                if (itm.CurrencyTypeDto == currencyType)
+                if (itm.CurrencyType == currencyType)
                 {
                     if (itm.RegDate < date && (result == null || itm.RegDate > result.RegDate))
                         result = itm;

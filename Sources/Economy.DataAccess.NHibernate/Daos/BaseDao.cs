@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using AutoMapper;
-using CQRS.Common;
+using CQRS.Dtos;
 using Economy.DataAccess.NHibernate.Entities;
 using Economy.DataAccess.NHibernate.NHibernate;
-using Economy.Dtos.Commands;
 using NHibernate.Criterion;
 
 namespace Economy.DataAccess.NHibernate.Daos
@@ -15,17 +14,17 @@ namespace Economy.DataAccess.NHibernate.Daos
     /// </summary>
     public abstract class BaseDao
     {
-        protected const string CONTAINS_FORMAT = "%{0}%";
-        protected const string STARTS_WITH_FORMAT = "{0}%";
+        protected const string ContainsFormat = "%{0}%";
+        protected const string StartsWithFormat = "{0}%";
 
         /// <summary>
         /// Session manager 
         /// </summary>
-        protected SessionManager SessionManager;
-        
-        protected BaseDao(IBaseSessionManager sessionManager)
+        protected ISessionManager SessionManager;
+
+        protected BaseDao(ISessionManager sessionManager)
         {
-            SessionManager = (SessionManager)sessionManager;
+            SessionManager = sessionManager;
         }
 
 
@@ -33,14 +32,15 @@ namespace Economy.DataAccess.NHibernate.Daos
         ///Save entity
         /// </summary>
         /// <returns></returns>
-        protected long Save<TDto, TEntity>(TDto dto)
+        protected TDto Save<TDto, TEntity>(TDto dto)
             where TDto : BaseDto
             where TEntity : BaseEntity
         {
             TEntity entity = Mapper.Map<TDto, TEntity>(dto);
             SessionManager.CurrentSession.SaveOrUpdate(entity);
             SessionManager.CurrentSession.Flush();
-            return entity.Id;
+
+            return Mapper.Map<TEntity, TDto>(entity);
         }
 
         /// <summary>
@@ -58,13 +58,13 @@ namespace Economy.DataAccess.NHibernate.Daos
             }
             SessionManager.CurrentSession.Flush();
         }
-        
+
 
         /// <summary>
         ///Delete entity
         /// </summary>
         /// <returns></returns>
-        protected void Delete<TEntity>(int id)
+        protected void Delete<TEntity>(Guid id)
             where TEntity : BaseEntity
         {
             var entity = SessionManager.CurrentSession.Get<TEntity>(id);

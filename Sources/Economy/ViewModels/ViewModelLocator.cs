@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AutoMapper;
 using Economy.Models;
 using CommonLibs.Serialization;
 using CQRS.Logic;
+using Economy.AutomapperMappings;
 using Economy.Common;
-using Economy.DataAccess.BlToolkit.IoC;
+using Economy.DataAccess.NHibernate.IoC;
 using Economy.Dtos;
 using Economy.IoC;
 using Economy.Logic.IoC;
@@ -57,7 +59,7 @@ namespace Economy.ViewModels
                     {
                         var historyPrice = History.PriceHistories
                             .OrderByDescending(i => i.RegDate)
-                            .FirstOrDefault(i => i.CurrencyTypeDto.Equals(account.CurrencyType));
+                            .FirstOrDefault(i => i.CurrencyType.Equals(account.CurrencyType));
                         result += account.Balance * historyPrice.Buy;
                     }
                 }
@@ -105,7 +107,7 @@ namespace Economy.ViewModels
             : base(isDebug)
         {
             UpdateDataFilesCommand = new RelayCommand(UpdateDataFiles);
-            AutomapperMappings.ViewModelMappings.InitAutoMapper();
+            Mapper.Initialize(ViewModelMappings.Initialize);
             Accounts = new ExtendedObservableCollection<AccountViewModel>();
             SelectedTransactions = new ExtendedObservableCollection<TransactionItemViewModel>();
             Information = new InformationViewModel();

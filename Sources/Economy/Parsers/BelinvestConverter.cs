@@ -41,7 +41,7 @@ namespace Economy.Parsers
                 throw new ArithmeticException("Где то несраслось.");
 
             var montlyReportDtos = new List<MontlyReportDto>();
-            var groups = montlyReport.TransactionDtos.OrderBy(i => i.RegistrationDate).GroupBy(i => i.RegistrationDate.Year * 100 + i.RegistrationDate.Month);
+            var groups = montlyReport.Transactions.OrderBy(i => i.RegistrationDate).GroupBy(i => i.RegistrationDate.Year * 100 + i.RegistrationDate.Month);
             var startBalance = montlyReport.StartBalance;
             foreach (var group in groups)
             {
@@ -50,14 +50,14 @@ namespace Economy.Parsers
                     StartBalance = startBalance,
                     EndBalance = startBalance,
                     StartDate = new DateTime(group.Key / 100, group.Key % 100, 1),
-                    WalletDto = montlyReport.WalletDto
+                    Wallet = montlyReport.Wallet
                 };
 
-                montlyReportByYearMonth.TransactionDtos = group.ToList();
-                montlyReportByYearMonth.EndBalance = montlyReportByYearMonth.TransactionDtos.Sum(i => i.QuantityByWallet.Value);
+                montlyReportByYearMonth.Transactions = group.ToList();
+                montlyReportByYearMonth.EndBalance = montlyReportByYearMonth.Transactions.Sum(i => i.QuantityByWallet.Value);
             }
 
-            CommandQueryDispatcher.ExecuteCommand<bool>(new MontlyReportSaveAllCommand(montlyReportDtos));
+            //CommandQueryDispatcher.ExecuteCommand<bool>(new MontlyReportSaveCommand(montlyReportDtos));
         }
 
         private bool ReadPreambula(XElement root)
@@ -80,7 +80,7 @@ namespace Economy.Parsers
             if (infoLines.Length != 5)
                 return false;
 
-            montlyReport.WalletDto.User.Name = infoLines[0].Elements().Single().Value;
+            montlyReport.Wallet.SystemUser.Name = infoLines[0].Elements().Single().Value;
             //montlyReport.WalletDto.BancInfo = infoLines[1].Elements().Single().Value;
             //montlyReport.ReportInfo = infoLines[2].Elements().Single().Value;
             montlyReport.StartDate = GetDate(infoLines[3].Elements().Single().Value);
@@ -108,10 +108,10 @@ namespace Economy.Parsers
                 return false;
 
             //montlyReport.ImmutableBalance = StringConverter.StringToDecimal(infoLines[0].Elements().Skip(3).First().Value);
-            montlyReport.WalletDto.Name = infoLines[1].Elements().Skip(1).First().Value;
+            montlyReport.Wallet.Name = infoLines[1].Elements().Skip(1).First().Value;
             //montlyReport.MinBalance = StringConverter.StringToDecimal(infoLines[1].Elements().Skip(3).First().Value);
             var currencyTypeShortName = infoLines[2].Elements().Skip(1).First().Value;
-            montlyReport.WalletDto.CurrencyType = CurrencyTypeDtos.FirstOrDefault(i => i.ShortName.Equals(currencyTypeShortName));
+            montlyReport.Wallet.CurrencyType = CurrencyTypeDtos.FirstOrDefault(i => i.ShortName.Equals(currencyTypeShortName));
             //montlyReport.AvailibleCredit = StringConverter.StringToDecimal(infoLines[2].Elements().Skip(3).First().Value);
             montlyReport.StartBalance = StringConverter.StringToDecimal(infoLines[3].Elements().Skip(3).First().Value);
             hederTable.Remove();
@@ -128,7 +128,7 @@ namespace Economy.Parsers
                 var item = ReadTransactionItem(items[i]);
                 if (item != null)
                 {
-                    montlyReport.TransactionDtos.Add(item);
+                    montlyReport.Transactions.Add(item);
                 }
                 else
                 {
@@ -140,7 +140,7 @@ namespace Economy.Parsers
                 }
             }
 
-            var cur = montlyReport.TransactionDtos.Sum(itm => itm.QuantityByWallet);
+            var cur = montlyReport.Transactions.Sum(itm => itm.QuantityByWallet);
             if (cur + montlyReport.StartBalance != sumAll)
             {
                 throw new ArithmeticException("Суммы не сошлись");

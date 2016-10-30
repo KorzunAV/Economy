@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CQRS.Common;
 using CQRS.Logic;
 using CQRS.Logic.Blos;
 using CQRS.Logic.Commands;
 using CQRS.Logic.Queries;
 using CQRS.Logic.Validation;
-using Economy.DataAccess.BlToolkit.Daos;
+using Economy.DataAccess.NHibernate.Daos;
 using Economy.Dtos;
 using Economy.Logic.Commands;
 using Economy.Logic.Queries;
@@ -22,26 +23,19 @@ namespace Economy.Logic.Blos
             TransactionDao = transactionDao;
         }
 
-        private ExecutionResult<int> SaveRange(BaseCommand command, IBaseSessionManager manager)
+        private ExecutionResult<Guid> Save(IBaseSessionManager manager, BaseCommand command)
         {
-            var dtos = ((TransactionSaveRangeCommand)command).Dtos;
-            //Validate(period);
-            var id = TransactionDao.SaveRange(dtos, manager);
-            return new ExecutionResult<int> { Data = id };
+            var dto = ((TransactionSaveCommand)command).Dto;
+            Validate(dto);
+            var rez = TransactionDao.Save(dto);
+            return new ExecutionResult<Guid> { Data = rez.Id };
         }
-
-        private ExecutionResult<List<TransactionDto>> GetAll(BaseQuery query, IBaseSessionManager manager)
-        {
-            var dtos = TransactionDao.GetAll(manager);
-            return new ExecutionResult<List<TransactionDto>> { Data = dtos };
-        }
-
+        
         public override void RegisterCommandsAndQueries(ICommandQueryRegistrator commandQueryRegistrator)
         {
             // RegisterCommands
-            commandQueryRegistrator.RegisterCommand(TransactionSaveRangeCommand.Id, SaveRange);
+            commandQueryRegistrator.RegisterCommand(TransactionSaveCommand.Id, Save);
             // RegisterQueries
-            commandQueryRegistrator.RegisterQuery(TransactionGetAllQuery.Id, GetAll);
         }
     }
 }

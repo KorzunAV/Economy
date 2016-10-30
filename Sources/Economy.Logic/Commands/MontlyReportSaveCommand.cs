@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using CQRS.Logic.Commands;
 using Economy.Dtos;
 
 namespace Economy.Logic.Commands
 {
-    public class MontlyReportSaveAllCommand : BaseCommand
+    public class MontlyReportSaveCommand : BaseCommand
     {
         public static readonly Guid Id = new Guid("19F013AE-EE10-4F1A-ADE2-6E22B4CC85EF");
 
@@ -14,11 +13,11 @@ namespace Economy.Logic.Commands
             get { return Id; }
         }
 
-        public MontlyReportSaveAllCommand(List<MontlyReportDto> dtos)
+        public MontlyReportSaveCommand(MontlyReportDto dto)
         {
-            Dtos = dtos;
+            Dto = dto;
         }
 
-        public List<MontlyReportDto> Dtos { get; set; }
+        public MontlyReportDto Dto { get; set; }
     }
 }

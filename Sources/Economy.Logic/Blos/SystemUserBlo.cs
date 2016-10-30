@@ -1,7 +1,7 @@
 ﻿using CQRS.Logic;
 using CQRS.Logic.Blos;
 using CQRS.Logic.Validation;
-using Economy.DataAccess.BlToolkit.Daos;
+using Economy.DataAccess.NHibernate.Daos;
 
 namespace Economy.Logic.Blos
 {

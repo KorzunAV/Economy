@@ -10,14 +10,12 @@ namespace Economy.DataAccess.NHibernate.NHMappings
     /// 	Represents base mapping class for entity.
     /// </summary>
     /// <typeparam name = "T"></typeparam>
-    public class ClassMapBase<T> : ClassMap<T>
+    public class BaseMapping<T> : ClassMap<T>
         where T : BaseEntity
     {
-
-        public ClassMapBase()
+        public BaseMapping()
         {
-            Table(typeof(T).Name.Replace("Entity", String.Empty));
-            Id(v => v.Id).GeneratedBy.Increment();
+            Table(typeof(T).Name.Replace("Entity", string.Empty));
         }
 
         protected string Column(Expression<Func<T, object>> expression)
