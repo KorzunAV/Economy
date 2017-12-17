@@ -1,0 +1,23 @@
+﻿
+        #region {3}
+
+        {0} {1};
+
+        /// <summary>
+        ///{2}
+        /// </summary>
+        [MapField("\"{3}\""){4}]
+        public virtual {0} {3}
+        {{
+            get
+            {{
+                return {5} && {6} != null ? {6}.Id : {1};
+            }}
+            set {{ {1} = value; }}
+        }}
+
+		[Association(ThisKey = "\"{3}\"", OtherKey = "\"Id\"", CanBeNull = false)]
+        public virtual {7}Entity {6} {{ get; set; }}
+
+		#endregion {3}
+		

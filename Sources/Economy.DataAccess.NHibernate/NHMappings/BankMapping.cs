@@ -6,10 +6,10 @@ namespace Economy.DataAccess.NHibernate.NHMappings
     {
         public BankMapping()
         {
-            Id(v => v.Id).GeneratedBy.Increment();
-            Map(v => v.Name);
+            Id(v => v.Id, "\"Id\"").GeneratedBy.Increment();
+            Map(v => v.Name, "\"Name\"");
             OptimisticLock.Version();
-            Version(entity => entity.Version);
+            Version(entity => entity.Version).Column("\"Version\"");
 
         }
     }

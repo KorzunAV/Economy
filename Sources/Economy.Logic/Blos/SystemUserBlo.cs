@@ -1,23 +1,26 @@
-﻿using CQRS.Logic;
-using CQRS.Logic.Blos;
-using CQRS.Logic.Validation;
-using Economy.DataAccess.NHibernate.Daos;
+using CQRS.Common;
+using CQRS.Logic;
+using CQRS.Logic.Queries;
+using Economy.Dtos;
+using Economy.Logic.Queries;
+
 
 namespace Economy.Logic.Blos
 {
-    public class SystemUserBlo : BaseBlo
+    public partial class SystemUserBlo
     {
-        private SystemUserDao SystemUserDao { get; set; }
-
-        public SystemUserBlo(ValidationManager validationManager, SystemUserDao systemUserDao)
-            : base(validationManager)
+        partial void RegisterCommandsAndQueries2(ICommandQueryRegistrator commandQueryRegistrator)
         {
-            SystemUserDao = systemUserDao;
+            // RegisterQueries
+            commandQueryRegistrator.RegisterQuery(GetSystemUserByLoginQuery.Id, GetByLogin);
         }
 
-        public override void RegisterCommandsAndQueries(ICommandQueryRegistrator commandQueryRegistrator)
+        private ExecutionResult<SystemUserDto> GetByLogin(IBaseSessionManager manager, BaseQuery query)
         {
-            throw new System.NotImplementedException();
+            var login = ((GetSystemUserByLoginQuery)query).Login;
+            //Validate(dto);
+            var result = _systemuserDao.GetByLogin(manager, login);
+            return new ExecutionResult<SystemUserDto> { Data = result };
         }
     }
 }

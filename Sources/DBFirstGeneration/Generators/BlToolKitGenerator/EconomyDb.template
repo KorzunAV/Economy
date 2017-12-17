@@ -1,0 +1,13 @@
+﻿//---------------------------------------------------------------------------------------------------
+// auto-generated
+//---------------------------------------------------------------------------------------------------
+using BLToolkit.Data.Linq;
+using Economy.DataAccess.BlToolkit.Entities;
+
+namespace Economy.DataAccess.BlToolkit.DbManagers
+{{
+    internal partial class EconomyDb
+    {{
+{0}
+    }}
+}}

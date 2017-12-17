@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using CQRS.Common;
@@ -8,49 +9,44 @@ using Economy.Dtos;
 
 namespace Economy.DataAccess.BlToolkit.Daos
 {
-    public class CourseArhiveDao : BaseDao
+    public partial class CourseArhiveDao
     {
         #region Commands
-        public void SaveAll(IBaseSessionManager manager, List<CourseArhiveDto> dtos)
-        {
-            foreach (var dto in dtos)
-            {
-                Save(manager, dto);
-            }
-        }
 
-        public void Save(IBaseSessionManager manager, CourseArhiveDto dto)
-        {
-            Insert<CourseArhiveEntity, CourseArhiveDto>((EconomyDb)manager, dto);
-        }
-        #endregion
+
+
+        #endregion Commands
 
         #region Queries
-        public List<CourseArhiveDto> GetAll(IBaseSessionManager manager)
+        public DateTime? GetLastData(IBaseSessionManager manager, BankDto dto)
         {
-            var db = (EconomyDb)manager;
-            var query = from c in db.CourseArhiveTable
-                        select c;
-            var entities = query.ToList();
-            return Mapper.Map<List<CourseArhiveEntity>, List<CourseArhiveDto>>(entities);
-        }
-
-        public CourseArhiveDto GetLast(IBaseSessionManager manager)
-        {
-            var db = (EconomyDb)manager;
-
-            var sortedRows = from b in db.CourseArhiveTable
-                             orderby b.RegDate descending
-                             select b;
-            var lastest = sortedRows.Take(1);
-            if (lastest.Any())
+            if (dto.Id == 0)
             {
-                var value = lastest.FirstOrDefault();
-                return Mapper.Map<CourseArhiveEntity, CourseArhiveDto>(value);
+                dto = InsertOrSelect<BankDto, BankEntity>(manager, dto);
             }
 
-            return null;
+            using (var db = new EconomyDb())
+            {
+                var rez = db.CourseArhiveTable.Where(e => e.BankId == dto.Id).OrderByDescending(e => e.RegDate).Select(e => e.RegDate).FirstOrDefault();
+                return rez;
+            }
         }
-        #endregion
+
+        public List<CourseArhiveDto> GetAll(IBaseSessionManager manager, BankDto dto)
+        {
+            if (dto.Id == 0)
+            {
+                dto = InsertOrSelect<BankDto, BankEntity>(manager, dto);
+            }
+
+            using (var db = new EconomyDb())
+            {
+                var rez = db.CourseArhiveTable.Where(e => e.BankId == dto.Id).OrderByDescending(e => e.RegDate).ToList();
+                return Mapper.Map<List<CourseArhiveEntity>, List<CourseArhiveDto>>(rez);
+            }
+        }
+        #endregion Queries
+
+
     }
 }

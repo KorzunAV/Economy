@@ -49,16 +49,6 @@ namespace Economy.DataAccess.NHibernate.Entities
         /// </summary>
         public virtual List<TransactionEntity> Transactions { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            if (obj is MontlyReportEntity)
-            {
-                var typed = (MontlyReportEntity)obj;
-                if (typed.Id != Id)
-                    return false;
-                return true;
-            }
-            return false;
-        }
+
     }
 }

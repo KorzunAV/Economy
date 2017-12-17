@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Economy.Dtos;
 using Economy.Logic.Commands;
+using Economy.Logic.Commands.SaveCommands;
 using NUnit.Framework;
 
 namespace Economy.Test.LogicTests
@@ -10,7 +10,7 @@ namespace Economy.Test.LogicTests
     public class CourseArhive : TestFixtureBase
     {
         [Test]
-        public void CourseArhiveSaveCommandTest()
+        public void CourseArhiveSaveCommandsuccesTest()
         {
             var cur = new CurrencyTypeDto
             {
@@ -18,25 +18,72 @@ namespace Economy.Test.LogicTests
                 ShortName = "TST"
             };
 
+            var bank = new BankDto
+            {
+                Name = "TestBank"
+            };
+
+            var dto = new CourseArhiveDto
+            {
+                Buy = 10,
+                Sel = 9,
+                RegDate = DateTime.Today,
+                CurrencyType = cur,
+                Bank = bank
+            };
+            var result = CommandQueryDispatcher.ExecuteCommand<CourseArhiveDto>(new CourseArhiveSaveCommand(dto));
+            Assert.IsTrue(result.Data != null);
+
+        }
+
+        [Test]
+        public void CourseArhiveSaveCommandErrorMinTest()
+        {
+            var cur = new CurrencyTypeDto
+            {
+                Name = "Test",
+                ShortName = "TST"
+            };
+
+            var bank = new BankDto
+            {
+                Name = "TestBank"
+            };
+
             var minDto = new CourseArhiveDto
             {
                 Buy = decimal.MinValue,
                 Sel = decimal.MinValue,
                 RegDate = DateTime.MinValue,
-                CurrencyType = cur
+                CurrencyType = cur,
+                Bank = bank
             };
-            var command = new CourseArhiveSaveCommand { Dto = minDto };
-            CommandQueryDispatcher.ExecuteCommand<bool>(command);
+            CommandQueryDispatcher.ExecuteCommand<CourseArhiveDto>(new CourseArhiveSaveCommand(minDto));
+        }
 
+        [Test]
+        public void CourseArhiveSaveCommandErrorMaxTest()
+        {
+            var cur = new CurrencyTypeDto
+            {
+                Name = "Test",
+                ShortName = "TST"
+            };
+
+            var bank = new BankDto
+            {
+                Name = "TestBank"
+            };
+            
             var maxDto = new CourseArhiveDto
             {
                 Buy = decimal.MaxValue,
                 Sel = decimal.MaxValue,
                 RegDate = DateTime.MaxValue,
-                CurrencyType = cur
+                CurrencyType = cur,
+                Bank = bank
             };
-            command = new CourseArhiveSaveCommand { Dto = maxDto };
-            CommandQueryDispatcher.ExecuteCommand<bool>(command);
+            CommandQueryDispatcher.ExecuteCommand<CourseArhiveDto>(new CourseArhiveSaveCommand(maxDto));
         }
     }
 }

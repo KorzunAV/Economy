@@ -25,8 +25,8 @@ namespace Economy.Logic.IoC
             Bind<BaseBlo>()
                .To<TransactionBlo>()
                .InSingletonScope();
-
-            Bind<ICommandQueryDispatcher, ICommandQueryRegistrator>()
+            
+           Bind<ICommandQueryDispatcher, ICommandQueryRegistrator>()
                 .To<CommandQueryDispatcherTest>()
                 .InSingletonScope()
                 .WithConstructorArgument(new ConstructorArgument("blos", Kernel.GetAll<BaseBlo>()))

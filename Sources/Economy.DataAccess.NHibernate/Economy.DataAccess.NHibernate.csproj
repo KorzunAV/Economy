@@ -73,6 +73,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Data" />
   </ItemGroup>
@@ -86,6 +88,8 @@
     <Compile Include="Daos\SystemUserDao.cs" />
     <Compile Include="Daos\TransactionDao.cs" />
     <Compile Include="Daos\WalletDao.cs" />
+    <Compile Include="IoC\DataAccessModule.Dao.cs" />
+    <Compile Include="NHibernate\SessionManagerFactory.cs" />
     <Compile Include="Entities\BankEntity.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\CourseArhiveEntity.cs" />
@@ -121,7 +125,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataSchema\Create.sql" />
+    <None Include="DataSchema\Create.sql" />
     <Content Include="DataSchema\Sql\Indexes\ReadMe.txt" />
     <Content Include="DataSchema\Sql\Procedures\ReadMe.txt" />
   </ItemGroup>

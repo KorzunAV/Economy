@@ -6,7 +6,7 @@ using Ninject.Parameters;
 
 namespace Economy.DataAccess.NHibernate.IoC
 {
-    public class DataAccessModule : NinjectModule
+    public partial class DataAccessModule : NinjectModule
     {
         public override void Load()
         {
@@ -17,25 +17,17 @@ namespace Economy.DataAccess.NHibernate.IoC
         private void BindImmutable()
         {
             Bind<ISessionStorage>()
-               .To<NHibernateSessionStorage>()
-               .InSingletonScope();
+                .To<NHibernateSessionStorage>()
+                .InSingletonScope();
 
-            Bind<IBaseSessionManager>()
+            Bind<IBaseSessionManager, ISessionManager>()
                 .To<SessionManager>()
                 .InSingletonScope()
                 .WithConstructorArgument(new ConstructorArgument("storage", Kernel.GetAll<ISessionStorage>()));
 
-            var t1 = Kernel.Get<ISessionStorage>();
-            var t2 = Kernel.Get<IBaseSessionManager>();
+            Bind<IBaseSessionManagerFactory>()
+                .To<SessionManagerFactory>()
+                .InTransientScope();
         }
-        
-        private void BindDaos()
-        {
-            //Bind<BaseDao>()
-            //    .ToSelf()
-            //    .InSingletonScope();
-            
-        }
-
     }
 }

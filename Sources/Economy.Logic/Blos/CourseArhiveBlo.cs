@@ -1,45 +1,38 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+using System;
+using System.Collections.Generic;
 using CQRS.Common;
 using CQRS.Logic;
-using CQRS.Logic.Blos;
-using CQRS.Logic.Commands;
 using CQRS.Logic.Queries;
-using CQRS.Logic.Validation;
-using Economy.DataAccess.NHibernate.Daos;
 using Economy.Dtos;
-using Economy.Logic.Commands;
 using Economy.Logic.Queries;
+
 
 namespace Economy.Logic.Blos
 {
-    public class CourseArhiveBlo : BaseBlo
+    public partial class CourseArhiveBlo
     {
-        private CourseArhiveDao CourseArhiveDao { get; set; }
-        private CurrencyTypeDao CurrencyTypeDao { get; set; }
-
-        public CourseArhiveBlo(ValidationManager validationManager, CourseArhiveDao belinvestCourseArhiveDao, CurrencyTypeDao currencyTypeDao)
-            : base(validationManager)
-        {
-            CourseArhiveDao = belinvestCourseArhiveDao;
-            CurrencyTypeDao = currencyTypeDao;
-        }
-
-        private ExecutionResult<bool> Save(IBaseSessionManager manager, BaseCommand command)
-        {
-            var dto = ((CourseArhiveSaveCommand)command).Dto;
-            //Validate(period);
-            CourseArhiveDao.Save(dto);
-            return new ExecutionResult<bool> { Data = true };
-        }
-
-        
-      
-        public override void RegisterCommandsAndQueries(ICommandQueryRegistrator commandQueryRegistrator)
+        partial void RegisterCommandsAndQueries2(ICommandQueryRegistrator commandQueryRegistrator)
         {
             // RegisterCommands
-            commandQueryRegistrator.RegisterCommand(CourseArhiveSaveCommand.Id, Save);
             // RegisterQueries
+            commandQueryRegistrator.RegisterQuery(CourseArhiveGetLastDataQuery.Id, GetLastData);
+            commandQueryRegistrator.RegisterQuery(CourseArhiveGetAllQuery.Id, GetAll);
+        }
+
+        private ExecutionResult<DateTime?> GetLastData(IBaseSessionManager manager, BaseQuery command)
+        {
+            var dto = ((CourseArhiveGetLastDataQuery)command).Bank;
+            //Validate(dto);
+            var result = _coursearhiveDao.GetLastData(manager, dto);
+            return new ExecutionResult<DateTime?> { Data = result };
+        }
+
+        private ExecutionResult<List<CourseArhiveDto>> GetAll(IBaseSessionManager manager, BaseQuery command)
+        {
+            var dto = ((CourseArhiveGetAllQuery)command).Bank;
+            //Validate(dto);
+            var result = _coursearhiveDao.GetAll(manager, dto);
+            return new ExecutionResult<List<CourseArhiveDto>> { Data = result };
         }
     }
 }

@@ -1,0 +1,23 @@
+﻿//---------------------------------------------------------------------------------------------------
+// auto-generated
+//---------------------------------------------------------------------------------------------------
+using System;
+using CQRS.Logic.Queries;
+using Economy.Dtos;
+
+namespace Economy.Logic.Queries.BaseQueries
+{{
+    public class Get{0}ByIdQuery : BaseQuery
+    {{
+        public static readonly Guid Id = new Guid("{1}");
+
+        public override Guid QueryId => Id;
+
+        public int Id {{ get; set; }}
+
+		public Get{0}ByIdQuery(int id)
+        {{
+            Id = id;
+        }}
+    }}
+}}

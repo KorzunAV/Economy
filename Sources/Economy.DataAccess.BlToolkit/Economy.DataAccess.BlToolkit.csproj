@@ -30,16 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BLToolkit.4, Version=4.3.4.0, Culture=neutral, PublicKeyToken=b1d3f6ab3aadaca3, processorArchitecture=MSIL">
-      <HintPath>..\packages\BLToolkit.4.3.4\lib\net40\BLToolkit.4.dll</HintPath>
+    <Reference Include="BLToolkit.4, Version=4.3.5.0, Culture=neutral, PublicKeyToken=b1d3f6ab3aadaca3, processorArchitecture=MSIL">
+      <HintPath>..\packages\BLToolkit.4.3.5\lib\net40\BLToolkit.4.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BLToolkit.Data.DataProvider.PostgreSQL.4, Version=4.3.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BLToolkit.PostgreSql.4.3.4\lib\net40\BLToolkit.Data.DataProvider.PostgreSQL.4.dll</HintPath>
+    <Reference Include="BLToolkit.Data.DataProvider.PostgreSQL.4, Version=4.3.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BLToolkit.PostgreSql.4.3.5\lib\net40\BLToolkit.Data.DataProvider.PostgreSQL.4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -47,8 +47,8 @@
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Npgsql, Version=3.1.8.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Npgsql.3.1.8\lib\net451\Npgsql.dll</HintPath>
+    <Reference Include="Npgsql, Version=3.1.9.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.3.1.9\lib\net451\Npgsql.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Npgsql.BulkCopy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -64,32 +64,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutomapperMappings\EntityDtoMappings.cs" />
-    <Compile Include="Daos\BankDao.cs" />
+    <Compile Include="AutomapperMappings\EntityDtoMappings.gen.cs" />
+    <Compile Include="Daos\BankDao.gen.cs" />
     <Compile Include="Daos\BaseDao.cs" />
     <Compile Include="Daos\CourseArhiveDao.cs" />
-    <Compile Include="Daos\CurrencyTypeDao.cs" />
-    <Compile Include="Daos\MontlyReportDao.cs" />
+    <Compile Include="Daos\CourseArhiveDao.gen.cs" />
+    <Compile Include="Daos\CurrencyTypeDao.gen.cs" />
+    <Compile Include="Daos\MontlyReportDao.gen.cs" />
     <Compile Include="Daos\QueryBuilderHelper.cs" />
     <Compile Include="Daos\SystemUserDao.cs" />
-    <Compile Include="Daos\TransactionDao.cs" />
+    <Compile Include="Daos\SystemUserDao.gen.cs" />
+    <Compile Include="Daos\TransactionDao.gen.cs" />
     <Compile Include="Daos\WalletDao.cs" />
+    <Compile Include="Daos\WalletDao.gen.cs" />
     <Compile Include="DbManagers\DbManagerFactory.cs" />
     <Compile Include="DbManagers\EconomyDb.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DbManagers\EconomyDb.gen.cs" />
     <Compile Include="DbManagers\PostgreDbBase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DbManagers\PostgreSqlDataProvider.cs" />
-    <Compile Include="Entities\BankEntity.cs" />
+    <Compile Include="Entities\BankEntity.gen.cs" />
+    <Compile Include="Entities\CourseArhiveEntity.gen.cs" />
+    <Compile Include="Entities\CurrencyTypeEntity.gen.cs" />
+    <Compile Include="Entities\MontlyReportEntity.gen.cs" />
+    <Compile Include="Entities\SystemUserEntity.gen.cs" />
+    <Compile Include="Entities\TransactionEntity.gen.cs" />
+    <Compile Include="Entities\WalletEntity.gen.cs" />
+    <Compile Include="IoC\DataAccessModule.Dao.gen.cs" />
+    <Compile Include="UniqueAttribute.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
-    <Compile Include="Entities\CourseArhiveEntity.cs" />
-    <Compile Include="Entities\CurrencyTypeEntity.cs" />
-    <Compile Include="Entities\MontlyReportEntity.cs" />
-    <Compile Include="Entities\SystemUserEntity.cs" />
-    <Compile Include="Entities\TransactionEntity.cs" />
-    <Compile Include="Entities\WalletEntity.cs" />
     <Compile Include="IoC\DataAccessModule.cs" />
     <Compile Include="IoC\NinjectExtensions.cs" />
     <Compile Include="Templates\EconomyDbDtoGenerator.generated.cs">
@@ -97,17 +103,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Templates\EconomyDb.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EconomyDb.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Templates\BLToolkitDto.ttinclude" />
-    <None Include="Templates\BLToolkit.ttinclude" />
     <None Include="packages.config" />
     <None Include="Templates\PostgreSQL.ttinclude" />
     <None Include="Templates\ValidationAttributes.ttinclude" />
@@ -117,14 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BulkCopyConfig.xml" />
-    <Content Include="DataSchema\SQL\Create.sql" />
     <Content Include="Templates\EconomyDbDtoGenerator.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EconomyDbDtoGenerator.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\EconomyDb.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EconomyDb.generated.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -141,11 +136,7 @@
       <Name>Economy.Dtos</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataSchema\data\Immutable\" />
-    <Folder Include="DataSchema\data\TestData\" />
-    <Folder Include="DataSchema\SQL\Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

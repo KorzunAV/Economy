@@ -28,16 +28,6 @@ namespace Economy.DataAccess.NHibernate.Entities
         /// </summary>
         public virtual List<CourseArhiveEntity> CourseArhives { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            if (obj is BankEntity)
-            {
-                var typed = (BankEntity)obj;
-                if (typed.Id != Id)
-                    return false;
-                return true;
-            }
-            return false;
-        }
+
     }
 }

@@ -1,0 +1,41 @@
+﻿//---------------------------------------------------------------------------------------------------
+// auto-generated
+//---------------------------------------------------------------------------------------------------
+using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
+using CQRS.Common;
+using Economy.DataAccess.BlToolkit.DbManagers;
+using Economy.DataAccess.BlToolkit.Entities;
+using Economy.Dtos;
+
+namespace Economy.DataAccess.BlToolkit.Daos
+{{
+    public partial class {0}Dao : BaseDao
+    {{
+		#region Commands
+
+		public {0}Dto Save(IBaseSessionManager manager, {0}Dto dto)
+        {{
+            return InsertOrSelect<{0}Dto, {0}Entity>(manager, dto);
+        }}
+
+		public List<{0}Dto> SaveList(IBaseSessionManager manager, List<{0}Dto> dtos)
+        {{
+            return InsertOrSelectList<{0}Dto, {0}Entity>(manager, dtos);
+        }}
+
+		#endregion Commands
+
+        #region Queries
+
+		public static {0}Dto GetById(IBaseSessionManager manager, int id)
+        {{
+			var db = (EconomyDb)manager;
+            var entity = db.{0}Table.SingleOrDefault(i=>i.Id == id);
+			return Mapper.Map<{0}Entity,{0}Dto>(entity);
+        }}
+
+		#endregion Queries
+    }}
+}}

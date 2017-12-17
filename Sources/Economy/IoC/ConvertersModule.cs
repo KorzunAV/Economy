@@ -1,4 +1,5 @@
 ﻿using Economy.Parsers;
+using Economy.ViewModels;
 using Ninject.Modules;
 
 namespace Economy.IoC

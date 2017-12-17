@@ -1,0 +1,58 @@
+﻿//---------------------------------------------------------------------------------------------------
+// auto-generated
+//---------------------------------------------------------------------------------------------------
+using System.Collections.Generic;
+using CQRS.Common;
+using CQRS.Logic;
+using CQRS.Logic.Blos;
+using CQRS.Logic.Commands;
+using CQRS.Logic.Queries;
+using CQRS.Logic.Validation;
+using Economy.DataAccess.BlToolkit.Daos;
+using Economy.Dtos;
+using Economy.Logic.Commands.SaveCommands;
+using Economy.Logic.Commands.SaveListCommands;
+using Economy.Logic.Queries;
+
+
+namespace Economy.Logic.Blos
+{{
+    public partial class {0}Blo : BaseBlo
+    {{
+	    private readonly {0}Dao _{1}Dao;
+
+        public {0}Blo(ValidationManager validationManager, {0}Dao {1}Dao)
+            : base(validationManager)
+        {{
+            _{1}Dao = {1}Dao;
+        }}	
+
+		private ExecutionResult<{0}Dto> Save(IBaseSessionManager manager, BaseCommand command)
+        {{
+            var dto = (({0}SaveCommand)command).Dto;
+            //Validate(dto);
+            var result = _{1}Dao.Save(manager, dto);
+            return new ExecutionResult<{0}Dto> {{ Data = result }};
+        }}
+		
+		private ExecutionResult<List<{0}Dto>> SaveList(IBaseSessionManager manager, BaseCommand command)
+        {{
+            var dtos = (({0}SaveListCommand)command).Dtos;
+            //Validate(dto);
+            var result = _{1}Dao.SaveList(manager, dtos);
+            return new ExecutionResult<List<{0}Dto>> {{ Data = result }};
+        }}
+
+        public override void RegisterCommandsAndQueries(ICommandQueryRegistrator commandQueryRegistrator)
+        {{
+            // RegisterCommands
+            commandQueryRegistrator.RegisterCommand({0}SaveCommand.Id, Save);
+            commandQueryRegistrator.RegisterCommand({0}SaveListCommand.Id, SaveList);
+            // RegisterQueries
+
+			RegisterCommandsAndQueries2(commandQueryRegistrator);
+        }}
+				
+        partial void RegisterCommandsAndQueries2(ICommandQueryRegistrator commandQueryRegistrator);
+    }}
+}}

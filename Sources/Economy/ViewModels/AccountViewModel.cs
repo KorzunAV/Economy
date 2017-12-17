@@ -10,7 +10,7 @@ namespace Economy.ViewModels
     {
         #region Поля
 
-        private string _accountNumber;
+        private int _walletId;
         private string _bancInfo;
         private decimal _startBalance;
         private CurrencyTypeDto _currencyType;
@@ -25,10 +25,10 @@ namespace Economy.ViewModels
         /// <summary>
         /// Номер счета
         /// </summary>
-        public string AccountNumber
+        public int WalletId
         {
-            get { return _accountNumber; }
-            set { SetProperty(ref _accountNumber, value); }
+            get { return _walletId; }
+            set { SetProperty(ref _walletId, value); }
         }
 
 
@@ -112,7 +112,7 @@ namespace Economy.ViewModels
 
             if (IsDesignTime) //данные для теста в режиме дизайна
             {
-                AccountNumber = "AccountNumber";
+                WalletId = "";
                 BancInfo = "BancInfo";
                 StartBalance = 0;
                 CurrencyType = new CurrencyTypeDto { Name = "Currency", ShortName = "Currency" };
@@ -186,7 +186,7 @@ namespace Economy.ViewModels
 
         public override string ToString()
         {
-            return $"{AccountNumber} {BancInfo}";
+            return $"{WalletId} {BancInfo}";
         }
     }
 }

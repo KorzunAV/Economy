@@ -1,0 +1,14 @@
+﻿using AutoMapper;
+using {0}.Entities;
+using Economy.Dtos;
+
+namespace {0}.AutomapperMappings
+{{
+    public class EntityDtoMappings
+    {{
+        public static void Initialize(IMapperConfigurationExpression cfg)
+        {{
+{1}
+        }}
+    }}
+}}

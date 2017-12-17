@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using AutoMapper;
 using Economy.Models;
 using CommonLibs.Serialization;
 using CQRS.Logic;
-using Economy.AutomapperMappings;
 using Economy.Common;
-using Economy.DataAccess.NHibernate.IoC;
 using Economy.Dtos;
 using Economy.IoC;
-using Economy.Logic.IoC;
 using Economy.Logic.Queries;
 using Economy.Parsers;
 using Ninject;
@@ -20,9 +16,6 @@ namespace Economy.ViewModels
 {
     public class ViewModelLocator : ViewModelBase
     {
-        private readonly IKernel _kernel = new StandardKernel(new DataAccessModule(), new LogicModule(), new ConvertersModule());
-        private ICommandQueryDispatcher _commandQueryDispatcher;
-
         public const string DataDir = @"..\..\..\Economy\Data\";
         public const string BelinvestDirPath = DataDir + @"Sources\Mails\Belinvest";
         public const string PriorDirPath = DataDir + @"Sources\Mails\Prior";
@@ -33,11 +26,6 @@ namespace Economy.ViewModels
         public const string HandsDirPathOut = DataDir + @"Converted\Hands";
         public const string DirHistoryPathOut = DataDir + @"Converted\History\";
 
-
-        protected ICommandQueryDispatcher CommandQueryDispatcher
-        {
-            get { return _commandQueryDispatcher ?? (_commandQueryDispatcher = _kernel.Get<ICommandQueryDispatcher>()); }
-        }
 
         public RelayCommand UpdateDataFilesCommand { get; private set; }
 
@@ -107,7 +95,7 @@ namespace Economy.ViewModels
             : base(isDebug)
         {
             UpdateDataFilesCommand = new RelayCommand(UpdateDataFiles);
-            Mapper.Initialize(ViewModelMappings.Initialize);
+
             Accounts = new ExtendedObservableCollection<AccountViewModel>();
             SelectedTransactions = new ExtendedObservableCollection<TransactionItemViewModel>();
             Information = new InformationViewModel();
@@ -142,39 +130,46 @@ namespace Economy.ViewModels
             Accounts.AddRange(accountViewModels);
         }
 
-        private static IEnumerable<MontlyReport> LoadMontlyReports()
+        private static IEnumerable<MontlyReportDto> LoadMontlyReports()
         {
-            var belinvestConvertedPaths = Directory.GetFiles(BelinvestDirPathOut);
-            var bml = belinvestConvertedPaths.Select(XmlSerialization.Deserialize<MontlyReport>);
-            var priorConvertedPaths = Directory.GetFiles(PriorDirPathOut);
-            var pcp = priorConvertedPaths.Select(XmlSerialization.Deserialize<MontlyReport>);
-            var handsConvertedPaths = Directory.GetFiles(HandsDirPathOut);
-            var hcp = handsConvertedPaths.Select(XmlSerialization.Deserialize<MontlyReport>);
-            return bml.Union(pcp).Union(hcp);
+            var bank = new BankDto { Name = CourseArhiveConverter.BankName };
+            var bml = App.CommandQueryDispatcher.ExecuteQuery<List<MontlyReportDto>>(new MontlyReportGetAllQuery(bank)).Data;
+
+            return bml;
+            //var belinvestConvertedPaths = Directory.GetFiles(BelinvestDirPathOut);
+            //var bml = belinvestConvertedPaths.Select(XmlSerialization.Deserialize<MontlyReport>);
+            //var priorConvertedPaths = Directory.GetFiles(PriorDirPathOut);
+            //var pcp = priorConvertedPaths.Select(XmlSerialization.Deserialize<MontlyReport>);
+            //var handsConvertedPaths = Directory.GetFiles(HandsDirPathOut);
+            //var hcp = handsConvertedPaths.Select(XmlSerialization.Deserialize<MontlyReport>);
+            //return bml.Union(pcp).Union(hcp);
         }
 
         private History LoadHistory()
         {
-            var result = CommandQueryDispatcher.ExecuteQuery<List<CourseArhiveDto>>(new CourseArhiveGetAllQuery());
+            var bank = new BankDto { Name = CourseArhiveConverter.BankName };
+
+            var result = App.CommandQueryDispatcher.ExecuteQuery<List<CourseArhiveDto>>(new CourseArhiveGetAllQuery(bank));
 
             return new History(result.Data, new CurrencyTypeDto());
         }
 
-        private static List<AccountViewModel> ConvertMontlyReportToAccountReport(IEnumerable<MontlyReport> montlyReport)
+        private static List<AccountViewModel> ConvertMontlyReportToAccountReport(IEnumerable<MontlyReportDto> montlyReport)
         {
             var accounts = new List<AccountViewModel>();
             var groups = montlyReport
-                .OrderBy(i => i.CreatedDateTime)
-                .GroupBy(i => i.AccountNumber);
+                .OrderBy(i => i.StartDate)
+                .GroupBy(i => i.WalletId);
+
             foreach (var itemList in groups)
             {
                 var buf = itemList.First();
                 var accountReport = new AccountViewModel
                 {
-                    AccountNumber = buf.AccountNumber,
-                    BancInfo = buf.BancInfo,
-                    StartBalance = buf.PrevBalance,
-                    CurrencyType = buf.AccountCurrency
+                    WalletId = buf.Wallet.Name,
+                    BancInfo = buf.Wallet.Bank.Name,
+                    StartBalance = buf.Wallet.StartBalance ?? 0,
+                    CurrencyType = buf.Wallet.CurrencyType
                 };
 
                 foreach (var item in itemList)
@@ -187,19 +182,19 @@ namespace Economy.ViewModels
             return accounts;
         }
 
-        private static void ValidateReports(List<AccountViewModel> accountViewModels, IEnumerable<MontlyReport> montlyReport)
+        private static void ValidateReports(List<AccountViewModel> accountViewModels, IEnumerable<MontlyReportDto> montlyReport)
         {
-            var groups = montlyReport.OrderBy(i => i.CreatedDateTime).GroupBy(i => i.AccountNumber);
+            var groups = montlyReport.OrderBy(i => i.StartDate).GroupBy(i => i.WalletId);
             foreach (var itemList in groups)
             {
                 var errors = new List<string>();
-                var balans = itemList.First().PrevBalance;
-                DateTime? startDate = null;
-                DateTime? endDate = null;
-                DateTime? createdDateTime = null;
+                var balans = itemList.First().StartBalance;
+                //DateTime? startDate = null;
+                //DateTime? endDate = null;
+                //DateTime? createdDateTime = null;
                 foreach (var item in itemList)
                 {
-                    if (balans != item.PrevBalance)
+                    if (balans != item.StartBalance)
                     {
                         errors.Add(
                             string.Format(
@@ -207,12 +202,12 @@ namespace Economy.ViewModels
                                 createdDateTime, startDate, endDate, balans, Environment.NewLine,
                                 item.CreatedDateTime, item.StartDate, item.EndDate, item.PrevBalance, "-----------"));
                     }
-                    startDate = item.StartDate;
-                    endDate = item.EndDate;
-                    createdDateTime = item.CreatedDateTime;
-                    balans = item.PrevBalance + item.TransactionDtos.Sum(i => i.QuantityByWallet.Value);
+                    //startDate = item.StartDate;
+                    //endDate = item.EndDate;
+                    //createdDateTime = item.CreatedDateTime;
+                    balans = item.StartBalance + item.Transactions.Sum(i => i.QuantityByWallet.Value);
                 }
-                var accountViewModel = accountViewModels.SingleOrDefault(i => i.AccountNumber == itemList.Key);
+                var accountViewModel = accountViewModels.SingleOrDefault(i => i.WalletId == itemList.Key);
                 if (accountViewModel == null)
                 {
                     throw new NullReferenceException("Непредвиденное исключение! Не найдено соответствие в данных.");
@@ -224,9 +219,10 @@ namespace Economy.ViewModels
         public async void UpdateDataFiles(object data)
         {
             State.CreateUpdateAction(StateViewModel.Actions.MailConvert, "Выполняется обновление данных.");
-            TryConvert(ConvertersModule.PriorConverter, PriorDirPath, PriorDirPathOut, UpdateDataFilesState);
-            TryConvert(ConvertersModule.BelinvestConverter, BelinvestDirPath, BelinvestDirPathOut, UpdateDataFilesState);
             TryConvert(ConvertersModule.HistoryConverter, DirHistoryPath, DirHistoryPathOut, UpdateDataFilesState);
+            //TryConvert(ConvertersModule.PriorConverter, PriorDirPath, PriorDirPathOut, UpdateDataFilesState);
+            TryConvert(ConvertersModule.BelinvestConverter, BelinvestDirPath, BelinvestDirPathOut, UpdateDataFilesState);
+
             LoadData();
         }
 
@@ -234,7 +230,7 @@ namespace Economy.ViewModels
         {
             try
             {
-                var parser = _kernel.Get<IConverter>(parserKey);
+                var parser = App.Kernel.Get<IConverter>(parserKey);
                 if (!Directory.Exists(dirPath))
                     throw new DirectoryNotFoundException(dirPath);
                 if (!Directory.Exists(dirPathOut))
@@ -246,16 +242,17 @@ namespace Economy.ViewModels
 
                 foreach (var filePath in paths)
                 {
-                    if (Path.GetExtension(filePath) == ".txt")
+                    var ext = Path.GetExtension(filePath);
+                    if (ext == ".txt" || ext == ".htm")
                     {
                         index++;
                         var fpwe = Path.GetFileNameWithoutExtension(filePath) ?? string.Empty;
-                        if (!convertedPaths.Any(f => fpwe.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.CurrentCultureIgnoreCase)) ||
-                            parserKey == ConvertersModule.HistoryConverter)
-                        {
-                            var outpath = Path.Combine(dirPathOut, Path.GetFileNameWithoutExtension(filePath) + ".xml");
-                            parser.ConvertAndSave(filePath, outpath);
-                        }
+                        //if (!convertedPaths.Any(f => fpwe.Equals(Path.GetFileNameWithoutExtension(f), StringComparison.CurrentCultureIgnoreCase)) ||
+                        //    parserKey == ConvertersModule.HistoryConverter)
+                        //{
+                        var outpath = Path.Combine(dirPathOut, Path.GetFileNameWithoutExtension(filePath) + ".xml");
+                        parser.ConvertAndSave(filePath, outpath);
+                        //}
                         if (callback != null)
                             callback(fpwe, paths.Length, index);
                     }
@@ -298,7 +295,7 @@ namespace Economy.ViewModels
                 return model.QuantityByCurrency;
             }
             var currencyType = model.CurrencyType == null ? model.Account.CurrencyType : model.CurrencyType;
-            var historyPrice = History.GetNearest(model.TransactionDate.Value.Date, currencyType);
+            var historyPrice = History.GetNearest(model.TransactionDate.Value.Date, currencyType.Id);
             if (historyPrice != null)
                 return model.QuantityByAccount.Value * historyPrice.Buy;
 

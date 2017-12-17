@@ -15,7 +15,7 @@ namespace Economy.DataAccess.NHibernate.NHMappings
     {
         public BaseMapping()
         {
-            Table(typeof(T).Name.Replace("Entity", string.Empty));
+            Table($"\"{typeof(T).Name.Replace("Entity", string.Empty)}\"");
         }
 
         protected string Column(Expression<Func<T, object>> expression)

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CQRS.Logic;
-using Economy.DataAccess.NHibernate.AutomapperMappings;
-using Economy.DataAccess.NHibernate.IoC;
+using Economy.DataAccess.BlToolkit.AutomapperMappings;
+using Economy.DataAccess.BlToolkit.IoC;
 using Economy.Logic.AutomapperMappings;
 using Economy.Logic.IoC;
 using Ninject;

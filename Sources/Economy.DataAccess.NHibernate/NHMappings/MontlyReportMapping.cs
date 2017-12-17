@@ -6,14 +6,14 @@ namespace Economy.DataAccess.NHibernate.NHMappings
     {
         public MontlyReportMapping()
         {
-            Id(v => v.Id).GeneratedBy.Guid();
-            Map(v => v.StartBalance);
-            Map(v => v.EndBalance);
-            Map(v => v.StartDate);
-            Map(v => v.WalletId);
-            References(v => v.Wallet).Column(Column(v => v.WalletId)).ReadOnly().LazyLoad();
+            Id(v => v.Id, "\"Id\"").GeneratedBy.Guid();
+            Map(v => v.StartBalance, "\"StartBalance\"");
+            Map(v => v.EndBalance, "\"EndBalance\"");
+            Map(v => v.StartDate, "\"StartDate\"");
+            Map(v => v.WalletId, "\"WalletId\"");
+            References(v => v.Wallet, "\"WalletId\"").Column(Column(v => v.WalletId)).ReadOnly().LazyLoad();
             OptimisticLock.Version();
-            Version(entity => entity.Version);
+            Version(entity => entity.Version).Column("\"Version\"");
 
         }
     }

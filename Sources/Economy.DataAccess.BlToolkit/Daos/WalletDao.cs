@@ -1,23 +1,31 @@
-﻿using System.Collections.Generic;
-using CQRS.Common;
+using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
+using Economy.DataAccess.BlToolkit.DbManagers;
+using Economy.DataAccess.BlToolkit.Entities;
 using Economy.Dtos;
 
 namespace Economy.DataAccess.BlToolkit.Daos
 {
-    public class WalletDao
+    public partial class WalletDao
     {
-        #region Commands
-        public int SaveRange(List<WalletDto> dtos, IBaseSessionManager manager)
-        {
-            throw new System.NotImplementedException();
-        }
-        #endregion
 
         #region Queries
-        public List<WalletDto> GetAll(IBaseSessionManager manager)
+
+        internal static List<WalletDto> GetBySystemUserId(EconomyDb db, int systemUserId)
         {
-            throw new System.NotImplementedException();
+            var walets = db.WalletTable.Where(i => i.SystemUserId == systemUserId).ToList();
+            var dtos = Mapper.Map<List<WalletEntity>, List<WalletDto>>(walets);
+            foreach (var dto in dtos)
+            {
+                if (dto.BankId.HasValue)
+                    dto.Bank = BankDao.GetById(db, dto.BankId.Value);
+
+                dto.CurrencyType = CurrencyTypeDao.GetById(db, dto.CurrencyTypeId);
+            }
+            return dtos;
         }
-        #endregion
+
+        #endregion Queries
     }
 }

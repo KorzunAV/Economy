@@ -30,23 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>DBFirstGeneration.Program</StartupObject>
+    <StartupObject>DBFirstGeneration.Generators.BlToolKitGenerator.BlToolKitGenerator</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BLToolkit.4, Version=4.3.4.0, Culture=neutral, PublicKeyToken=b1d3f6ab3aadaca3, processorArchitecture=MSIL">
-      <HintPath>..\packages\BLToolkit.4.3.4\lib\net40\BLToolkit.4.dll</HintPath>
+    <Reference Include="BLToolkit.4, Version=4.3.5.0, Culture=neutral, PublicKeyToken=b1d3f6ab3aadaca3, processorArchitecture=MSIL">
+      <HintPath>..\packages\BLToolkit.4.3.5\lib\net40\BLToolkit.4.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BLToolkit.Data.DataProvider.PostgreSQL.4, Version=4.3.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BLToolkit.PostgreSql.4.3.4\lib\net40\BLToolkit.Data.DataProvider.PostgreSQL.4.dll</HintPath>
+    <Reference Include="BLToolkit.Data.DataProvider.PostgreSQL.4, Version=4.3.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BLToolkit.PostgreSql.4.3.5\lib\net40\BLToolkit.Data.DataProvider.PostgreSQL.4.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Mono.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\Npgsql.2.0.11\lib\Net40\Mono.Security.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Npgsql, Version=2.0.11.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Npgsql.2.0.11\lib\Net40\Npgsql.dll</HintPath>
+    <Reference Include="Npgsql, Version=3.1.9.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.3.1.9\lib\net451\Npgsql.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -60,31 +56,64 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="DbInfoEntity.cs" />
+    <Compile Include="Generators\Shared\BaseGenerator.cs" />
+    <Compile Include="Generators\NhibernateGenerator\NhibernateGenerator.cs" />
+    <Compile Include="Generators\BlToolKitGenerator\BlToolKitGenerator.cs" />
+    <Compile Include="Generators\Shared\DbInfoEntity.cs" />
     <Compile Include="DbManagers\PostgreDbBase.cs" />
     <Compile Include="DbManagers\PostgreSqlDataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Dao.template">
+    <None Include="Generators\BlToolKitGenerator\EconomyDb.template">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Dto.template">
+    <None Include="Generators\BlToolKitGenerator\GetByIdQuery.template">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="EntityDtoMappings.template">
+    <None Include="Generators\BlToolKitGenerator\SaveListCommand.template">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="NHMappings.template">
+    <None Include="Generators\BlToolKitGenerator\SaveCommand.template">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Entity.template">
+    <None Include="Generators\BlToolKitGenerator\Blo.template">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Generators\BlToolKitGenerator\Dao.template">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Generators\BlToolKitGenerator\EntityProp.template">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Generators\BlToolKitGenerator\EntityRefProp.template">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Generators\BlToolKitGenerator\Entity.template">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Generators\NhibernateGenerator\Dao.template">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Generators\Shared\Dto.template">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Generators\Shared\EntityDtoMappings.template">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Generators\Shared\DataAccessModule.Dao.template">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Generators\NhibernateGenerator\NHMappings.template">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Generators\NhibernateGenerator\Entity.template">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

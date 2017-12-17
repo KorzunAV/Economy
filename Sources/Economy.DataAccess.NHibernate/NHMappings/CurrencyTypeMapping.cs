@@ -6,11 +6,11 @@ namespace Economy.DataAccess.NHibernate.NHMappings
     {
         public CurrencyTypeMapping()
         {
-            Id(v => v.Id).GeneratedBy.Increment();
-            Map(v => v.Name);
-            Map(v => v.ShortName);
+            Id(v => v.Id, "\"Id\"").GeneratedBy.Increment();
+            Map(v => v.Name, "\"Name\"");
+            Map(v => v.ShortName, "\"ShortName\"");
             OptimisticLock.Version();
-            Version(entity => entity.Version);
+            Version(entity => entity.Version).Column("\"Version\"");
 
         }
     }

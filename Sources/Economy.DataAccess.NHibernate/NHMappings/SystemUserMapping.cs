@@ -6,10 +6,10 @@ namespace Economy.DataAccess.NHibernate.NHMappings
     {
         public SystemUserMapping()
         {
-            Id(v => v.Id).GeneratedBy.Guid();
-            Map(v => v.Name);
+            Id(v => v.Id, "\"Id\"").GeneratedBy.Guid();
+            Map(v => v.Name, "\"Name\"");
             OptimisticLock.Version();
-            Version(entity => entity.Version);
+            Version(entity => entity.Version).Column("\"Version\"");
 
         }
     }

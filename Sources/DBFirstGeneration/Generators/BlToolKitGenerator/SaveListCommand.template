@@ -1,0 +1,24 @@
+﻿//---------------------------------------------------------------------------------------------------
+// auto-generated
+//---------------------------------------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using CQRS.Logic.Commands;
+using Economy.Dtos;
+
+namespace Economy.Logic.Commands.SaveListCommands
+{{
+    public class {0}SaveListCommand : BaseCommand
+    {{
+        public static readonly Guid Id = new Guid("{1}");
+
+        public override Guid CommandId => Id;
+
+        public List<{0}Dto> Dtos {{ get; set; }}
+
+		public {0}SaveListCommand(List<{0}Dto> dtos)
+        {{
+            Dtos = dtos;
+        }}
+    }}
+}}

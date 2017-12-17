@@ -106,7 +106,7 @@ namespace Economy.ViewModels
         /// </summary>
         public string AccountNumber
         {
-            get { return Account.AccountNumber; }
+            get { return Account.WalletId; }
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Economy.ViewModels
                 _currencyType = new CurrencyTypeDto {Name = "Currency" , ShortName = "Currency" };
                 _quantityByCurrency = 42;
                 _quantityByAccount = 42;
-                _accountNumber = "AccountNumber";
+                _accountNumber = "WalletId";
             }
             else
             {

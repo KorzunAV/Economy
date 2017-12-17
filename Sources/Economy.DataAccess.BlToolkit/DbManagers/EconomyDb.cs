@@ -7,6 +7,7 @@ namespace Economy.DataAccess.BlToolkit.DbManagers
     {
         private const string ConfigurationName = "EconomyDbConfiguration";
         private const string ConnectionString = "Server=localhost;Port=5432;Database=economy; User Id=postgres;Password=1234;Pooling=False;";
+        
 
         static EconomyDb()
         {

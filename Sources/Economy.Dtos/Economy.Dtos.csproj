@@ -34,14 +34,14 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BankDto.cs" />
-    <Compile Include="CourseArhiveDto.cs" />
-    <Compile Include="CurrencyTypeDto.cs" />
-    <Compile Include="MontlyReportDto.cs" />
+    <Compile Include="BankDto.gen.cs" />
+    <Compile Include="CourseArhiveDto.gen.cs" />
+    <Compile Include="CurrencyTypeDto.gen.cs" />
+    <Compile Include="MontlyReportDto.gen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemUserDto.cs" />
-    <Compile Include="TransactionDto.cs" />
-    <Compile Include="WalletDto.cs" />
+    <Compile Include="SystemUserDto.gen.cs" />
+    <Compile Include="TransactionDto.gen.cs" />
+    <Compile Include="WalletDto.gen.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\CQRS\Sources\CQRS\CQRS.Common\CQRS.Common.csproj">

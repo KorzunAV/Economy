@@ -25,9 +25,17 @@ namespace Economy.Parsers
 
         protected XDocument ToDocument(string file)
         {
-            file = $"<data>{file}</data>";
-            var doc = XDocument.Parse(file);
-            return doc;
+            try
+            {
+                file = $"<data>{file}</data>";
+                var doc = XDocument.Parse(file);
+                return doc;
+            }
+            catch (Exception exception)
+            {
+                
+            }
+            return null;
         }
 
         protected virtual string CleanFile(string file)

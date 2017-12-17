@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Economy.Helpers
 {
     public static class StringConverter
     {
+        private static Regex CleanNumR = new Regex("[^0-9.,+-]");
+        private static Regex CleanDate = new Regex("[^0-9-:. ]|(^ )|( $)");
+        private static Regex CleanString = new Regex("(&nbsp;)|(\n)|(\r)");
+
         public static decimal StringToDecimal(string value)
         {
-            value = value.Trim();
+            value = CleanNumR.Replace(value, string.Empty);
             if (string.IsNullOrEmpty(value))
                 return 0;
 
@@ -24,19 +29,24 @@ namespace Economy.Helpers
         //    return DateTime.ParseExact(value, new[] { "dd.MM.yyyy", "dd.MM.yyyy HH:mm" }, new CultureInfo("ru-RU"), DateTimeStyles.None);
         //}
 
-        public static DateTime StringToDateTime(string value)
+        public static DateTime GetDateTime(string value)
         {
-            value = value.Trim();
+            value = CleanDate.Replace(value, string.Empty);
             if (string.IsNullOrEmpty(value))
                 throw new InvalidCastException("Ожидалась дата");
 
             DateTime dateTime;
-            if (DateTime.TryParseExact(value, new[] { "dd.MM.yyyy", "dd.MM.yyyy HH:mm" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime))
+            if (DateTime.TryParseExact(value, new[] { "dd.MM.yyyy", "dd-MM-yyyy", "dd.MM.yyyy HH:mm" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime))
             {
                 return dateTime;
             }
 
             throw new InvalidCastException($"Enable cast {value} to DateTime");
+        }
+
+        internal static string GetString(string innerHtml)
+        {
+            return CleanString.Replace(innerHtml, " ").Trim();
         }
     }
 }

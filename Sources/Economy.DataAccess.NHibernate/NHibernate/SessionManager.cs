@@ -6,7 +6,6 @@ using System.Reflection;
 using Common.Logging;
 using CQRS.Common;
 using Economy.DataAccess.NHibernate.Entities;
-using Economy.DataAccess.NHibernate.NHMappings;
 using FluentNHibernate.Cfg;
 using NHibernate;
 using NHibernate.Cfg;
@@ -15,11 +14,10 @@ using NHibernate.Util;
 using NHibernate.Validator.Cfg;
 using NHibernate.Validator.Engine;
 using NHibernate.Validator.Event;
-using FluentNHibernate.Automapping;
 
 namespace Economy.DataAccess.NHibernate.NHibernate
 {
-    public class SessionManager : IBaseSessionManager
+    public class SessionManager : IBaseSessionManager, ISessionManager
     {
         #region [ Fields ]
 
@@ -60,7 +58,7 @@ namespace Economy.DataAccess.NHibernate.NHibernate
             try
             {
                 _factory = Fluently.Configure(configuration)
-                    .Database(FluentNHibernate.Cfg.Db.PostgreSQLConfiguration.Standard.ConnectionString("Server=localhost;Port=5432;Database=economy; User Id=postgres;Password=1234;Pooling=False;"))
+                    .Database(FluentNHibernate.Cfg.Db.PostgreSQLConfiguration.PostgreSQL82.ConnectionString("Server=localhost;Port=5432;Database=economy;User Id=postgres;Password=1234;Pooling=False;"))
                     .Mappings(m => m.FluentMappings.AddFromAssemblyOf<BaseEntity>())
                     //.Mappings(m => m.AutoMappings.Add(AutoMap.AssemblyOf<Machine>()))
                     .BuildSessionFactory();

@@ -65,12 +65,12 @@ namespace Economy.Parsers
             var items = line.Split('\t');
             int i = 0;
             var rez = new TransactionDto();
-            rez.TransactionDate = StringConverter.StringToDateTime(items[i++]);
+            rez.TransactionDate = StringConverter.GetDateTime(items[i++]);
             rez.Description = items[i++].Trim();
             rez.QuantityByTransaction = StringConverter.StringToDecimal(items[i++]);
             rez.CurrencyType = CurrencyTypeDtos.FirstOrDefault(itm => itm.ShortName.Equals(items[i].Trim()));
             i++;
-            rez.RegistrationDate = StringConverter.StringToDateTime(items[i++]);
+            rez.RegistrationDate = StringConverter.GetDateTime(items[i++]);
             rez.QuantityByWallet = StringConverter.StringToDecimal(items[i]);
             return rez;
         }

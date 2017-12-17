@@ -48,20 +48,18 @@ namespace Economy.DataAccess.NHibernate.Entities
         [NotNull]
         public virtual decimal Sel { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            if (obj is CourseArhiveEntity)
-            {
-                var typed = (CourseArhiveEntity)obj;
-                if (typed.CurrencyTypeId != CurrencyTypeId && (typed.CurrencyType == null || CurrencyType == null || typed.CurrencyType != CurrencyType))
-                    return false;
-                if (typed.RegDate != RegDate)
-                    return false;
-                if (typed.BankId != BankId && (typed.Bank == null || Bank == null || typed.Bank != Bank))
-                    return false;
-                return true;
-            }
-            return false;
-        }
+        /// <summary>
+        ///Идентификатор
+        /// </summary>
+        [NotNull]
+        public virtual int Id { get; set; }
+
+        /// <summary>
+        ///Версия для оптимистической блокировки
+        /// </summary>
+        [NotNull]
+        public virtual int Version { get; set; }
+
+
     }
 }

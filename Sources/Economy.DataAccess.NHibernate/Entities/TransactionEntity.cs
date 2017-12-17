@@ -85,16 +85,6 @@ namespace Economy.DataAccess.NHibernate.Entities
         [NotNull]
         public virtual int Version { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            if (obj is TransactionEntity)
-            {
-                var typed = (TransactionEntity)obj;
-                if (typed.Id != Id)
-                    return false;
-                return true;
-            }
-            return false;
-        }
+
     }
 }

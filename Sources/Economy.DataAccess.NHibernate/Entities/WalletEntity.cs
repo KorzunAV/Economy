@@ -53,16 +53,6 @@ namespace Economy.DataAccess.NHibernate.Entities
         /// </summary>
         public virtual List<MontlyReportEntity> MontlyReports { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            if (obj is WalletEntity)
-            {
-                var typed = (WalletEntity)obj;
-                if (typed.Id != Id)
-                    return false;
-                return true;
-            }
-            return false;
-        }
+
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using CQRS.Logic.Queries;
+using Economy.Dtos;
 
 namespace Economy.Logic.Queries
 {
@@ -10,6 +11,13 @@ namespace Economy.Logic.Queries
         public override Guid QueryId
         {
             get { return Id; }
+        }
+
+        public BankDto Bank { get; set; }
+
+        public MontlyReportGetAllQuery(BankDto bank)
+        {
+            Bank = bank;
         }
     }
 }

@@ -1,0 +1,21 @@
+﻿//---------------------------------------------------------------------------------------------------
+// auto-generated
+//---------------------------------------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using BLToolkit.Data;
+using BLToolkit.Data.Linq;
+using BLToolkit.DataAccess;
+using BLToolkit.Mapping;
+using BLToolkit.Validation;
+using CQRS.Common;
+using Economy.DataAccess.BlToolkit.Entities;
+
+namespace Economy.DataAccess.BlToolkit.Entities
+{{
+    [TableName(Database = "economy", Owner = "public", Name = "\"{0}\"")]
+    internal class {0}Entity : BaseEntity
+    {{
+{1}  
+    }}
+}}

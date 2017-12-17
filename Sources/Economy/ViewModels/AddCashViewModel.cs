@@ -90,8 +90,8 @@ namespace Economy.ViewModels
             
             foreach (var path in convertedPaths )
             {
-                var montlyReport = XmlSerialization.Deserialize<MontlyReport>(path);
-                if (montlyReport.AccountNumber == SelectedAccount.AccountNumber 
+                var montlyReport = XmlSerialization.Deserialize<MontlyReportDto>(path);
+                if (montlyReport.WalletId == SelectedAccount.WalletId 
                     && montlyReport.StartDate >= TransactionItem.TransactionDate 
                     && montlyReport.EndDate <= TransactionItem.TransactionDate)
                 {

@@ -1,0 +1,11 @@
+﻿
+		#region {1}
+
+        /// <summary>
+        ///{0}
+        /// </summary>
+        [MapField("\"{1}\""){2}]
+        public virtual {3} {1} {{ get; set; }}
+
+		#endregion {1}
+		

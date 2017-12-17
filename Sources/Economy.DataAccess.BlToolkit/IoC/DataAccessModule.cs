@@ -1,12 +1,11 @@
 ﻿using CQRS.Common;
 using Economy.DataAccess.BlToolkit.AutomapperMappings;
-using Economy.DataAccess.BlToolkit.Daos;
 using Economy.DataAccess.BlToolkit.DbManagers;
 using Ninject.Modules;
 
 namespace Economy.DataAccess.BlToolkit.IoC
 {
-    public class DataAccessModule : NinjectModule
+    public partial class DataAccessModule : NinjectModule
     {
         public override void Load()
         {
@@ -28,41 +27,6 @@ namespace Economy.DataAccess.BlToolkit.IoC
             Bind<IBaseSessionManagerFactory>()
                 .To<DbManagerFactory>()
                 .InTransientScope();
-        }
-
-        private void BindDaos()
-        {
-            Bind<BaseDao>()
-                .ToSelf()
-                .InSingletonScope();
-
-            Bind<BankDao>()
-                .ToSelf()
-                .InSingletonScope();
-
-            Bind<CourseArhiveDao>()
-                .ToSelf()
-                .InSingletonScope();
-
-            Bind<CurrencyTypeDao>()
-                .ToSelf()
-                .InSingletonScope();
-
-            Bind<MontlyReportDao>()
-                .ToSelf()
-                .InSingletonScope();
-
-            Bind<SystemUserDao>()
-                .ToSelf()
-                .InSingletonScope();
-
-            Bind<TransactionDao>()
-                .ToSelf()
-                .InSingletonScope();
-
-            Bind<WalletDao>()
-                .ToSelf()
-                .InSingletonScope();
         }
     }
 }
